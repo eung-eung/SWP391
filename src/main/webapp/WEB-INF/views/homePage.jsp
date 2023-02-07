@@ -39,10 +39,15 @@
                                 <div class="navigation-user">
                                     <ul class="navigation-user-selection">
                                         <li class="navigation-user-item">
-                                            <a href="#">
-                                                <i class="fa-solid fa-lock"></i>
-                                                Sign in
-                                            </a>
+                                             <span id="g_id_onload"
+                                            data-client_id="1091790792976-ks6ah0826cgh92qtm3qo1k5n6cpov2mg.apps.googleusercontent.com"
+                                            data-context="signin" data-ux_mode="popup" data-callback="loginByGoogle"
+                                            data-auto_select="true" data-itp_support="true">
+                                        </span>
+
+                                        <span class="g_id_signin" data-type="icon" data-shape="circle"
+                                            data-theme="outline" data-text="signin_with" data-size="medium">
+                                        </span>
                                         </li>
                                         <li class="navigation-user-item">
                                             <a href="#" class="navigation-user-action">
@@ -1482,5 +1487,47 @@
 </script>
 
     <script src="<c:url value="/assets/Javascript/handleMenuCategories.js" />"> </script>
-
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script>
+ 
+    // function to get response
+    function loginByGoogle(response) {
+        console.log(response)
+        const responsePayload = decodeJwtResponse(response.credential);
+        console.log(responsePayload)
+        const email = responsePayload.email;
+        // fetch("<c:url value=" / MainController ? btnAction = login & func=loginGoogle & email="/>" + email, {
+        //     method: "GET"
+        // })
+        //     .then(res => res.json())
+        //     .then(res => {
+        //         if (res == null) {
+        //             localStorage.setItem("msg", "This email is not existed in our system, please login to another one");
+        //             window.location.reload();
+        //         } else {
+        //             window.location.href = '<c:url value="/MainController"/>'
+        //         }
+        //     });
+        //                img.src = responsePayload.picture;
+        //                getName.innerHTML = responsePayload.name;
+        //                id.innerHTML = responsePayload.sub;
+        //                email.innerHTML = responsePayload.email;
+        //                container.style.display = 'inline-block';
+        //                googleButton.style.display = 'none'
+    }
+    window.onload = function () {
+        // also display the One Tap dialog on right side
+        // important for auto login
+        google.accounts.id.prompt();
+    }
+    // function to decode the response.credential
+    function decodeJwtResponse(token) {
+        var base64Url = token.split('.')[1];
+        var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        var jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+        return JSON.parse(jsonPayload);
+    }
+    </script>
 </html>
