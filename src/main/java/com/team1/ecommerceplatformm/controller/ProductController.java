@@ -4,24 +4,24 @@
  */
 package com.team1.ecommerceplatformm.controller;
 
-import com.team1.ecommerceplatformm.category.CategoryDAO;
-import com.team1.ecommerceplatformm.category.CategoryDTO;
+import com.team1.ecommerceplatformm.product.ProductDAO;
+import com.team1.ecommerceplatformm.product.ProductDTO;
 import com.team1.ecommerceplatformm.utils.Constrants;
 import java.io.IOException;
 import java.io.PrintWriter;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  *
  * @author boyvi
  */
-@WebServlet(name = "MainController", urlPatterns = {"/MainController"})
-public class MainController extends HttpServlet {
+@WebServlet(name = "ProductController", urlPatterns = {"/ProductController"})
+public class ProductController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,35 +35,28 @@ public class MainController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String btnAction = request.getParameter("btnAction");
+        ProductDAO dao = new ProductDAO();
+        String productAction = request.getParameter("productAction");
+        System.out.println(productAction);
         String url = "";
         try {
-            if (btnAction == null) {
-                CategoryDAO cateDAO = new CategoryDAO();
-                ArrayList<CategoryDTO> listCategory = new ArrayList<>();
-                listCategory = cateDAO.getAll();
-                request.setAttribute("listCategory", listCategory);
-                url = "WEB-INF/views/homePage.jsp";
-            } else {
-                switch (btnAction) {
-                    case "user": {
-                        url = Constrants.USER_CONTROLLER;
-                        break;
-                    }
-                    case "product": {
-                        System.out.println("vào case product main");
-                        url = "ProductController";
-                        break;
-                    }
-                }
+            switch (productAction) {
+                case "showByCateID":
+                    System.out.println("vào r");
+                    int category_id = Integer.parseInt(request.getParameter("categoryID"));
+                    ArrayList<ProductDTO> productListByCateID = new ArrayList<>();
+                    productListByCateID = dao.getAllProductByCategoryID(category_id);
+                    request.setAttribute("productListByCateID", productListByCateID);
+                    url = Constrants.SHOW_PRODUCT_PAGE;
+                    break;
+          
             }
+
         } catch (Exception ex) {
             ex.printStackTrace();
         } finally {
-            System.out.println(url);
             request.getRequestDispatcher(url).forward(request, response);
         }
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

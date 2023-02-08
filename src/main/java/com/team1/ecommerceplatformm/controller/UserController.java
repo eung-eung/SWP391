@@ -4,24 +4,27 @@
  */
 package com.team1.ecommerceplatformm.controller;
 
-import com.team1.ecommerceplatformm.category.CategoryDAO;
-import com.team1.ecommerceplatformm.category.CategoryDTO;
-import com.team1.ecommerceplatformm.utils.Constrants;
+import com.google.gson.Gson;
+import com.team1.ecommerceplatformm.user.UserDAO;
+import com.team1.ecommerceplatformm.user.UserDTO;
+import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-
+import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import com.team1.ecommerceplatformm.utils.Constrants;
 /**
  *
  * @author boyvi
  */
-@WebServlet(name = "MainController", urlPatterns = {"/MainController"})
-public class MainController extends HttpServlet {
+@WebServlet(name = "UserController", urlPatterns = {"/UserController"})
+public class UserController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,35 +38,56 @@ public class MainController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String btnAction = request.getParameter("btnAction");
+        String userAction = request.getParameter("userAction");
+        HttpSession session = request.getSession();
+        UserDAO uDAO = new UserDAO();
+        PrintWriter out = response.getWriter();
+
         String url = "";
         try {
-            if (btnAction == null) {
-                CategoryDAO cateDAO = new CategoryDAO();
-                ArrayList<CategoryDTO> listCategory = new ArrayList<>();
-                listCategory = cateDAO.getAll();
-                request.setAttribute("listCategory", listCategory);
-                url = "WEB-INF/views/homePage.jsp";
-            } else {
-                switch (btnAction) {
-                    case "user": {
-                        url = Constrants.USER_CONTROLLER;
-                        break;
-                    }
-                    case "product": {
-                        System.out.println("vào case product main");
-                        url = "ProductController";
-                        break;
-                    }
-                }
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        } finally {
-            System.out.println(url);
-            request.getRequestDispatcher(url).forward(request, response);
-        }
+            if (userAction == null) {
+                throw new IllegalArgumentException("\"action\" parameter is missing");
 
+            }
+            switch (userAction) {
+                case "login": {
+                    String email = request.getParameter("email");
+
+                    if (email == null || email.isEmpty()) {
+                        throw new IllegalArgumentException("\"email\" parameter is missing");
+                    } else {
+                        UserDTO user = uDAO.login(email);
+                        if (user == null) {
+                            //
+                            String avatarURL = request.getParameter("picture");
+
+                            user = uDAO.insertNewUser(email, avatarURL);
+
+                        }
+                        System.out.println("luu session");
+                        session.setAttribute("user", user);
+
+                        response.getWriter().println(user);
+
+                    }
+
+                    break;
+                }
+                case "logout": {
+                    System.out.println("đã xóa session");
+                    session.removeAttribute("user");
+                    response.sendRedirect(Constrants.MAIN_CONTROLLER);
+                    break;
+                }
+                default:
+                    throw new AssertionError();
+            }
+
+        } catch (IllegalArgumentException ex) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, ex.getMessage());
+        } catch (SQLException ex) {
+            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
