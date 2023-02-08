@@ -4,8 +4,10 @@
     Author     : boyvi
 --%>
 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<fmt:setLocale value="vi-VN"/>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -58,28 +60,16 @@
                         </div>
                         <div class="block-sidebar-content">
                             <ul class="nav-list">
-                                <li class="nav-list-item">
-                                    <a href="#" class="nav-list-action">Tên loại</a>
-                                </li>
 
-                                <li class="nav-list-item">
-                                    <a href="#" class="nav-list-action">Tên loại</a>
-                                </li>
-                                <li class="nav-list-item">
-                                    <a href="#" class="nav-list-action">Tên loại</a>
-                                </li>
-                                <li class="nav-list-item">
-                                    <a href="#" class="nav-list-action">Tên loại</a>
-                                </li>
-                                <li class="nav-list-item">
-                                    <a href="#" class="nav-list-action">Tên loại</a>
-                                </li>
-                                <li class="nav-list-item">
-                                    <a href="#" class="nav-list-action">Tên loại</a>
-                                </li>
-                                <li class="nav-list-item">
-                                    <a href="#" class="nav-list-action">Tên loại</a>
-                                </li>
+
+                                <c:forEach items="${sessionScope.listCategory}" var="categoryItem">
+                                    <li class="nav-list-item">
+                                        <a class="nav-list-action" href="<c:url value="/MainController?btnAction=product&productAction=showByCateID&categoryID=${categoryItem.categoryID}"></c:url>" class="menu-categories-item-action">
+                                            ${categoryItem.icon}${categoryItem.name}
+                                        </a>
+
+                                    </li>
+                                </c:forEach>
                             </ul>
                         </div>
                     </div>
@@ -99,347 +89,57 @@
                                 </div>
                             </div>
                             <div class="products-list">
-                                <div class="product">
-                                    <div class="product-block">
-                                        <div class="product-content">
-                                            <div class="top-block">
-                                                <a href="#" class="product-content-image">
-                                                    <img src="assets/images/item-content.jpg" alt="">
-                                                </a>
 
-                                            </div>
-                                            <div class="bottom-block">
-                                                <h4 class="card-title">
-                                                    <a href="#">ABVBDU</a>
-                                                </h4>
-                                                <div class="ratings">
-                                                    <div class="product-rating">
-                                                        <span class="rating-small">
-                                                            <span class="icon"><i
-                                                                    class="fa-solid fa-star rating-star-full"></i></span>
-                                                            <span class="icon"><i
-                                                                    class="fa-solid fa-star rating-star-full"></i></span>
-                                                            <span class="icon"><i
-                                                                    class="fa-solid fa-star rating-star-full"></i></span>
-                                                            <span class="icon"><i
-                                                                    class="fa-solid fa-star rating-star-full"></i></span>
-                                                            <span class="icon"><i class="fa-regular fa-star"></i></span>
-                                                        </span>
+                                <c:forEach items="${productListByCateID}" varStatus="loop"  var="productByCateID">
+
+                                    <div class="product">
+                                        <div class="product-block">
+                                            <div class="product-content">
+                                                <div class="top-block">
+
+                                                    <a href="#" class="product-content-image">
+                                                        <c:forEach items="${imageList}" var="image">
+                                                            <c:if test="${image.productID == productByCateID.productID}">
+                                                                <img src="${image.url}" alt="">
+                                                            </c:if>
+
+                                                        </c:forEach>   
+
+                                                    </a>
+
+                                                </div>
+                                                <div class="bottom-block">
+                                                    <h4 class="card-title">
+                                                        <a href="#">${productByCateID.name}</a>
+                                                    </h4>
+                                                    <div class="ratings">
+                                                        <div class="product-rating">
+                                                            <span class="rating-small">
+                                                                <span class="icon"><i
+                                                                        class="fa-solid fa-star rating-star-full"></i></span>
+                                                                <span class="icon"><i
+                                                                        class="fa-solid fa-star rating-star-full"></i></span>
+                                                                <span class="icon"><i
+                                                                        class="fa-solid fa-star rating-star-full"></i></span>
+                                                                <span class="icon"><i
+                                                                        class="fa-solid fa-star rating-star-full"></i></span>
+                                                                <span class="icon"><i class="fa-regular fa-star"></i></span>
+                                                            </span>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="price-block">
-                                                    <span class="price price-after-discount">300000vnd</span>
-                                                    <span class="price price-without-discount">500000vnd</span>
-                                                </div>
+                                                    <div class="price-block">
+                                                        <span class="price price-after-discount"><fmt:formatNumber value="${productByCateID.price}" type="currency" /></span>
+                                                        <!--<span class="price price-without-discount">500000vnd</span>-->
+                                                    </div>
 
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </c:forEach>
+
                                 <!--  -->
-                                <div class="product">
-                                    <div class="product-block">
-                                        <div class="product-content">
-                                            <div class="top-block">
-                                                <a href="#" class="product-content-image">
-                                                    <img src="assets/images/item-content.jpg" alt="">
-                                                </a>
 
-                                            </div>
-                                            <div class="bottom-block">
-                                                <h4 class="card-title">
-                                                    <a href="#">ABVBDU</a>
-                                                </h4>
-                                                <div class="ratings">
-                                                    <div class="product-rating">
-                                                        <span class="rating-small">
-                                                            <span class="icon"><i
-                                                                    class="fa-solid fa-star rating-star-full"></i></span>
-                                                            <span class="icon"><i
-                                                                    class="fa-solid fa-star rating-star-full"></i></span>
-                                                            <span class="icon"><i
-                                                                    class="fa-solid fa-star rating-star-full"></i></span>
-                                                            <span class="icon"><i
-                                                                    class="fa-solid fa-star rating-star-full"></i></span>
-                                                            <span class="icon"><i class="fa-regular fa-star"></i></span>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="price-block">
-                                                    <span class="price price-after-discount">300000vnd</span>
-                                                    <span class="price price-without-discount">500000vnd</span>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--  -->
-                                <div class="product">
-                                    <div class="product-block">
-                                        <div class="product-content">
-                                            <div class="top-block">
-                                                <a href="#" class="product-content-image">
-                                                    <img src="assets/images/item-content.jpg" alt="">
-                                                </a>
-
-                                            </div>
-                                            <div class="bottom-block">
-                                                <h4 class="card-title">
-                                                    <a href="#">ABVBDU</a>
-                                                </h4>
-                                                <div class="ratings">
-                                                    <div class="product-rating">
-                                                        <span class="rating-small">
-                                                            <span class="icon"><i
-                                                                    class="fa-solid fa-star rating-star-full"></i></span>
-                                                            <span class="icon"><i
-                                                                    class="fa-solid fa-star rating-star-full"></i></span>
-                                                            <span class="icon"><i
-                                                                    class="fa-solid fa-star rating-star-full"></i></span>
-                                                            <span class="icon"><i
-                                                                    class="fa-solid fa-star rating-star-full"></i></span>
-                                                            <span class="icon"><i class="fa-regular fa-star"></i></span>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="price-block">
-                                                    <span class="price price-after-discount">300000vnd</span>
-                                                    <span class="price price-without-discount">500000vnd</span>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--  -->
-                                <div class="product">
-                                    <div class="product-block">
-                                        <div class="product-content">
-                                            <div class="top-block">
-                                                <a href="#" class="product-content-image">
-                                                    <img src="assets/images/item-content.jpg" alt="">
-                                                </a>
-
-                                            </div>
-                                            <div class="bottom-block">
-                                                <h4 class="card-title">
-                                                    <a href="#">ABVBDU</a>
-                                                </h4>
-                                                <div class="ratings">
-                                                    <div class="product-rating">
-                                                        <span class="rating-small">
-                                                            <span class="icon"><i
-                                                                    class="fa-solid fa-star rating-star-full"></i></span>
-                                                            <span class="icon"><i
-                                                                    class="fa-solid fa-star rating-star-full"></i></span>
-                                                            <span class="icon"><i
-                                                                    class="fa-solid fa-star rating-star-full"></i></span>
-                                                            <span class="icon"><i
-                                                                    class="fa-solid fa-star rating-star-full"></i></span>
-                                                            <span class="icon"><i class="fa-regular fa-star"></i></span>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="price-block">
-                                                    <span class="price price-after-discount">300000vnd</span>
-                                                    <span class="price price-without-discount">500000vnd</span>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--  -->
-                                <div class="product">
-                                    <div class="product-block">
-                                        <div class="product-content">
-                                            <div class="top-block">
-                                                <a href="#" class="product-content-image">
-                                                    <img src="assets/images/item-content.jpg" alt="">
-                                                </a>
-
-                                            </div>
-                                            <div class="bottom-block">
-                                                <h4 class="card-title">
-                                                    <a href="#">ABVBDU</a>
-                                                </h4>
-                                                <div class="ratings">
-                                                    <div class="product-rating">
-                                                        <span class="rating-small">
-                                                            <span class="icon"><i
-                                                                    class="fa-solid fa-star rating-star-full"></i></span>
-                                                            <span class="icon"><i
-                                                                    class="fa-solid fa-star rating-star-full"></i></span>
-                                                            <span class="icon"><i
-                                                                    class="fa-solid fa-star rating-star-full"></i></span>
-                                                            <span class="icon"><i
-                                                                    class="fa-solid fa-star rating-star-full"></i></span>
-                                                            <span class="icon"><i class="fa-regular fa-star"></i></span>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="price-block">
-                                                    <span class="price price-after-discount">300000vnd</span>
-                                                    <span class="price price-without-discount">500000vnd</span>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--  -->
-                                <div class="product">
-                                    <div class="product-block">
-                                        <div class="product-content">
-                                            <div class="top-block">
-                                                <a href="#" class="product-content-image">
-                                                    <img src="assets/images/item-content.jpg" alt="">
-                                                </a>
-
-                                            </div>
-                                            <div class="bottom-block">
-                                                <h4 class="card-title">
-                                                    <a href="#">ABVBDU</a>
-                                                </h4>
-                                                <div class="ratings">
-                                                    <div class="product-rating">
-                                                        <span class="rating-small">
-                                                            <span class="icon"><i
-                                                                    class="fa-solid fa-star rating-star-full"></i></span>
-                                                            <span class="icon"><i
-                                                                    class="fa-solid fa-star rating-star-full"></i></span>
-                                                            <span class="icon"><i
-                                                                    class="fa-solid fa-star rating-star-full"></i></span>
-                                                            <span class="icon"><i
-                                                                    class="fa-solid fa-star rating-star-full"></i></span>
-                                                            <span class="icon"><i class="fa-regular fa-star"></i></span>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="price-block">
-                                                    <span class="price price-after-discount">300000vnd</span>
-                                                    <span class="price price-without-discount">500000vnd</span>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--  -->
-                                <div class="product">
-                                    <div class="product-block">
-                                        <div class="product-content">
-                                            <div class="top-block">
-                                                <a href="#" class="product-content-image">
-                                                    <img src="assets/images/item-content.jpg" alt="">
-                                                </a>
-
-                                            </div>
-                                            <div class="bottom-block">
-                                                <h4 class="card-title">
-                                                    <a href="#">ABVBDU</a>
-                                                </h4>
-                                                <div class="ratings">
-                                                    <div class="product-rating">
-                                                        <span class="rating-small">
-                                                            <span class="icon"><i
-                                                                    class="fa-solid fa-star rating-star-full"></i></span>
-                                                            <span class="icon"><i
-                                                                    class="fa-solid fa-star rating-star-full"></i></span>
-                                                            <span class="icon"><i
-                                                                    class="fa-solid fa-star rating-star-full"></i></span>
-                                                            <span class="icon"><i
-                                                                    class="fa-solid fa-star rating-star-full"></i></span>
-                                                            <span class="icon"><i class="fa-regular fa-star"></i></span>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="price-block">
-                                                    <span class="price price-after-discount">300000vnd</span>
-                                                    <span class="price price-without-discount">500000vnd</span>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--  -->
-                                <div class="product">
-                                    <div class="product-block">
-                                        <div class="product-content">
-                                            <div class="top-block">
-                                                <a href="#" class="product-content-image">
-                                                    <img src="assets/images/item-content.jpg" alt="">
-                                                </a>
-
-                                            </div>
-                                            <div class="bottom-block">
-                                                <h4 class="card-title">
-                                                    <a href="#">ABVBDU</a>
-                                                </h4>
-                                                <div class="ratings">
-                                                    <div class="product-rating">
-                                                        <span class="rating-small">
-                                                            <span class="icon"><i
-                                                                    class="fa-solid fa-star rating-star-full"></i></span>
-                                                            <span class="icon"><i
-                                                                    class="fa-solid fa-star rating-star-full"></i></span>
-                                                            <span class="icon"><i
-                                                                    class="fa-solid fa-star rating-star-full"></i></span>
-                                                            <span class="icon"><i
-                                                                    class="fa-solid fa-star rating-star-full"></i></span>
-                                                            <span class="icon"><i class="fa-regular fa-star"></i></span>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="price-block">
-                                                    <span class="price price-after-discount">300000vnd</span>
-                                                    <span class="price price-without-discount">500000vnd</span>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--  -->
-                                <div class="product">
-                                    <div class="product-block">
-                                        <div class="product-content">
-                                            <div class="top-block">
-                                                <a href="#" class="product-content-image">
-                                                    <img src="assets/images/item-content.jpg" alt="">
-                                                </a>
-
-                                            </div>
-                                            <div class="bottom-block">
-                                                <h4 class="card-title">
-                                                    <a href="#">ABVBDU</a>
-                                                </h4>
-                                                <div class="ratings">
-                                                    <div class="product-rating">
-                                                        <span class="rating-small">
-                                                            <span class="icon"><i
-                                                                    class="fa-solid fa-star rating-star-full"></i></span>
-                                                            <span class="icon"><i
-                                                                    class="fa-solid fa-star rating-star-full"></i></span>
-                                                            <span class="icon"><i
-                                                                    class="fa-solid fa-star rating-star-full"></i></span>
-                                                            <span class="icon"><i
-                                                                    class="fa-solid fa-star rating-star-full"></i></span>
-                                                            <span class="icon"><i class="fa-regular fa-star"></i></span>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="price-block">
-                                                    <span class="price price-after-discount">300000vnd</span>
-                                                    <span class="price price-without-discount">500000vnd</span>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                                 <!--  -->
                             </div>
                         </div>
@@ -450,6 +150,6 @@
             </div>
         </div>
     </body>
- 
-    <script <c:url value="/assets/Javascript/handleMenuCategories.js" />> </script>
+
+    <script src="<c:url value="/assets/Javascript/handleMenuCategories.js" />"></script>
 </html>

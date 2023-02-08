@@ -430,9 +430,12 @@ body {
     padding: 10px 20px;
     display: block;
     color: #495057;
-    font-size: 13px;
+    font-size: 17px;
 }
-
+.nav-list-action i {
+    margin-right: 10px;
+    font-size: 19px;
+}
 .block-sidebar-content .nav-list .nav-list-item {
     /* position: relative; */
     box-shadow: none;

@@ -4,17 +4,18 @@
  */
 package com.team1.ecommerceplatformm.controller;
 
+import com.team1.ecommerceplatformm.imageProduct.ImageProductDAO;
+import com.team1.ecommerceplatformm.imageProduct.ImageProductDTO;
 import com.team1.ecommerceplatformm.product.ProductDAO;
 import com.team1.ecommerceplatformm.product.ProductDTO;
 import com.team1.ecommerceplatformm.utils.Constrants;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  *
@@ -35,7 +36,8 @@ public class ProductController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        ProductDAO dao = new ProductDAO();
+        ProductDAO productDao = new ProductDAO();
+        ImageProductDAO imageDao = new ImageProductDAO();
         String productAction = request.getParameter("productAction");
         System.out.println(productAction);
         String url = "";
@@ -45,11 +47,14 @@ public class ProductController extends HttpServlet {
                     System.out.println("vào r");
                     int category_id = Integer.parseInt(request.getParameter("categoryID"));
                     ArrayList<ProductDTO> productListByCateID = new ArrayList<>();
-                    productListByCateID = dao.getAllProductByCategoryID(category_id);
+                    ArrayList<ImageProductDTO> imageList = new ArrayList<>();
+                    productListByCateID = productDao.getAllProductByCategoryID(category_id);
+                    imageList = imageDao.getAllMainImages();
+                       request.setAttribute("imageList", imageList);
                     request.setAttribute("productListByCateID", productListByCateID);
                     url = Constrants.SHOW_PRODUCT_PAGE;
                     break;
-          
+
             }
 
         } catch (Exception ex) {

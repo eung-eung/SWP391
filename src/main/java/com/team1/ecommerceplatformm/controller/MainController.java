@@ -8,12 +8,12 @@ import com.team1.ecommerceplatformm.category.CategoryDAO;
 import com.team1.ecommerceplatformm.category.CategoryDTO;
 import com.team1.ecommerceplatformm.utils.Constrants;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 
 /**
@@ -36,13 +36,16 @@ public class MainController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String btnAction = request.getParameter("btnAction");
+        HttpSession session = request.getSession();
+
         String url = "";
         try {
             if (btnAction == null) {
                 CategoryDAO cateDAO = new CategoryDAO();
                 ArrayList<CategoryDTO> listCategory = new ArrayList<>();
                 listCategory = cateDAO.getAll();
-                request.setAttribute("listCategory", listCategory);
+                session.setAttribute("listCategory", listCategory);
+
                 url = "WEB-INF/views/homePage.jsp";
             } else {
                 switch (btnAction) {
@@ -52,7 +55,7 @@ public class MainController extends HttpServlet {
                     }
                     case "product": {
                         System.out.println("vào case product main");
-                        url = "ProductController";
+                        url = Constrants.PRODUCT_CONTROLLER;
                         break;
                     }
                 }

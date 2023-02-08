@@ -29,7 +29,9 @@
                             <div class="col-right">
                                 <div class="navigation-user">
                                     <ul class="navigation-user-selection">
+
                                         <c:choose>
+
                                             <c:when test="${not empty sessionScope.user}">
                                                 <li class="navigation-user-item">
                                                     <span class="email-need-split" data-email="${sessionScope.user.email}"></span>
@@ -53,7 +55,6 @@
 
                                             </c:when>
                                             <c:otherwise>
-
                                                 <li class="navigation-user-item">
                                                     <span id="g_id_onload"
                                                           data-client_id="1091790792976-ks6ah0826cgh92qtm3qo1k5n6cpov2mg.apps.googleusercontent.com"
@@ -128,13 +129,13 @@
                                     <span>Các loại sản phẩm</span>
                                     <i class="fa-regular fa-circle-down down"></i>
                                 </a>
-                                <div class="menu-categories">
-                                    <ul class="menu-categories-list">
+                                <div class="menu-categories  ${param.btnAction == null ? "" : "is-hover"}">
+                                    <ul  class="menu-categories-list">
 
-                                        <c:forEach items="${listCategory}" var="categoryItem">
+                                        <c:forEach items="${sessionScope.listCategory}" var="categoryItem">
                                             <li class="menu-categories-item">
-                                                <a href="<c:url value="MainController?btnAction=product&productAction=showByCateID&categoryID=${categoryItem.categoryID}"></c:url>" class="menu-categories-item-action">
-                                                     ${categoryItem.icon}${categoryItem.name}
+                                                <a href="<c:url value="/MainController?btnAction=product&productAction=showByCateID&categoryID=${categoryItem.categoryID}"></c:url>" class="menu-categories-item-action">
+                                                    ${categoryItem.icon}${categoryItem.name}
                                                 </a>
                                             </li>
                                         </c:forEach>
@@ -171,4 +172,68 @@
             </div>
         </header>
     </body>
+
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script>
+
+        // function to get response
+        function loginByGoogle(response) {
+            console.log(response)
+            const responsePayload = decodeJwtResponse(response.credential);
+            console.log(responsePayload)
+            const email = responsePayload.email;
+            const avatar = responsePayload.picture;
+
+            fetch("<c:url value="/MainController?btnAction=user&userAction=login&email="/>" + email + "&picture=" + avatar, {
+                method: "GET"
+            }).then(res =>
+                res.json()
+
+
+            ).then(res => {
+//                console.log(res.email)
+                document.querySelector('.navigation-user-selection').innerHTML =
+                        `<li class="navigation-user-item">
+                 <span class="email-need-split" data-email="${res.email}"></span>
+                                  </li>
+                                  <li class="navigation-user-item dropdown">
+                                      <span class="navigation-user-action">
+                                          <i class="fa-solid fa-user"></i>
+                                          <span>My Account</span>
+                                          <i class="fa-solid fa-angle-down"></i>
+
+                                      </span>
+
+                                      <div class="dropdown-action">
+                                          <a>Thông tin của tôi</a>
+                                          <a href="<c:url value="/MainController?btnAction=user&userAction=logout"></c:url>">Đăng xuất</a>
+
+                                          </div>
+
+                                      </li>`;
+          
+                        document.querySelector('.email-need-split').innerHTML = res.email.substring(0, res.email.lastIndexOf("@"));
+
+            }
+            )
+        }
+        window.onload = function () {
+            // also display the One Tap dialog on right side
+            // important for auto login
+            google.accounts.id.prompt();
+        }
+        // function to decode the response.credential
+        function decodeJwtResponse(token) {
+            var base64Url = token.split('.')[1];
+            var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            var jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+            return JSON.parse(jsonPayload);
+        }
+        let usernameDiv = document.querySelector('.email-need-split');
+        let emailNeedSplit = document.querySelector('.email-need-split').dataset.email;
+        let username = emailNeedSplit.substring(0, emailNeedSplit.lastIndexOf("@"));
+        usernameDiv.innerHTML = username;
+    </script>
 </html>

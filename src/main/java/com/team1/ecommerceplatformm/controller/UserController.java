@@ -19,6 +19,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import com.team1.ecommerceplatformm.utils.Constrants;
+
 /**
  *
  * @author boyvi
@@ -42,7 +43,7 @@ public class UserController extends HttpServlet {
         HttpSession session = request.getSession();
         UserDAO uDAO = new UserDAO();
         PrintWriter out = response.getWriter();
-
+        Gson gson = new Gson();
         String url = "";
         try {
             if (userAction == null) {
@@ -65,10 +66,9 @@ public class UserController extends HttpServlet {
 
                         }
                         System.out.println("luu session");
+                        
                         session.setAttribute("user", user);
-
-                        response.getWriter().println(user);
-
+                       out.println(gson.toJson(user));
                     }
 
                     break;
@@ -76,7 +76,7 @@ public class UserController extends HttpServlet {
                 case "logout": {
                     System.out.println("đã xóa session");
                     session.removeAttribute("user");
-                    response.sendRedirect(Constrants.MAIN_CONTROLLER);
+                  
                     break;
                 }
                 default:

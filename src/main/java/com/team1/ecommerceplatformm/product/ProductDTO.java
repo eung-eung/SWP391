@@ -21,19 +21,19 @@ import lombok.ToString;
 @ToString
 
 public class ProductDTO {
-    private int product_id;
-    private int shop_id;
-    private int category_id;
-    private int user_admin_id;
+    private int productID;
+    private int shopID;
+    private int categoryID;
+    private int userAdminID;
     private double price;
     private String name;
     private String description;
     private int quanity;
     private boolean status;
-    private Date create_at;
-    private Date approve_at;
+    private Date createAt;
+    private Date approveAt;
     private float discount;
-    private int sold_count;
+    private int soldCount;
     private boolean authen;
     
 

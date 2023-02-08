@@ -592,12 +592,19 @@ body {
     overflow: hidden;
     font-size: 14px;
     margin: 0;
+    display: flex;
+    justify-content: center;
 
 }
 
 .card-title a {
     text-decoration: none;
     color: var(--header-color);
+    width: 200px;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    display: block;
+  
 }
 
 /* .add-cart {
@@ -763,9 +770,10 @@ body {
 
 /* width */
 ::-webkit-scrollbar {
-    width: 10px;
+    width: 1px;
 
 }
+
 
 /* Track */
 ::-webkit-scrollbar-track {

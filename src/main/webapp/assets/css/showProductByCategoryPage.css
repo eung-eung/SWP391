@@ -78,3 +78,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     border: 6px solid transparent;
     border-color: #fff transparent transparent transparent;
 }
+.product-content-image img{
+    width: 118px;
+    height: 118px;
+}

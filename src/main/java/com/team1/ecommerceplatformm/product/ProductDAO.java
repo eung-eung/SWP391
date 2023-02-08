@@ -41,19 +41,19 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
         ArrayList<ProductDTO> list = new ArrayList<>();
         while (rs.next()) {
             ProductDTO dto = new ProductDTO();
-            dto.setProduct_id(rs.getInt("product_id"));
-            dto.setShop_id(rs.getInt("shop_id"));
-            dto.setCategory_id(rs.getInt("category_id"));
-            dto.setUser_admin_id(rs.getInt("user_admin_id"));
+            dto.setProductID(rs.getInt("product_id"));
+            dto.setShopID(rs.getInt("shop_id"));
+            dto.setCategoryID(rs.getInt("category_id"));
+            dto.setUserAdminID(rs.getInt("user_admin_id"));
             dto.setPrice(rs.getDouble("price"));
             dto.setName(rs.getString("name"));
             dto.setDescription(rs.getString("description"));
             dto.setQuanity(rs.getInt("quantity"));
             dto.setStatus(rs.getBoolean("status"));
-            dto.setCreate_at(rs.getDate("create_at"));
-            dto.setApprove_at(rs.getDate("approve_at"));
+            dto.setCreateAt(rs.getDate("create_at"));
+            dto.setApproveAt(rs.getDate("approve_at"));
             dto.setDiscount(rs.getFloat("discount"));
-            dto.setSold_count(rs.getInt("sold_count"));
+            dto.setSoldCount(rs.getInt("sold_count"));
             dto.setAuthen(rs.getBoolean("authen"));
             list.add(dto);
         }
@@ -82,19 +82,19 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
         ArrayList<ProductDTO> list = new ArrayList<>();
         while (rs.next()) {
             ProductDTO dto = new ProductDTO();
-            dto.setProduct_id(rs.getInt("product_id"));
-            dto.setShop_id(rs.getInt("shop_id"));
-            dto.setCategory_id(rs.getInt("category_id"));
-            dto.setUser_admin_id(rs.getInt("user_admin_id"));
+           dto.setProductID(rs.getInt("product_id"));
+            dto.setShopID(rs.getInt("shop_id"));
+            dto.setCategoryID(rs.getInt("category_id"));
+            dto.setUserAdminID(rs.getInt("user_admin_id"));
             dto.setPrice(rs.getDouble("price"));
             dto.setName(rs.getString("name"));
             dto.setDescription(rs.getString("description"));
             dto.setQuanity(rs.getInt("quantity"));
             dto.setStatus(rs.getBoolean("status"));
-            dto.setCreate_at(rs.getDate("create_at"));
-            dto.setApprove_at(rs.getDate("approve_at"));
+            dto.setCreateAt(rs.getDate("create_at"));
+            dto.setApproveAt(rs.getDate("approve_at"));
             dto.setDiscount(rs.getFloat("discount"));
-            dto.setSold_count(rs.getInt("sold_count"));
+            dto.setSoldCount(rs.getInt("sold_count"));
             dto.setAuthen(rs.getBoolean("authen"));
             list.add(dto);
         }

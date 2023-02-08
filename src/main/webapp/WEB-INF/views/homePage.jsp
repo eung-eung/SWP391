@@ -1314,44 +1314,5 @@
 </script>
 
 <script src="<c:url value="/assets/Javascript/handleMenuCategories.js" />"></script>
-<script src="https://accounts.google.com/gsi/client" async defer></script>
-<script>
 
-// function to get response
-    function loginByGoogle(response) {
-        console.log(response)
-        const responsePayload = decodeJwtResponse(response.credential);
-        console.log(responsePayload)
-        const email = responsePayload.email;
-        const avatar=responsePayload.picture;
-
-        fetch("<c:url value="/MainController?btnAction=user&userAction=login&email="/>" + email + "&picture=" + avatar, {
-            method: "GET"
-        }).then(() => {
-
-            window.location.href = '<c:url value="/MainController"/>'
-
-        })
-
-
-    }
-    window.onload = function () {
-        // also display the One Tap dialog on right side
-        // important for auto login
-        google.accounts.id.prompt();
-    }
-// function to decode the response.credential
-    function decodeJwtResponse(token) {
-        var base64Url = token.split('.')[1];
-        var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        var jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
-            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-        }).join(''));
-        return JSON.parse(jsonPayload);
-    }
-    let usernameDiv = document.querySelector('.email-need-split');
-    let emailNeedSplit = document.querySelector('.email-need-split').dataset.email;
-    let username = emailNeedSplit.substring(0, emailNeedSplit.lastIndexOf("@"));
-    usernameDiv.innerHTML = username;
-</script>
 </html>
