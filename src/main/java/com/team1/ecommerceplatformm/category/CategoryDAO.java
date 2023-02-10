@@ -24,6 +24,7 @@ public class CategoryDAO extends AbstractDAO<CategoryDTO> {
         PreparedStatement stm = conn.prepareStatement("SELECT [category_id]\n"
                 + "      ,[name]\n"
                 + "      ,[icon]\n"
+                + "        ,[banner],[bannerVertical]"
                 + "  FROM [EcommmercePlatform].[dbo].[Category]");
         ResultSet rs = stm.executeQuery();
         ArrayList<CategoryDTO> list = new ArrayList<>();
@@ -31,6 +32,8 @@ public class CategoryDAO extends AbstractDAO<CategoryDTO> {
             CategoryDTO dto = new CategoryDTO();
             dto.setName(rs.getString("name"));
             dto.setIcon(rs.getString("icon"));
+            dto.setBanner(rs.getString("banner"));
+            dto.setBannerVertical(rs.getString("bannerVertical"));
             dto.setCategoryID(rs.getInt("category_id"));
             list.add(dto);
         }

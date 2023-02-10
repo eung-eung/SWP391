@@ -86,7 +86,7 @@
                                                 <input id="phone" type="number" placeholder="Nhập số điện thoại" value="${sessionScope.user.phone}"/>
                                             </div>
                                         </div>
-
+                                        <button type="button" id="submit">Lưu</button>
                                     </div>
 
 
@@ -97,7 +97,7 @@
                                             </div>
                                             <input id="input-avatar" type="file" hidden accept=".jpg, .jpeg, .png" onchange="readURL(this)"/>
                                             <!--<button id="submit">Upload</button>-->   
-                                            <button type="button" id="submit">Lưu</button>
+
                                         </div>
                                     </div>
                                 </div>

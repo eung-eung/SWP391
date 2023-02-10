@@ -42,11 +42,16 @@
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item">
                             <i class="fa-solid fa-house"></i>
-                            <a href="#" class="breadcrumb-label">Home</a>
+                            <a href="<c:url value="/MainController" />" class="breadcrumb-label">Home</a>
                         </li>
                         <li class="breadcrumb-item">
-                            <i class="fa-solid fa-angle-right"></i>
-                            <a href="#" class="breadcrumb-label">Tên loại sản phẩm</a>
+
+                            <c:forEach items="${sessionScope.listCategory}" var="categoryItem3">
+                                <c:if test="${categoryItem3.categoryID == param.categoryID}">
+                                    <i class="fa-solid fa-angle-right"></i>        <a href="<c:url value="/MainController?btnAction=product&productAction=showByCateID&categoryID=${categoryItem3.categoryID}"></c:url>"  class="breadcrumb-label">  ${categoryItem3.name}</a>
+                                </c:if>
+                            </c:forEach>
+
                         </li>
 
                     </ul>
@@ -61,8 +66,6 @@
                         </div>
                         <div class="block-sidebar-content">
                             <ul class="nav-list">
-
-
                                 <c:forEach items="${sessionScope.listCategory}" var="categoryItem">
                                     <li class="nav-list-item">
                                         <a class="nav-list-action" href="<c:url value="/MainController?btnAction=product&productAction=showByCateID&categoryID=${categoryItem.categoryID}"></c:url>" class="menu-categories-item-action">
@@ -77,7 +80,13 @@
                     <div class="product-detail-container">
                         <div class="product-detail-by-category">
                             <div class="nav-product-detail">
-                                <h3 class="product-category-title">Fashion</h3>
+                                <h3 class="product-category-title">
+                                    <c:forEach items="${sessionScope.listCategory}" var="categoryItem2">
+                                        <c:if test="${categoryItem2.categoryID == param.categoryID}">
+                                            ${categoryItem2.name}
+                                        </c:if>
+                                    </c:forEach>
+                                </h3>
                                 <div class="sort-by">
                                     <label for="sort">Sort By:</label>
                                     <select id="sort">

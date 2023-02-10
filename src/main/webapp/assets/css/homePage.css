@@ -35,7 +35,7 @@ body {
 }
 
 .header-top-content {
-    
+
 }
 
 .row {
@@ -489,6 +489,7 @@ body {
 
 .list-product-tab {
     display: grid;
+    position: relative;
     grid-template-columns: repeat(6, 1fr);
 }
 
@@ -502,10 +503,13 @@ body {
 
 .list-product:nth-child(odd) .mySwiper2-css {
     grid-column: 1 / 6;
+    position: absolute;
+    overflow: hidden;
+    top:0;
 }
 
 .list-product:nth-child(odd) .list-product-image {
-    /* grid-column: 6/7; */
+     grid-column: 6/7; 
 }
 
 .list-product-image {
@@ -717,7 +721,7 @@ body {
     color: var(--background-header-top);
 }
 
-.tab-title:hover {
+.tab-title {
     color: var(--header-color-hover);
     transition: 0.6s;
 }
@@ -837,9 +841,22 @@ body {
     margin: 0 3px;
 }
 .banner-image a .img-popu-cate{
-    
+
     height: 270px;
     width: 210px;
     object-fit: cover;
 
+}
+
+
+
+a.slide-product-content-image {
+    width: 200px;
+    display: block;
+    height: 200px;
+}
+
+.list-product{
+box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+    
 }

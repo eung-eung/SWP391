@@ -15,12 +15,14 @@ import lombok.ToString;
  *
  * @author boyvi
  */
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 
 public class ProductDTO {
+
     private int productID;
     private int shopID;
     private int categoryID;
@@ -35,8 +37,6 @@ public class ProductDTO {
     private float discount;
     private int soldCount;
     private boolean authen;
-    
-
-
+    private String mainImg;
 
 }

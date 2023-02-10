@@ -4,6 +4,8 @@
  */
 package com.team1.ecommerceplatformm.category;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,4 +29,5 @@ public class CategoryDTO {
     private String icon;
     private String banner;
     private String bannerVertical;
+    
 }
