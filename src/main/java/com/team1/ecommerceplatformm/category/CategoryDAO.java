@@ -39,9 +39,25 @@ public class CategoryDAO extends AbstractDAO<CategoryDTO> {
         return list;
     }
 
+    public ArrayList<CategoryDTO> getTop5CategoriesByTotalSoldCount() throws SQLException {
+        PreparedStatement stm = conn.prepareStatement("  select top(5) sum(sold_count), \n"
+                + "                 c.name, p.category_id, c.banner\n"
+                + "                 from Product p right join Category c on p.category_id = c.category_id  \n"
+                + "                 group by  c.icon, c.name, p.category_id,c.banner  order by sum(sold_count)  desc");
 
-
-
+        ResultSet rs = stm.executeQuery();
+        ArrayList<CategoryDTO> list = new ArrayList<>();
+        while (rs.next()) {
+            CategoryDTO dto = new CategoryDTO();
+            dto.setName(rs.getString(2));
+            dto.setCategoryID(rs.getInt(3));
+            dto.setBanner(rs.getString(4));
+            list.add(dto);
+        }
+        rs.close();
+        stm.close();
+        return list;
+    }
 
     @Override
     public void save(CategoryDTO t) throws SQLException {
@@ -62,7 +78,7 @@ public class CategoryDAO extends AbstractDAO<CategoryDTO> {
         try {
             CategoryDAO dao = new CategoryDAO();
             ArrayList<CategoryDTO> list = new ArrayList<>();
-            list = dao.getAll();
+            list = dao.getTop5CategoriesByTotalSoldCount();
             System.out.println(list);
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);

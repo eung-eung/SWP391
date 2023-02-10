@@ -29,7 +29,11 @@
 
     <body>
         <jsp:include page="header.jsp"/>
-
+        <c:if test="${empty sessionScope.listCategory}">
+            <script>
+                window.location.href = "<c:url value="/" />"
+            </script>
+        </c:if>
         <!-- body -->
         <div class="main-body">
             <div class="container">
@@ -44,10 +48,7 @@
                             <i class="fa-solid fa-angle-right"></i>
                             <a href="#" class="breadcrumb-label">Tên loại sản phẩm</a>
                         </li>
-                        <li class="breadcrumb-item">
-                            <i class="fa-solid fa-angle-right"></i>
-                            <a href="#" class="breadcrumb-label">Tên sản phẩm</a>
-                        </li>
+
                     </ul>
                 </div>
 
@@ -67,7 +68,6 @@
                                         <a class="nav-list-action" href="<c:url value="/MainController?btnAction=product&productAction=showByCateID&categoryID=${categoryItem.categoryID}"></c:url>" class="menu-categories-item-action">
                                             ${categoryItem.icon}${categoryItem.name}
                                         </a>
-
                                     </li>
                                 </c:forEach>
                             </ul>
@@ -137,7 +137,53 @@
                                         </div>
                                     </div>
                                 </c:forEach>
+                                <c:forEach items="${listSearched}"  var="productByName">
 
+                                    <div class="product">
+                                        <div class="product-block">
+                                            <div class="product-content">
+                                                <div class="top-block">
+
+                                                    <a href="#" class="product-content-image">
+                                                        <c:forEach items="${listMainImg}" var="mainIMG">
+                                                            <c:if test="${mainIMG.productID == productByName.productID}">
+                                                                <img src="${mainIMG.url}" alt="">
+                                                            </c:if>
+
+                                                        </c:forEach>   
+
+                                                    </a>
+
+                                                </div>
+                                                <div class="bottom-block">
+                                                    <h4 class="card-title">
+                                                        <a href="#">${productByName.name}</a>
+                                                    </h4>
+                                                    <div class="ratings">
+                                                        <div class="product-rating">
+                                                            <span class="rating-small">
+                                                                <span class="icon"><i
+                                                                        class="fa-solid fa-star rating-star-full"></i></span>
+                                                                <span class="icon"><i
+                                                                        class="fa-solid fa-star rating-star-full"></i></span>
+                                                                <span class="icon"><i
+                                                                        class="fa-solid fa-star rating-star-full"></i></span>
+                                                                <span class="icon"><i
+                                                                        class="fa-solid fa-star rating-star-full"></i></span>
+                                                                <span class="icon"><i class="fa-regular fa-star"></i></span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="price-block">
+                                                        <span class="price price-after-discount"><fmt:formatNumber value="${productByName.price}" type="currency" /></span>
+                                                        <!--<span class="price price-without-discount">500000vnd</span>-->
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </c:forEach>
                                 <!--  -->
 
                                 <!--  -->

@@ -1,0 +1,39 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Feb 9, 2023, 1:05:47 PM
+    Author     : boyvi
+*/
+.user-detail-container{
+    width: 100%;
+    padding: 10px;
+}
+.profile-items{
+    display: flex;
+}
+.profile-item{
+    padding: 8px;
+    margin: 10px 0;
+    flex-basis: 50%;
+}
+.profile-item input{
+    padding: 10px;
+}
+.profile-modal{
+    display: flex;
+}
+.profile{
+    flex-basis: 70%;
+}
+.current-avatar div{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-position: center;
+    background-size: contain;
+}
+#my-image {
+    cursor: pointer;
+}

@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 package com.team1.ecommerceplatformm.controller;
-
+ 
 import com.google.gson.Gson;
 import com.team1.ecommerceplatformm.user.UserDAO;
 import com.team1.ecommerceplatformm.user.UserDTO;
@@ -61,14 +61,14 @@ public class UserController extends HttpServlet {
                         if (user == null) {
                             //
                             String avatarURL = request.getParameter("picture");
-
-                            user = uDAO.insertNewUser(email, avatarURL);
+                            String username = request.getParameter("username");
+                            user = uDAO.insertNewUser(email, avatarURL,username);
 
                         }
                         System.out.println("luu session");
-                        
+                        System.out.println(user);
                         session.setAttribute("user", user);
-                       out.println(gson.toJson(user));
+                        out.println(gson.toJson(user));
                     }
 
                     break;
@@ -76,7 +76,29 @@ public class UserController extends HttpServlet {
                 case "logout": {
                     System.out.println("đã xóa session");
                     session.removeAttribute("user");
-                  
+                    response.sendRedirect(Constrants.MAIN_CONTROLLER);
+                    break;
+                }
+                case "profile": {
+                    request.getRequestDispatcher(Constrants.SHOW_USER_PROFILE_PAGE).forward(request, response);
+                    break;
+                }
+                case "updateProfile": {
+                    String username = request.getParameter("username");
+                    String phone = request.getParameter("phone");
+                    String email = request.getParameter("email");
+                    String urlAvatar = request.getParameter("urlAvatar").replace("/avatar/", "%2Favatar%2F");
+                    System.out.println("username"+ username);
+                    System.out.println("phone"+ phone);
+                    System.out.println("email"+ email);
+                    System.out.println("urlAvatar"+ urlAvatar);
+                    uDAO.updateProfile(email, username, phone, urlAvatar);
+                    UserDTO u = (UserDTO) session.getAttribute("user");
+                    u.setPhone(phone);
+                    u.setUsername(username);
+                    u.setAvatarUrl(urlAvatar);
+                    
+                    session.setAttribute("user", u);
                     break;
                 }
                 default:

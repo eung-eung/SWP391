@@ -27,4 +27,5 @@ public class UserDTO {
     private Date yob;
     private String address;
     private String avatarUrl;
+    private String username;
 }

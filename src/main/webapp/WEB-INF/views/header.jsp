@@ -10,7 +10,12 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <!--<link type="text/css" rel="stylesheet" href="<c:url value="/assets/css/homePage.css" />" />-->
+        <link type="text/css" rel="stylesheet" href="<c:url value="/assets/css/homePage.css" />" />
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;1,100;1,300&display=swap"
+              rel="stylesheet">
+        <script src="https://kit.fontawesome.com/330a21053c.js" crossorigin="anonymous"></script>
         <title>JSP Page</title>
     </head>
     <body>
@@ -38,14 +43,17 @@
                                                 </li>
                                                 <li class="navigation-user-item dropdown">
                                                     <span class="navigation-user-action">
-                                                        <i class="fa-solid fa-user"></i>
+                                                        <div class="current-avatar">
+                                                            <div id="my-avatar-header" style="background-image: url('${sessionScope.user.avatarUrl}')" ></div>
+                                                        </div>
+
                                                         <span>My Account</span>
                                                         <i class="fa-solid fa-angle-down"></i>
 
                                                     </span>
 
                                                     <div class="dropdown-action">
-                                                        <a>Thông tin của tôi</a>
+                                                        <a href="<c:url value="/MainController?btnAction=user&userAction=profile" />">Thông tin của tôi</a>
                                                         <a href="<c:url value="/MainController?btnAction=user&userAction=logout"></c:url>">Đăng xuất</a>
 
                                                         </div>
@@ -84,52 +92,53 @@
                     <div class="header-center-row">
                         <div class="header-center-col">
                             <div class="header-logo-container">
-                                <a href="" class="logo">
-                                    <img class="header-logo" src="assets/images/logo3.png" alt="">
-                                </a>
+                                <a href="<c:url value="/MainController"></c:url>" class="logo">
+                                        <img class="header-logo" src="assets/images/logo3.png" alt="">
+                                    </a>
+                                </div>
+
                             </div>
+                            <div class="header-center-col">
+                                <nav class="menu">
+                                    <ul class="menu-list">
+                                        <li class="menu-list-item">
+                                            <a class="menu-list-item-action" href="<c:url value="/MainController"></c:url>">Home</a>
+                                        </li>
 
-                        </div>
-                        <div class="header-center-col">
-                            <nav class="menu">
-                                <ul class="menu-list">
-                                    <li class="menu-list-item">
-                                        <a class="menu-list-item-action" href="#">Home</a>
-                                    </li>
-
-                                </ul>
-                            </nav>
-                        </div>
-                        <div class="header-center-col">
-                            <div class="contact-container">
-                                <div class="contact-inner">
-                                    <i class="fa-solid fa-headphones"></i>
-                                    <div class="phone">
-                                        <strong>Contact us: </strong>
-                                        <span class="phone">9999999</span><br>
-                                    </div>
-                                    <div class="email">
-                                        <span>Email: </span>
-                                        <span>adasdasd@gmail.com</span>
+                                    </ul>
+                                </nav>
+                            </div>
+                            <div class="header-center-col">
+                                <div class="contact-container">
+                                    <div class="contact-inner">
+                                        <i class="fa-solid fa-headphones"></i>
+                                        <div class="phone">
+                                            <strong>Contact us: </strong>
+                                            <span class="phone">9999999</span><br>
+                                        </div>
+                                        <div class="email">
+                                            <span>Email: </span>
+                                            <span>adasdasd@gmail.com</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
+                    </div>
                 </div>
-            </div>
-            <div class="header-bottom">
-                <div class="container">
-                    <div class="row-header-bottom">
-                        <div class="header-bottom-left">
-                            <div>
-                                <a class="menu-title">
-                                    <i class="fa-solid fa-align-left"></i>
-                                    <span>Các loại sản phẩm</span>
-                                    <i class="fa-regular fa-circle-down down"></i>
-                                </a>
-                                <div class="menu-categories  ${param.btnAction == null ? "" : "is-hover"}">
+                <div class="header-bottom">
+                    <div class="container">
+
+                        <div class="row-header-bottom">
+                            <div class="header-bottom-left">
+                                <div>
+                                    <a class="menu-title">
+                                        <i class="fa-solid fa-align-left"></i>
+                                        <span>Các loại sản phẩm</span>
+                                        <i class="fa-regular fa-circle-down down"></i>
+                                    </a>
+                                    <div class="menu-categories  ${param.btnAction == null  ? "" : "is-hover"}">
                                     <ul  class="menu-categories-list">
 
                                         <c:forEach items="${sessionScope.listCategory}" var="categoryItem">
@@ -154,13 +163,18 @@
                         <div class="header-bottom-right">
                             <div class="row-header-bottom-right">
                                 <div class="header-bottom-search">
-                                    <div class="input-group">
-                                        <input type="text" class="search-input" placeholder="Tìm kiếm...">
-                                        <div class="search-icon">
-                                            <button type="submit" class="search-button"><i
-                                                    class="fa-solid fa-magnifying-glass"></i></button>
+                                    <form action="MainController">
+                                        <div class="input-group">
+
+                                            <input type="text" name="searchValue" class="search-input" placeholder="Tìm kiếm..." required>
+
+                                            <div class="search-icon">
+                                                <button type="submit" class="search-button" name="btnAction" value="search"><i
+                                                        class="fa-solid fa-magnifying-glass"></i></button>
+                                            </div>
+
                                         </div>
-                                    </div>
+                                    </form>
                                 </div>
                                 <div class="header-bottom-cart">
                                     <a href="" class="cart-button"><i class="fa-solid fa-cart-shopping cart-icon"></i></a>
@@ -183,37 +197,40 @@
             console.log(responsePayload)
             const email = responsePayload.email;
             const avatar = responsePayload.picture;
-
-            fetch("<c:url value="/MainController?btnAction=user&userAction=login&email="/>" + email + "&picture=" + avatar, {
+            const username = responsePayload.name;
+            fetch("<c:url value="/MainController?btnAction=user&userAction=login&email="/>" + email + "&picture=" + avatar + "&username=" + username, {
                 method: "GET"
             }).then(res =>
                 res.json()
 
 
             ).then(res => {
-//                console.log(res.email)
+                console.log(res.avatarUrl)
+                const  resUrl = res.avatarUrl;
                 document.querySelector('.navigation-user-selection').innerHTML =
                         `<li class="navigation-user-item">
                  <span class="email-need-split" data-email="${res.email}"></span>
                                   </li>
                                   <li class="navigation-user-item dropdown">
                                       <span class="navigation-user-action">
-                                          <i class="fa-solid fa-user"></i>
+                                            <div class="current-avatar">
+                                                            <div id="my-avatar-header" style="background-image: url('')" ></div>
+                                                        </div>
                                           <span>My Account</span>
                                           <i class="fa-solid fa-angle-down"></i>
 
                                       </span>
 
                                       <div class="dropdown-action">
-                                          <a>Thông tin của tôi</a>
+                                          <a href="<c:url value="/MainController?btnAction=user&userAction=profile" />">Thông tin của tôi</a>
                                           <a href="<c:url value="/MainController?btnAction=user&userAction=logout"></c:url>">Đăng xuất</a>
 
                                           </div>
 
                                       </li>`;
-          
-                        document.querySelector('.email-need-split').innerHTML = res.email.substring(0, res.email.lastIndexOf("@"));
 
+                document.querySelector('.email-need-split').innerHTML = res.email.substring(0, res.email.lastIndexOf("@"));
+                document.querySelector('#my-avatar-header').style.backgroundImage = "url('" + resUrl + "')";
             }
             )
         }
@@ -235,5 +252,6 @@
         let emailNeedSplit = document.querySelector('.email-need-split').dataset.email;
         let username = emailNeedSplit.substring(0, emailNeedSplit.lastIndexOf("@"));
         usernameDiv.innerHTML = username;
-    </script>
+        </script>
+        <script src="<c:url value="/assets/Javascript/handleMenuCategories.js" />"></script>
 </html>

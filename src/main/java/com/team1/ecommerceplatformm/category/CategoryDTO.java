@@ -25,4 +25,6 @@ public class CategoryDTO {
     private int categoryID;
     private String name;
     private String icon;
+    private String banner;
+    private String bannerVertical;
 }

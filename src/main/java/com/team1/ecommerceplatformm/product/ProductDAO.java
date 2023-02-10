@@ -82,7 +82,7 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
         ArrayList<ProductDTO> list = new ArrayList<>();
         while (rs.next()) {
             ProductDTO dto = new ProductDTO();
-           dto.setProductID(rs.getInt("product_id"));
+            dto.setProductID(rs.getInt("product_id"));
             dto.setShopID(rs.getInt("shop_id"));
             dto.setCategoryID(rs.getInt("category_id"));
             dto.setUserAdminID(rs.getInt("user_admin_id"));
@@ -101,6 +101,84 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
         return list;
     }
 
+    public ArrayList<ProductDTO> getAllProductByName(String name) throws SQLException {
+        PreparedStatement stm = conn.prepareStatement("SELECT [product_id]\n"
+                + "      ,[shop_id]\n"
+                + "      ,[category_id]\n"
+                + "      ,[user_admin_id]\n"
+                + "      ,[price]\n"
+                + "      ,[name]\n"
+                + "      ,[description]\n"
+                + "      ,[quantity]\n"
+                + "      ,[status]\n"
+                + "      ,[create_at]\n"
+                + "      ,[approve_at]\n"
+                + "      ,[discount]\n"
+                + "      ,[sold_count]\n"
+                + "      ,[authen]   FROM [EcommmercePlatform].[dbo].[Product] where name like ?");
+        stm.setString(1, "%" + name + "%");
+        ResultSet rs = stm.executeQuery();
+        ArrayList<ProductDTO> list = new ArrayList<>();
+        while (rs.next()) {
+            ProductDTO dto = new ProductDTO();
+            dto.setProductID(rs.getInt("product_id"));
+            dto.setShopID(rs.getInt("shop_id"));
+            dto.setCategoryID(rs.getInt("category_id"));
+            dto.setUserAdminID(rs.getInt("user_admin_id"));
+            dto.setPrice(rs.getDouble("price"));
+            dto.setName(rs.getString("name"));
+            dto.setDescription(rs.getString("description"));
+            dto.setQuanity(rs.getInt("quantity"));
+            dto.setStatus(rs.getBoolean("status"));
+            dto.setCreateAt(rs.getDate("create_at"));
+            dto.setApproveAt(rs.getDate("approve_at"));
+            dto.setDiscount(rs.getFloat("discount"));
+            dto.setSoldCount(rs.getInt("sold_count"));
+            dto.setAuthen(rs.getBoolean("authen"));
+            list.add(dto);
+        }
+        return list;
+    }
+
+//    public ArrayList<ProductDTO> getBannerVertical() throws SQLException {
+//        PreparedStatement stm = conn.prepareStatement("SELECT [product_id]\n"
+//                + "      ,[shop_id]\n"
+//                + "      ,[category_id]\n"
+//                + "      ,[user_admin_id]\n"
+//                + "      ,[price]\n"
+//                + "      ,[name]\n"
+//                + "      ,[description]\n"
+//                + "      ,[quantity]\n"
+//                + "      ,[status]\n"
+//                + "      ,[create_at]\n"
+//                + "      ,[approve_at]\n"
+//                + "      ,[discount]\n"
+//                + "      ,[sold_count]\n"
+//                + "      ,[authen]   FROM [EcommmercePlatform].[dbo].[Product] where name like ?");
+//        stm.setString(1, "%" + name + "%");
+//        ResultSet rs = stm.executeQuery();
+//        ArrayList<ProductDTO> list = new ArrayList<>();
+//        while (rs.next()) {
+//            ProductDTO dto = new ProductDTO();
+//            dto.setProductID(rs.getInt("product_id"));
+//            dto.setShopID(rs.getInt("shop_id"));
+//            dto.setCategoryID(rs.getInt("category_id"));
+//            dto.setUserAdminID(rs.getInt("user_admin_id"));
+//            dto.setPrice(rs.getDouble("price"));
+//            dto.setName(rs.getString("name"));
+//            dto.setDescription(rs.getString("description"));
+//            dto.setQuanity(rs.getInt("quantity"));
+//            dto.setStatus(rs.getBoolean("status"));
+//            dto.setCreateAt(rs.getDate("create_at"));
+//            dto.setApproveAt(rs.getDate("approve_at"));
+//            dto.setDiscount(rs.getFloat("discount"));
+//            dto.setSoldCount(rs.getInt("sold_count"));
+//            dto.setAuthen(rs.getBoolean("authen"));
+//            list.add(dto);
+//        }
+//        return list;
+//    }
+    
     @Override
     public Optional<ProductDTO> get(int id) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
@@ -124,11 +202,13 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
     public static void main(String[] args) {
         try {
             ProductDAO dao = new ProductDAO();
-            ArrayList<ProductDTO> list = new ArrayList<>();
-            list = dao.getAllProductByCategoryID(1);
-            System.out.println(list);
+            ArrayList<ProductDTO> lsit  = dao.getAllProductByName("n");
+            for (ProductDTO productDTO : lsit) {
+                System.out.println(productDTO);
+            }
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
 }

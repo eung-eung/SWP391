@@ -36,7 +36,7 @@ body {
 }
 
 .header-top-content {
-    padding: 10px 0;
+   
 }
 
 .row {
@@ -68,10 +68,7 @@ body {
 
 .navigation-user-item {}
 
-.navigation-user-item:hover a {
-    color: var(--header-color-hover);
-    transition: 0.4s;
-}
+
 
 .navigation-user-item a {
     text-decoration: none;

@@ -13,15 +13,12 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="https://kit.fontawesome.com/330a21053c.js" crossorigin="anonymous"></script>
+
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
         <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
         <link type="text/css" rel="stylesheet" href="<c:url value="/assets/css/homePage.css" />" />
         <link type="text/css" rel="stylesheet" href="<c:url value="/assets/css/swiperHomePage.css" />" />
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;1,100;1,300&display=swap"
-              rel="stylesheet">
+
         <title>Document</title>
 
     </head>
@@ -75,66 +72,20 @@
                             Các loại sản phẩm phổ biến
                         </h5>
                         <div class="block-content">
-                            <div class="banner">
-                                <div class="banner-image">
-                                    <a href="#">
-                                        <img src="assets/images/banner4.jpg" alt="">
-                                    </a>
-                                </div>
-                                <div class="banner-caption">
-                                    <div class="banner-caption-body">
-                                        <h5 class="banner-caption-title">Loại Sản phấm</h5>
+                            <c:forEach items="${listPopularCatetory}" var="popuCate">
+                                <div class="banner">
+                                    <div class="banner-image">
+                                        <a href="<c:url value="MainController?btnAction=product&productAction=showByCateID&categoryID=${popuCate.categoryID}"></c:url>">
+                                            <img class="img-popu-cate" src="assets/images/${popuCate.banner}.jpg" alt="${popuCate.name}">
+                                        </a>
+                                    </div>
+                                    <div class="banner-caption">
+                                        <div class="banner-caption-body">
+                                            <h5 class="banner-caption-title">${popuCate.name}</h5>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="banner">
-                                <div class="banner-image">
-                                    <a href="#">
-                                        <img src="assets/images/banner5.jpg" alt="">
-                                    </a>
-                                </div>
-                                <div class="banner-caption">
-                                    <div class="banner-caption-body">
-                                        <h5 class="banner-caption-title">Loại Sản phấm</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="banner">
-                                <div class="banner-image">
-                                    <a href="#">
-                                        <img src="assets/images/banner6.jpg" alt="">
-                                    </a>
-                                </div>
-                                <div class="banner-caption">
-                                    <div class="banner-caption-body">
-                                        <h5 class="banner-caption-title">Loại Sản phấm</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="banner">
-                                <div class="banner-image">
-                                    <a href="#">
-                                        <img src="assets/images/banner7.jpg" alt="">
-                                    </a>
-                                </div>
-                                <div class="banner-caption">
-                                    <div class="banner-caption-body">
-                                        <h5 class="banner-caption-title">Loại Sản phấm</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="banner">
-                                <div class="banner-image">
-                                    <a href="#">
-                                        <img src="assets/images/banner8.jpg" alt="">
-                                    </a>
-                                </div>
-                                <div class="banner-caption">
-                                    <div class="banner-caption-body">
-                                        <h5 class="banner-caption-title">Loại Sản phấm</h5>
-                                    </div>
-                                </div>
-                            </div>
+                            </c:forEach>
                         </div>
                     </div>
 
@@ -164,7 +115,7 @@
                             <div class="list-product-image">
                                 <div class="banner">
                                     <div class="banner-image">
-                                        <a href="#"><img src="assets/images/verticalBanner1.jpg" alt=""></a>
+                                        <a href="#"><img src="assets/images/quanAoY.jpg" alt=""></a>
                                     </div>
                                     <div class="gif-box">
                                         <div class="gif-background">
@@ -1287,10 +1238,10 @@
             el: ".swiper-pagination",
             clickable: true,
         },
-        // autoplay: {
-        //     delay: 2500,
-        //     disableOnInteraction: false,
-        // },
+        autoplay: {
+            delay: 2500,
+            disableOnInteraction: false,
+        },
 
     });
 
@@ -1306,13 +1257,13 @@
             nextEl: ".swiper-button-next",
             prevEl: ".swiper-button-prev",
         },
-        // autoplay: {
-        //     delay: 3500,
-        //     disableOnInteraction: false,
-        // }
+        autoplay: {
+            delay: 3500,
+            disableOnInteraction: false,
+        }
     });
 </script>
 
-<script src="<c:url value="/assets/Javascript/handleMenuCategories.js" />"></script>
+
 
 </html>

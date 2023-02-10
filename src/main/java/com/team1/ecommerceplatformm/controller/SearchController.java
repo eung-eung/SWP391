@@ -4,24 +4,29 @@
  */
 package com.team1.ecommerceplatformm.controller;
 
-import com.team1.ecommerceplatformm.category.CategoryDAO;
-import com.team1.ecommerceplatformm.category.CategoryDTO;
+import com.team1.ecommerceplatformm.imageProduct.ImageProductDAO;
+import com.team1.ecommerceplatformm.imageProduct.ImageProductDTO;
+import com.team1.ecommerceplatformm.product.ProductDAO;
+import com.team1.ecommerceplatformm.product.ProductDTO;
 import com.team1.ecommerceplatformm.utils.Constrants;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import java.util.ArrayList;
 
 /**
  *
  * @author boyvi
  */
-@WebServlet(name = "MainController", urlPatterns = {"/MainController"})
-public class MainController extends HttpServlet {
+@WebServlet(name = "SearchController", urlPatterns = {"/SearchController"})
+public class SearchController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,47 +40,23 @@ public class MainController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String btnAction = request.getParameter("btnAction");
-        HttpSession session = request.getSession();
+        ImageProductDAO imageDao = new ImageProductDAO();
+        ProductDAO dao = new ProductDAO();
+        ArrayList<ProductDTO> list = new ArrayList<>();
 
-        String url = "";
+        String searchValue = request.getParameter("searchValue").trim();
+        System.out.println("aaa" + searchValue);
         try {
-            if (btnAction == null) {
-                CategoryDAO cateDAO = new CategoryDAO();
-                ArrayList<CategoryDTO> listCategory = new ArrayList<>();
-                ArrayList<CategoryDTO> listPopularCatetory = new ArrayList<>();
-                
-                listPopularCatetory = cateDAO.getTop5CategoriesByTotalSoldCount();
-                listCategory = cateDAO.getAll();
-                
-                request.setAttribute("listPopularCatetory", listPopularCatetory);
-                session.setAttribute("listCategory", listCategory);
-                url = Constrants.HOME_PAGE;
-            } else {
-                switch (btnAction) {
-                    case "user": {
-                        url = Constrants.USER_CONTROLLER;
-                        break;
-                    }
-                    case "product": {
-                        System.out.println("vào case product main");
-                        url = Constrants.PRODUCT_CONTROLLER;
-                        break;
-                    }
-                    case "search": {
-                        System.out.println("vao case search");
-                        url = Constrants.SEARCH_CONTROLLER;
-                        break;
-                    }
-                }
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        } finally {
-            System.out.println(url);
-            request.getRequestDispatcher(url).forward(request, response);
+            list = dao.getAllProductByName(searchValue);
+            ArrayList<ImageProductDTO> listMainImg = imageDao.getAllMainImages();
+//            set list anh main + list san pham duoc search
+            request.setAttribute("listMainImg", listMainImg);
+            request.setAttribute("listSearched", list);
+        } catch (SQLException ex) {
+            Logger.getLogger(SearchController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+        request.getRequestDispatcher(Constrants.SHOW_PRODUCT_PAGE).forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -30,6 +30,7 @@ public class UserDAO extends AbstractDAO<UserDTO> {
                 + "      ,[yob]\n"
                 + "      ,[address]\n"
                 + "      ,[avatar]\n"
+                + "      ,[username]\n"
                 + "  FROM [User]");
         ResultSet rs = stm.executeQuery();
         ArrayList<UserDTO> list = new ArrayList<>();
@@ -47,6 +48,7 @@ public class UserDAO extends AbstractDAO<UserDTO> {
             u.setYob(rs.getDate("yob"));
             u.setAddress(rs.getString("address"));
             u.setAvatarUrl(rs.getString("avatar"));
+            u.setUsername(rs.getString("username"));
             list.add(u);
         }
         rs.close();
@@ -61,31 +63,46 @@ public class UserDAO extends AbstractDAO<UserDTO> {
     }
 
 //    
-
-    public UserDTO insertNewUser(String email, String imageUrl) throws SQLException {
-        PreparedStatement stm = conn.prepareStatement("INSERT into [User]( [role_id] ,[email]  ,[avatar])"
-                + " values (?,?,?)");
+    public UserDTO insertNewUser(String email, String imageUrl, String username) throws SQLException {
+        PreparedStatement stm = conn.prepareStatement("INSERT into [User]( [role_id] ,[email]  ,[avatar],[username])"
+                + " values (?,?,?,?)");
 
         stm.setInt(1, 2);
         stm.setString(2, email);
         stm.setString(3, imageUrl);
+        stm.setString(4, username);
         stm.executeUpdate();
 
         UserDTO dto = new UserDTO();
         dto.setAvatarUrl(imageUrl);
         dto.setEmail(email);
+        dto.setUsername(username);
+      
+        stm.close();
         return dto;
 
     }
-//    public static void main(String[] args) throws SQLException {
-//        UserDAO udao = new UserDAO();
-//        try {
-//            udao.getAll().forEach(System.out::println);
-//        } catch (SQLException ex) {
-//            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//
-//    }
+
+    public void updateProfile(String email, String username, String phone, String avatarURL) throws SQLException {
+        PreparedStatement stm = conn.prepareStatement("update [User]\n"
+                + "  set phone = ?,username=?, avatar=? where email = ?");
+        stm.setString(1, phone);
+        stm.setString(2, username);
+        stm.setString(3, avatarURL);
+        stm.setString(4, email);
+        stm.executeUpdate();
+        stm.close();
+    }
+    public static void main(String[] args) throws SQLException {
+        UserDAO udao = new UserDAO();
+        try {
+            udao.getAll().forEach(System.out::println);
+            udao.updateProfile("test", "test update dao", "113", "eqwerqwer");
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
 
     @Override
     public Optional<UserDTO> get(int id) {
@@ -107,12 +124,9 @@ public class UserDAO extends AbstractDAO<UserDTO> {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
-    public static void main(String[] args) {
-        try {
-            UserDAO dao = new UserDAO();
-            dao.insertNewUser("adasd", "asdasdasd");
-        } catch (SQLException ex) {
-            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+//    public static void main(String[] args) throws SQLException {
+//        UserDAO dao = new UserDAO();
+//        dao.insertNewUser("adasd", "asdasdasd",
+//                "saas");
+//    }
 }
