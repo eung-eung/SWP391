@@ -2,3 +2,5 @@
 
 
 ### When adding new servlet, please fix replace javax to jakarta at import lines
+
+### Always check time commit of EcommercePlatform.sql for updating newest data
