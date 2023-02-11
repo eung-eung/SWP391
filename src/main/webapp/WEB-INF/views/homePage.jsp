@@ -145,14 +145,15 @@
                                                 <div class="slide-product-block">
                                                     <div class="slide-product-content">
                                                         <div class="top-block">
-                                                            <a href="#" class="slide-product-content-image">
+                                                            <a href="<c:url value="MainController?btnAction=product&productAction=showDetail&productID=${product.productID}"></c:url>" class="slide-product-content-image">
                                                                 <img src="${product.mainImg}" alt="">
                                                             </a>
 
                                                         </div>
                                                         <div class="bottom-block">
                                                             <h4 class="card-title">
-                                                                <a href="#">${product.name}</a>
+                                                             <a href="<c:url value="MainController?btnAction=product&productAction=showDetail&productID=${product.productID}"></c:url>">${product.name}</a>
+                                                    
                                                             </h4>
                                                             <div class="ratings">
                                                                 <div class="product-rating">

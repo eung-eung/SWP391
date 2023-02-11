@@ -89,7 +89,7 @@ public class CategoryDAO extends AbstractDAO<CategoryDTO> {
     }
 
     @Override
-    public Optional<CategoryDTO> get(int id) throws SQLException {
+    public CategoryDTO get(int id) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

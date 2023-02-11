@@ -199,8 +199,46 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
     }
 
     @Override
-    public Optional<ProductDTO> get(int id) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public ProductDTO get(int id) throws SQLException {
+        PreparedStatement stm = conn.prepareStatement("SELECT [product_id]\n"
+                + "      ,[shop_id]\n"
+                + "      ,[category_id]\n"
+                + "      ,[user_admin_id]\n"
+                + "      ,[price]\n"
+                + "      ,[name]\n"
+                + "      ,[description]\n"
+                + "      ,[quantity]\n"
+                + "      ,[status]\n"
+                + "      ,[create_at]\n"
+                + "      ,[approve_at]\n"
+                + "      ,[discount]\n"
+                + "      ,[sold_count]\n"
+                + "      ,[authen]   FROM [EcommmercePlatform].[dbo].[Product] where product_id = ?");
+        stm.setInt(1, id);
+        ResultSet rs = stm.executeQuery();
+        ImageProductDAO imgDao = new ImageProductDAO();
+        ProductDTO dto = new ProductDTO();
+        if (rs.next()) {
+
+            dto.setProductID(rs.getInt("product_id"));
+            dto.setShopID(rs.getInt("shop_id"));
+            dto.setCategoryID(rs.getInt("category_id"));
+            dto.setUserAdminID(rs.getInt("user_admin_id"));
+            dto.setPrice(rs.getDouble("price"));
+            dto.setName(rs.getString("name"));
+            dto.setDescription(rs.getString("description"));
+            dto.setQuanity(rs.getInt("quantity"));
+            dto.setStatus(rs.getBoolean("status"));
+            dto.setCreateAt(rs.getDate("create_at"));
+            dto.setApproveAt(rs.getDate("approve_at"));
+            dto.setDiscount(rs.getFloat("discount"));
+            dto.setSoldCount(rs.getInt("sold_count"));
+            dto.setAuthen(rs.getBoolean("authen"));
+            dto.setMainImg(imgDao.getMainImageByProductID(rs.getInt("product_id")).getUrl());
+        }
+//        Optional<ProductDTO> result = ;
+        return dto;
+
     }
 
     @Override
@@ -223,8 +261,12 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
             ProductDAO dao = new ProductDAO();
             CategoryDAO cdao = new CategoryDAO();
             ArrayList<CategoryDTO> lt = cdao.getAll();
+//            ProductDTO dtoa = dao.get(449);
+//            System.out.println(dtoa);
+
             dao.getTOP20BestSellingProductsByCategoryID(2).forEach(System.out::println);
             ArrayList<ArrayList<ProductDTO>> lsit = dao.getAllTOP20BestSellingProductsByCategoryIDs(lt);
+
             for (ArrayList<ProductDTO> productDTO : lsit) {
                 System.out.println(productDTO.toString());
 

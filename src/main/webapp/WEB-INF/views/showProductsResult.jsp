@@ -48,9 +48,9 @@
 
                             <c:forEach items="${sessionScope.listCategory}" var="categoryItem3">
                                 <c:if test="${categoryItem3.categoryID == param.categoryID}">
-                                    <i class="fa-solid fa-angle-right"></i>        <a href="<c:url value="/MainController?btnAction=product&productAction=showByCateID&categoryID=${categoryItem3.categoryID}"></c:url>"  class="breadcrumb-label">  ${categoryItem3.name}</a>
-                                </c:if>
-                            </c:forEach>
+                                    <i class="fa-solid fa-angle-right"></i><a href="<c:url value="/MainController?btnAction=product&productAction=showByCateID&categoryID=${categoryItem3.categoryID}"></c:url>"  class="breadcrumb-label">  ${categoryItem3.name}</a>
+                                    </c:if>
+                                </c:forEach>
 
                         </li>
 
@@ -106,7 +106,7 @@
                                             <div class="product-content">
                                                 <div class="top-block">
 
-                                                    <a href="#" class="product-content-image">
+                                                    <a href="<c:url value="MainController?btnAction=product&productAction=showDetail&productID=${productByCateID.productID}"></c:url>"class="product-content-image">
                                                         <c:forEach items="${imageList}" var="image">
                                                             <c:if test="${image.productID == productByCateID.productID}">
                                                                 <img src="${image.url}" alt="">
@@ -119,7 +119,7 @@
                                                 </div>
                                                 <div class="bottom-block">
                                                     <h4 class="card-title">
-                                                        <a href="#">${productByCateID.name}</a>
+                                                        <a href="<c:url value="/MainController?btnAction=product&productAction=showDetail&productID=${productByCateID.productID}" />">${productByCateID.name}</a>
                                                     </h4>
                                                     <div class="ratings">
                                                         <div class="product-rating">
@@ -153,7 +153,7 @@
                                             <div class="product-content">
                                                 <div class="top-block">
 
-                                                    <a href="#" class="product-content-image">
+                                                    <a href="<c:url value="MainController?btnAction=product&productAction=showDetail&productID=${productByName.productID}"></c:url>" class="product-content-image">
                                                         <c:forEach items="${listMainImg}" var="mainIMG">
                                                             <c:if test="${mainIMG.productID == productByName.productID}">
                                                                 <img src="${mainIMG.url}" alt="">
@@ -166,7 +166,7 @@
                                                 </div>
                                                 <div class="bottom-block">
                                                     <h4 class="card-title">
-                                                        <a href="#">${productByName.name}</a>
+                                                        <a href="<c:url value="/MainController?btnAction=product&productAction=showDetail&productID=${productByName.productID}" />">${productByName.name}</a>
                                                     </h4>
                                                     <div class="ratings">
                                                         <div class="product-rating">

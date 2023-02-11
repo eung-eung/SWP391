@@ -44,8 +44,30 @@ public class ImageProductDAO extends AbstractDAO<ImageProductDTO> {
         return list;
     }
 
+    public ArrayList<ImageProductDTO> getAllImagesIsNotMain(int id) throws SQLException {
+        PreparedStatement stm = conn.prepareStatement("SELECT  [image_id]\n"
+                + "      ,[product_id]\n"
+                + "      ,[url]\n"
+                + "      ,[is_main_img]\n"
+                + "  FROM [EcommmercePlatform].[dbo].[image_product] where is_main_img = 0 and product_id = ?");
+        stm.setInt(1, id);
+        ResultSet rs = stm.executeQuery();
+        ArrayList<ImageProductDTO> list = new ArrayList<>();
+        while (rs.next()) {
+            ImageProductDTO dto = new ImageProductDTO();
+            dto.setImageID(rs.getInt("image_id"));
+            dto.setProductID(rs.getInt("product_id"));
+            dto.setUrl(rs.getString("url"));
+            dto.setMainImage(rs.getBoolean("is_main_img"));
+            list.add(dto);
+        }
+        stm.close();
+        rs.close();
+        return list;
+    }
+
     @Override
-    public Optional<ImageProductDTO> get(int id) throws SQLException {
+    public ImageProductDTO get(int id) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
@@ -79,9 +101,11 @@ public class ImageProductDAO extends AbstractDAO<ImageProductDTO> {
     public static void main(String[] args) {
         try {
             ImageProductDAO dao = new ImageProductDAO();
-            dao.getAll().forEach(i -> System.out.println(i));
-            dao.getAll().forEach(System.out::println);
-            System.out.println(dao.getMainImageByProductID(167));
+          ArrayList<ImageProductDTO> l = dao.getAllImagesIsNotMain(452);
+            for (ImageProductDTO imageProductDTO : l) {
+                System.out.println(imageProductDTO);
+            }
+//            System.out.println(dao.getMainImageByProductID(167));
         } catch (SQLException ex) {
             Logger.getLogger(ImageProductDAO.class.getName()).log(Level.SEVERE, null, ex);
         }

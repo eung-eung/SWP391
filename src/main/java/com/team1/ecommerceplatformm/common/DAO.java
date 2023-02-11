@@ -16,7 +16,7 @@ public interface DAO<T> {
  
     List<T> getAll() throws SQLException;
  
-    Optional<T> get(int id) throws SQLException;
+    T get(int id) throws SQLException;
  
     void save(T t) throws SQLException;
  

@@ -19,4 +19,5 @@ public class Constrants {
     public final static String SHOW_USER_PROFILE_PAGE = "WEB-INF/views/userDetailPage.jsp";
     public final static String SHOW_STORE_PAGE = "WEB-INF/views/storePage.jsp";
     public final static String HOME_PAGE = "WEB-INF/views/homePage.jsp";
+    public final static String SHOW_PRODUCT_DETAIL_PAGE = "WEB-INF/views/detailProductPage.jsp";
 }

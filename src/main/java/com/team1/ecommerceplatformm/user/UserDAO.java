@@ -105,7 +105,7 @@ public class UserDAO extends AbstractDAO<UserDTO> {
     }
 
     @Override
-    public Optional<UserDTO> get(int id) {
+    public UserDTO get(int id) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 

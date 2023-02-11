@@ -29,175 +29,7 @@
     </head>
 
     <body>
-        <header class="header">
-            <div class="header-top">
-                <div class="container">
-                    <div class="header-top-content">
-                        <div class="row">
-                            <div class="col-left">
-                                <div class="col-left-content">Chào mừng Thiện đến với chúng tôi</div>
-                            </div>
-                            <div class="col-right">
-                                <div class="navigation-user">
-                                    <ul class="navigation-user-selection">
-                                        <li class="navigation-user-item">
-                                            <a href="#">
-                                                <i class="fa-solid fa-lock"></i>
-                                                Sign in
-                                            </a>
-                                        </li>
-                                        <li class="navigation-user-item">
-                                            <a href="#" class="navigation-user-action">
-                                                <i class="fa-solid fa-user"></i>
-                                                <span>My Account</span>
-                                                <i class="fa-solid fa-angle-down"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- End header top -->
-            <div class="header-center">
-                <div class="container">
-                    <div class="header-center-row">
-                        <div class="header-center-col">
-                            <div class="header-logo-container">
-                                <a href="" class="logo">
-                                    <img class="header-logo" src="assets/images/logo3.png" alt="">
-                                </a>
-                            </div>
-
-                        </div>
-                        <div class="header-center-col">
-                            <nav class="menu">
-                                <ul class="menu-list">
-                                    <li class="menu-list-item">
-                                        <a class="menu-list-item-action" href="#">Home</a>
-                                    </li>
-
-                                </ul>
-                            </nav>
-                        </div>
-                        <div class="header-center-col">
-                            <div class="contact-container">
-                                <div class="contact-inner">
-                                    <i class="fa-solid fa-headphones"></i>
-                                    <div class="phone">
-                                        <strong>Contact us: </strong>
-                                        <span class="phone">9999999</span><br>
-                                    </div>
-                                    <div class="email">
-                                        <span>Email: </span>
-                                        <span>adasdasd@gmail.com</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-            <div class="header-bottom">
-                <div class="container">
-                    <div class="row-header-bottom">
-                        <div class="header-bottom-left">
-                            <div>
-                                <a class="menu-title">
-                                    <i class="fa-solid fa-align-left"></i>
-                                    <span>Các loại sản phẩm</span>
-                                    <i class="fa-regular fa-circle-down down"></i>
-                                </a>
-                                <div class="menu-categories is-hover">
-                                    <ul class="menu-categories-list">
-                                        <li class="menu-categories-item">
-                                            <a href="" class="menu-categories-item-action">
-                                                <i class="fa-solid fa-shirt"></i>Tên loại
-                                            </a>
-                                        </li>
-                                        <li class="menu-categories-item">
-                                            <a href="" class="menu-categories-item-action">
-                                                <i class="fa-solid fa-kitchen-set"></i>Tên loại
-                                            </a>
-                                        </li>
-                                        <li class="menu-categories-item">
-                                            <a href="" class="menu-categories-item-action">
-                                                <i class="fa-solid fa-computer"></i>Tên loại
-                                            </a>
-                                        </li>
-                                        <li class="menu-categories-item">
-                                            <a href="" class="menu-categories-item-action">
-                                                <i class="fa-solid fa-bag-shopping"></i>Tên loại
-                                            </a>
-                                        </li>
-                                        <li class="menu-categories-item">
-                                            <a href="" class="menu-categories-item-action">
-                                                <i class="fa-regular fa-clock"></i>Tên loại
-                                            </a>
-                                        </li>
-                                        <li class="menu-categories-item">
-                                            <a href="" class="menu-categories-item-action">
-                                                <i class="fa-solid fa-mobile"></i>Tên loại
-                                            </a>
-                                        </li>
-                                        <li class="menu-categories-item">
-                                            <a href="" class="menu-categories-item-action">
-                                                <i class="fa-solid fa-cookie-bite"></i>Tên loại
-                                            </a>
-                                        </li>
-                                        <li class="menu-categories-item">
-                                            <a href="" class="menu-categories-item-action">
-                                                <i class="fa-solid fa-eye-dropper"></i>Tên loại
-                                            </a>
-                                        </li>
-                                        <li class="menu-categories-item">
-                                            <a href="" class="menu-categories-item-action">
-                                                <i class="fa-solid fa-eye-dropper"></i>Tên loại
-                                            </a>
-                                        </li>
-                                        <li class="menu-categories-item">
-                                            <a href="" class="menu-categories-item-action">
-                                                <i class="fa-solid fa-eye-dropper"></i>Tên loại
-                                            </a>
-                                        </li>
-                                        <li class="menu-categories-item">
-                                            <a href="" class="menu-categories-item-action">
-                                                <i class="fa-solid fa-eye-dropper"></i>Tên loại
-                                            </a>
-                                        </li>
-                                        <li class="menu-categories-item loadmore">
-                                            <div class="menu-categories-item-action">
-                                                <i class="fa-solid fa-circle-plus"></i>
-                                                <span class="more-view">Xem Thêm</span>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="header-bottom-right">
-                            <div class="row-header-bottom-right">
-                                <div class="header-bottom-search">
-                                    <div class="input-group">
-                                        <input type="text" class="search-input" placeholder="Tìm kiếm...">
-                                        <div class="search-icon">
-                                            <button type="submit" class="search-button"><i
-                                                    class="fa-solid fa-magnifying-glass"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="header-bottom-cart">
-                                    <a href="" class="cart-button"><i class="fa-solid fa-cart-shopping cart-icon"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </header>
+        <jsp:include page="header.jsp" />
         <!-- body -->
         <div class="main-body">
             <div class="container">
@@ -228,40 +60,27 @@
                         </div>
                         <div class="block-sidebar-content">
                             <ul class="nav-list">
-                                <li class="nav-list-item">
-                                    <a href="#" class="nav-list-action">Tên loại</a>
-                                </li>
-
-                                <li class="nav-list-item">
-                                    <a href="#" class="nav-list-action">Tên loại</a>
-                                </li>
-                                <li class="nav-list-item">
-                                    <a href="#" class="nav-list-action">Tên loại</a>
-                                </li>
-                                <li class="nav-list-item">
-                                    <a href="#" class="nav-list-action">Tên loại</a>
-                                </li>
-                                <li class="nav-list-item">
-                                    <a href="#" class="nav-list-action">Tên loại</a>
-                                </li>
-                                <li class="nav-list-item">
-                                    <a href="#" class="nav-list-action">Tên loại</a>
-                                </li>
-                                <li class="nav-list-item">
-                                    <a href="#" class="nav-list-action">Tên loại</a>
-                                </li>
+                                <c:forEach items="${sessionScope.listCategory}" var="categoryItem">
+                                    <li class="nav-list-item">
+                                        <a class="nav-list-action" href="<c:url value="/MainController?btnAction=product&productAction=showByCateID&categoryID=${categoryItem.categoryID}"></c:url>" class="menu-categories-item-action">
+                                            ${categoryItem.icon}${categoryItem.name}
+                                        </a>
+                                    </li>
+                                </c:forEach>
                             </ul>
                         </div>
                     </div>
+
                     <!-- right:detail-block -->
                     <div class="product-detail-container">
 
                         <!-- left: right-detail-block/images -->
+               
                         <div class="product-view-images">
                             <div class="product-view-image">
                                 <div class="product-view-image-main">
                                     <a href="#">
-                                        <img id="image" src="assets/images/bag-thumbnail1.jpg" alt="">
+                                        <img id="image" src="${productDetail.mainImg}" alt="">
                                     </a>
                                 </div>
                             </div>
@@ -270,34 +89,20 @@
                                 <ul class="swiper-wrapper product-view-thumbnails">
                                     <li class="swiper-slide product-view-thumbnail">
                                         <a href="#" class="product-view-thumnail-link active">
-                                            <img class="img-thumbnail" src="assets/images/bag-thumbnail1.jpg" alt=""
+                                            <img class="img-thumbnail" src="${productDetail.mainImg}" alt=""
                                                  onmouseover="hoverToShowImage(this)">
                                         </a>
                                     </li>
-                                    <li class="swiper-slide product-view-thumbnail">
-                                        <a href="#" class="product-view-thumnail-link">
-                                            <img class="img-thumbnail" src="assets/images/bag-thumbnail2.jpg" alt=""
-                                                 onmouseover="hoverToShowImage(this)">
-                                        </a>
-                                    </li>
-                                    <li class="swiper-slide product-view-thumbnail">
-                                        <a href="#" class="product-view-thumnail-link">
-                                            <img class="img-thumbnail" src="assets/images/bag-thumbnail3.jpg" alt=""
-                                                 onmouseover="hoverToShowImage(this)">
-                                        </a>
-                                    </li>
-                                    <li class="swiper-slide product-view-thumbnail">
-                                        <a href="#" class="product-view-thumnail-link">
-                                            <img class="img-thumbnail" src="assets/images/item-fashion.jpg" alt=""
-                                                 onmouseover="hoverToShowImage(this)">
-                                        </a>
-                                    </li>
-                                    <li class="swiper-slide product-view-thumbnail">
-                                        <a href="#" class="product-view-thumnail-link">
-                                            <img class="img-thumbnail" src="assets/images/item-fashion.jpg" alt=""
-                                                 onmouseover="hoverToShowImage(this)">
-                                        </a>
-                                    </li>
+                                    <c:forEach items="${listNotMainImg}" var="img">
+                                        <li class="swiper-slide product-view-thumbnail">
+                                            <a href="#" class="product-view-thumnail-link">
+                                                <img class="img-thumbnail" src="${img.url}" alt=""
+                                                     onmouseover="hoverToShowImage(this)">
+                                            </a>
+                                        </li>
+                                    </c:forEach>
+
+                                    
 
                                 </ul>
                                 <!-- <div class="swiper-pagination"></div> -->
@@ -317,10 +122,11 @@
                         <!-- right: right-detail-block.details -->
                         <div class="product-view-details">
                             <div class="product-view-details-container">
+   
                                 <!-- company -->
                                 <p class="product-view-company">Adidas</p>
                                 <!-- name product -->
-                                <h1 class="product-view-title">ABVBDU</h1>
+                                <h1 class="product-view-title">${productDetail.name}</h1>
                                 <!-- rating + review form -->
                                 <div class="product-view-ratings">
                                     <span class="icon fa-solid fa-star rating-star-full"></span>
@@ -340,8 +146,8 @@
 
                                 <!--  product-price -->
                                 <div class="product-view-price">
-                                    <span class="price price-after-discount">300000vnd</span>
-                                    <span class="price price-without-discount">400000vnd</span>
+                                    <span class="price price-after-discount">${productDetail.price}</span>
+                                    <!--<span class="price price-without-discount">400000vnd</span>-->
                                 </div>
                                 <!-- end product-price -->
 
@@ -395,16 +201,7 @@
                             </ul>
                             <div class="tabs-contents">
                                 <div class="tab-content active" id="tab-description">
-                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti doloremque
-                                        numquam expedita iste nihil vero amet suscipit cum, dicta nobis aspernatur
-                                        dolorum in esse, enim voluptate, ratione accusamus nemo. Illo!</p>
-                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Modi sapiente fugit
-                                        sint, amet consequatur excepturi ipsam neque. Voluptatibus hic necessitatibus
-                                        non tempore doloribus aut tenetur recusandae soluta pariatur dicta? Hic.</p>
-                                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Odit eligendi nemo
-                                        voluptatibus numquam veniam. Eveniet, sequi ea, perspiciatis dignissimos
-                                        quisquam, dolor inventore vero harum vel asperiores natus possimus molestias a?
-                                    </p>
+                                    ${productDetail.description}
 
                                 </div>
                                 <div class="tab-content" id="tab-review">
@@ -482,7 +279,7 @@
                                 <div class="slide-product-block">
                                     <div class="slide-product-content">
                                         <div class="top-block">
-                                            <a href="#" class="slide-product-content-image">
+                                            <a href="" class="slide-product-content-image">
                                                 <img src="assets/images/item-content.jpg" alt="">
                                             </a>
 

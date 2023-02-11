@@ -43,18 +43,32 @@ public class ProductController extends HttpServlet {
         String url = "";
         try {
             switch (productAction) {
-                case "showByCateID":
+                case "showByCateID": {
                     System.out.println("vào r");
                     int category_id = Integer.parseInt(request.getParameter("categoryID"));
                     ArrayList<ProductDTO> productListByCateID = new ArrayList<>();
                     ArrayList<ImageProductDTO> imageList = new ArrayList<>();
                     productListByCateID = productDao.getAllProductByCategoryID(category_id);
                     imageList = imageDao.getAllMainImages();
-                       request.setAttribute("imageList", imageList);
+                    request.setAttribute("imageList", imageList);
                     request.setAttribute("productListByCateID", productListByCateID);
                     url = Constrants.SHOW_PRODUCT_PAGE;
                     break;
-
+                }
+                case "showDetail": {
+                    int productID = Integer.parseInt(request.getParameter("productID"));
+                    ArrayList<ImageProductDTO> listImgs = imageDao.getAllMainImages();
+                    ArrayList<ImageProductDTO> listNotMainImg = imageDao.getAllImagesIsNotMain(productID);
+                    ProductDTO pro = productDao.get(productID);
+                    System.out.println("aaaaaaaaaaaa" + pro);
+                    request.setAttribute("listNotMainImg", listNotMainImg);
+                    request.setAttribute("listImgs", listImgs);
+                    request.setAttribute("productDetail", pro);
+                    
+                 
+                    url = Constrants.SHOW_PRODUCT_DETAIL_PAGE;
+                    break;
+                }
             }
 
         } catch (Exception ex) {
