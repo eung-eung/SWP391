@@ -15,6 +15,7 @@ public class Constrants {
     public final static String CATEGORY_CONTROLLER = "CategoryController";
     public final static String PRODUCT_CONTROLLER = "ProductController";
     public final static String SEARCH_CONTROLLER = "SearchController";
+    public final static String SEARCH_AJAX_CONTROLLER = "SearchAjaxController";
     public final static String SHOW_PRODUCT_PAGE = "WEB-INF/views/showProductsResult.jsp";
     public final static String SHOW_USER_PROFILE_PAGE = "WEB-INF/views/userDetailPage.jsp";
     public final static String SHOW_STORE_PAGE = "WEB-INF/views/storePage.jsp";

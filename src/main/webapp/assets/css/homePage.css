@@ -509,7 +509,7 @@ body {
 }
 
 .list-product:nth-child(odd) .list-product-image {
-     grid-column: 6/7; 
+    grid-column: 6/7;
 }
 
 .list-product-image {
@@ -857,6 +857,25 @@ a.slide-product-content-image {
 }
 
 .list-product{
-box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
-    
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+
+}
+#searchAjaxResult{
+    position: absolute;
+    top: 50px;
+    width: 100%;
+    z-index: 10;
+    background: #fff;
+    box-shadow: 0 1px 4px 0 rgb(0 0 0 / 26%);
+    border-radius: 2px;
+    overflow: hidden;
+}
+#searchAjaxResult a{
+    display: block;
+    text-decoration: none;
+    padding:10px 8px;
+    color: rgba(0,0,0,.87);
+}
+#searchAjaxResult a:hover{
+    background: #fafafa;
 }

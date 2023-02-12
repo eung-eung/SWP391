@@ -78,6 +78,11 @@ public class MainController extends HttpServlet {
                         url = Constrants.SEARCH_CONTROLLER;
                         break;
                     }
+                    case "searchAjax": {
+                        System.out.println("vào case searchAjax main");
+                        url = Constrants.SEARCH_AJAX_CONTROLLER;
+                        break;
+                    }
                 }
             }
         } catch (Exception ex) {

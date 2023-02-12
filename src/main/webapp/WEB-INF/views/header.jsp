@@ -163,8 +163,8 @@
                                     <form action="MainController">
                                         <div class="input-group">
 
-                                            <input type="text" name="searchValue" class="search-input" placeholder="Tìm kiếm..." required>
-
+                                            <input type="text" name="searchValue" class="search-input" placeholder="Tìm kiếm..." required onkeyup="renderSearchResult(this.value)">
+                                            <div id="searchAjaxResult"></div>
                                             <div class="search-icon">
                                                 <button type="submit" class="search-button" name="btnAction" value="search"><i
                                                         class="fa-solid fa-magnifying-glass"></i></button>
@@ -187,25 +187,25 @@
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script>
 
-        // function to get response
-        function loginByGoogle(response) {
-            console.log(response)
-            const responsePayload = decodeJwtResponse(response.credential);
-            console.log(responsePayload)
-            const email = responsePayload.email;
-            const avatar = responsePayload.picture;
-            const username = responsePayload.name;
-            fetch("<c:url value="/MainController?btnAction=user&userAction=login&email="/>" + email + "&picture=" + avatar + "&username=" + username, {
-                method: "GET"
-            }).then(res =>
-                res.json()
+                                                // function to get response
+                                                function loginByGoogle(response) {
+                                                    console.log(response)
+                                                    const responsePayload = decodeJwtResponse(response.credential);
+                                                    console.log(responsePayload)
+                                                    const email = responsePayload.email;
+                                                    const avatar = responsePayload.picture;
+                                                    const username = responsePayload.name;
+                                                    fetch("<c:url value="/MainController?btnAction=user&userAction=login&email="/>" + email + "&picture=" + avatar + "&username=" + username, {
+                                                        method: "GET"
+                                                    }).then(res =>
+                                                        res.json()
 
 
-            ).then(res => {
-                console.log(res.avatarUrl)
-                const  resUrl = res.avatarUrl;
-                document.querySelector('.navigation-user-selection').innerHTML =
-                        `<li class="navigation-user-item">
+                                                    ).then(res => {
+                                                        console.log(res.avatarUrl)
+                                                        const  resUrl = res.avatarUrl;
+                                                        document.querySelector('.navigation-user-selection').innerHTML =
+                                                                `<li class="navigation-user-item">
                  <span class="email-need-split" data-email="${res.email}"></span>
                                   </li>
                                   <li class="navigation-user-item dropdown">
@@ -226,29 +226,70 @@
 
                                       </li>`;
 
-                document.querySelector('.email-need-split').innerHTML = res.email.substring(0, res.email.lastIndexOf("@"));
-                document.querySelector('#my-avatar-header').style.backgroundImage = "url('" + resUrl + "')";
-            }
-            )
-        }
-        window.onload = function () {
-            // also display the One Tap dialog on right side
-            // important for auto login
-            google.accounts.id.prompt();
-        }
-        // function to decode the response.credential
-        function decodeJwtResponse(token) {
-            var base64Url = token.split('.')[1];
-            var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-            var jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
-                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-            }).join(''));
-            return JSON.parse(jsonPayload);
-        }
-        let usernameDiv = document.querySelector('.email-need-split');
-        let emailNeedSplit = document.querySelector('.email-need-split').dataset.email;
-        let username = emailNeedSplit.substring(0, emailNeedSplit.lastIndexOf("@"));
-        usernameDiv.innerHTML = username;
-        </script>
-        <script src="<c:url value="/assets/Javascript/handleMenuCategories.js" />"></script>
+                                                        document.querySelector('.email-need-split').innerHTML = res.email.substring(0, res.email.lastIndexOf("@"));
+                                                        document.querySelector('#my-avatar-header').style.backgroundImage = "url('" + resUrl + "')";
+                                                    }
+                                                    )
+                                                }
+                                                window.onload = function () {
+                                                    // also display the One Tap dialog on right side
+                                                    // important for auto login
+                                                    google.accounts.id.prompt();
+                                                }
+                                                // function to decode the response.credential
+                                                function decodeJwtResponse(token) {
+                                                    var base64Url = token.split('.')[1];
+                                                    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                                                    var jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+                                                        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                                                    }).join(''));
+                                                    return JSON.parse(jsonPayload);
+                                                }
+                                                let usernameDiv = document.querySelector('.email-need-split');
+                                                let emailNeedSplit = document.querySelector('.email-need-split').dataset.email;
+                                                let username = emailNeedSplit.substring(0, emailNeedSplit.lastIndexOf("@"));
+                                                usernameDiv.innerHTML = username;
+
+
+
+
+                                                function callSearchControllerAjax(typingValue) {
+
+                                                    return new Promise(function (res, rej) {
+                                                        var xmlHttp = new XMLHttpRequest();
+                                                        xmlHttp.open('GET', 'MainController?btnAction=searchAjax&searchValue=' + typingValue, true)
+
+                                                        xmlHttp.onreadystatechange = function () {
+                                                            if (this.readyState == 4) {
+                                                                return res(this.responseText)
+                                                            }
+                                                        }
+                                                        xmlHttp.send()
+                                                    })
+
+                                                }
+                                                ;
+
+                                                function renderSearchResult(typingValueFromInput) {
+                                                    if (typingValueFromInput.length === 0) {
+                                                        document.querySelector("#searchAjaxResult").innerHTML = "";
+                                                        return
+                                                    }
+                                                    console.log(typingValueFromInput.length)
+                                                    let div = document.querySelector("#searchAjaxResult");
+                                                    callSearchControllerAjax(typingValueFromInput)
+                                                            .then(res => {
+                                                                let div = document.querySelector("#searchAjaxResult");
+                                                                let data = JSON.parse(res);
+                                                                let htmls = data.map(d => {
+                                                                    console.log(d)
+                                                                    return `<a href="<c:url value="MainController?btnAction=product&productAction=showDetail&productID=\${d.productID}" />">\${d.name}</a>`
+                                                                })
+                                                                div.innerHTML = htmls.join('');
+                                                            })
+//                                                    div.innerHTML = htmls.join('');
+
+                                                }
+    </script>
+    <script src="<c:url value="/assets/Javascript/handleMenuCategories.js" />"></script>
 </html>
