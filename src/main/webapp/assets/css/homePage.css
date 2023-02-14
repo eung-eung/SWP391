@@ -879,3 +879,7 @@ a.slide-product-content-image {
 #searchAjaxResult a:hover{
     background: #fafafa;
 }
+.swal-text{
+    
+    font-size: 25px;
+}

@@ -83,6 +83,11 @@ public class MainController extends HttpServlet {
                         url = Constrants.SEARCH_AJAX_CONTROLLER;
                         break;
                     }
+                    case "cart": {
+                        System.out.println("vào add cart main");
+                        url = Constrants.CART_CONTROLLER;
+                        break;
+                    }
                 }
             }
         } catch (Exception ex) {

@@ -9,21 +9,29 @@ import com.team1.ecommerceplatformm.imageProduct.ImageProductDAO;
 import com.team1.ecommerceplatformm.imageProduct.ImageProductDTO;
 import com.team1.ecommerceplatformm.product.ProductDAO;
 import com.team1.ecommerceplatformm.product.ProductDTO;
+import com.team1.ecommerceplatformm.shop.ShopDAO;
+import com.team1.ecommerceplatformm.shop.ShopDTO;
 import com.team1.ecommerceplatformm.utils.Constrants;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author boyvi
  */
-@WebServlet(name = "ProductController", urlPatterns = {"/ProductController"})
-public class ProductController extends HttpServlet {
+@WebServlet(name = "CartController", urlPatterns = {"/CartController"})
+public class CartController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,52 +45,40 @@ public class ProductController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        ProductDAO productDao = new ProductDAO();
-        ImageProductDAO imageDao = new ImageProductDAO();
-        String productAction = request.getParameter("productAction");
-        System.out.println(productAction);
-        String url = "";
-        Gson gson = new Gson();
-        try {
-            switch (productAction) {
-                case "showByCateID": {
-                    System.out.println("vào r");
-                    int category_id = Integer.parseInt(request.getParameter("categoryID"));
-                    ArrayList<ProductDTO> productListByCateID = new ArrayList<>();
-                    ArrayList<ImageProductDTO> imageList = new ArrayList<>();
-                    productListByCateID = productDao.getAllProductByCategoryID(category_id);
-                    imageList = imageDao.getAllMainImages();
-                    request.setAttribute("imageList", imageList);
-                    request.setAttribute("productListByCateID", productListByCateID);
-                    url = Constrants.SHOW_PRODUCT_PAGE;
-                    break;
-                }
-                case "showDetail": {
-                    int productID = Integer.parseInt(request.getParameter("productID"));
-                    ArrayList<ImageProductDTO> listImgs = imageDao.getAllMainImages();
-                    ArrayList<ImageProductDTO> listNotMainImg = imageDao.getAllImagesIsNotMain(productID);
-                    ProductDTO pro = productDao.get(productID);
-                    System.out.println("aaaaaaaaaaaa" + pro);
-                    request.setAttribute("listNotMainImg", listNotMainImg);
-                    request.setAttribute("listImgs", listImgs);
-                    request.setAttribute("productDetail", pro);
+        String cartAction = request.getParameter("cartAction");
+        HttpSession session = request.getSession();
 
-                    url = Constrants.SHOW_PRODUCT_DETAIL_PAGE;
+        Gson gson = new Gson();
+        switch (cartAction) {
+            case "view": {
+
+                
+                request.getRequestDispatcher(Constrants.SHOW_CART_PAGE).forward(request, response);
+                break;
+
+            }
+
+            case "render": {
+                try {
+                    ShopDAO shopDao = new ShopDAO();
+
+                    int shopID = Integer.parseInt(request.getParameter("shopID"));
+                    System.out.println("shopid" + shopID);
+                    ShopDTO dto = shopDao.get(shopID);
+                    response.getWriter().println(gson.toJson(dto));
                     break;
-                }
-                case "showName": {
-                    int productID = Integer.parseInt(request.getParameter("productID"));
-                    ProductDTO pro = productDao.get(productID);
-                    response.getWriter().println(gson.toJson(pro));
-                    break;
+                } catch (SQLException ex) {
+                    Logger.getLogger(CartController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
 
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        } finally {
-            request.getRequestDispatcher(url).forward(request, response);
+            case "add": {
+
+                break;
+            }
+
         }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

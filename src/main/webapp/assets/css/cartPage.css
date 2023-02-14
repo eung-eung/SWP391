@@ -165,3 +165,45 @@ tr {
     display: flex;
     justify-content: center;
 }
+.shop-name td{
+    padding: 10px 8px;
+    font-weight: 800;
+    font-size: 23px;
+}
+.cart-list .shop-name{
+    box-shadow:none;
+    border-bottom: none;
+    width: 100%;
+}
+.cart-list{
+
+}
+.cart-list .shop-name i{
+    font-size: 16px;
+}
+.shop-name .name a{
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin-top: 28px;
+    text-decoration: none;
+}
+.shop-name .name a i{
+    margin-right: 10px;
+    /*font-weight: 500;*/
+    color: rgb(128, 128, 137);
+}
+.increase,.decrease{
+    display: flex;
+    border: none;
+    width: 40px;
+    height: 20px;
+    cursor: pointer;
+    justify-content: center;
+}
+.increase:hover,.decrease:hover{
+    opacity: 0.7;
+}
+.cart{
+    width: 100%;
+}

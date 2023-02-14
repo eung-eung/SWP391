@@ -12,6 +12,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link type="text/css" rel="stylesheet" href="<c:url value="/assets/css/showProductByCategoryPage.css" />" />
         <link type="text/css" rel="stylesheet" href="<c:url value="/assets/css/detailProduct.css" />" />
+        <link type="text/css" rel="stylesheet" href="<c:url value="/assets/css/homePage.css" />" />
         <link type="text/css" rel="stylesheet" href="<c:url value="/assets/css/userDetailPage.css" />" />
         <title>JSP Page</title>
     </head>

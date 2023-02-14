@@ -5,12 +5,12 @@
 
 
 function increaseValue() {
-
     var value = parseInt(document.querySelector(".form-input").value, 10);
     value++;
     value = isNaN(value) ? 1 : value;
 
     document.querySelector(".form-input").value = value;
+    console.log(value)
 }
 
 function decreaseValue() {
@@ -20,6 +20,7 @@ function decreaseValue() {
     value < 1 ? value = 1 : value;
 
     document.querySelector(".form-input").value = value;
+    console.log(value)
 }
 
 (function zoomImages() {

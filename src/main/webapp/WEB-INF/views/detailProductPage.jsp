@@ -75,7 +75,7 @@
                     <div class="product-detail-container">
 
                         <!-- left: right-detail-block/images -->
-               
+
                         <div class="product-view-images">
                             <div class="product-view-image">
                                 <div class="product-view-image-main">
@@ -102,7 +102,7 @@
                                         </li>
                                     </c:forEach>
 
-                                    
+
 
                                 </ul>
                                 <!-- <div class="swiper-pagination"></div> -->
@@ -122,7 +122,7 @@
                         <!-- right: right-detail-block.details -->
                         <div class="product-view-details">
                             <div class="product-view-details-container">
-   
+
                                 <!-- company -->
                                 <p class="product-view-company">Adidas</p>
                                 <!-- name product -->
@@ -171,22 +171,24 @@
                         <!-- product view option form -->
                         <div class="product-view-details">
                             <div class="product-view-option">
-                                <form id="product-view-option-form">
-                                    <div class="form-field">
-                                        <label for="quantity" class="form-label">Số lượng:</label>
-                                        <div class="form-in-de-crement">
-                                            <input class="form-input" type="number" id="quantity" value="1" min="1">
-                                            <div id="increase" onclick="increaseValue()"><i
-                                                    class="fa-solid fa-angle-up"></i></div>
-                                            <div id="decrease" onclick="decreaseValue()"><i
-                                                    class="fa-solid fa-angle-down"></i></div>
-                                        </div>
-                                        <div class="form-action">
-                                            <input type="submit" id="form-action-addToCart" class="addToCart-button"
-                                                   value="Thêm vào giỏ hàng">
-                                        </div>
+                                <!--                                <form id="product-view-option-form">-->
+                                <div class="form-field">
+                                    <label for="quantity" class="form-label">Số lượng:</label>
+                                    <div class="form-in-de-crement">
+                                        <input class="form-input" type="number" id="quantity" value="1" min="1">
+                                        <div id="increase" onclick="increaseValue()"><i
+                                                class="fa-solid fa-angle-up"></i></div>
+                                        <div id="decrease" onclick="decreaseValue()"><i
+                                                class="fa-solid fa-angle-down"></i></div>
                                     </div>
-                                </form>
+                                    <div class="form-action">
+                                        <input type="submit" id="form-action-addToCart" class="addToCart-button"
+                                               value="Thêm vào giỏ hàng">
+                                        <input type="hidden" id="productID"value="${productDetail.productID}">
+                                        <input type="hidden" id="shopID"value="${productDetail.shopID}">
+                                    </div>
+                                </div>
+                                <!--</form>-->
                             </div>
                         </div>
                         <div class="product-view-description">
@@ -650,7 +652,51 @@
             var swiper = new Swiper(" .mySwiper2", {slidesPerView: 6, spaceBetween: 5, });</script>
     </body>
 
-    <script src="<c:url value="/assets/Javascript/handleMenuCategories.js" />"></script>
+<!--    <script src="<c:url value="/assets/Javascript/handleMenuCategories.js" />"></script>-->
 
     <script src="<c:url value="/assets/Javascript/handleDetailProductPage.js" />"></script>
+
+    <script>
+
+
+            document.querySelector("#form-action-addToCart").addEventListener('click', function () {
+                let quantity = parseInt(document.querySelector("#quantity").value);
+                let productID = document.querySelector("#productID").value;
+                let srcImg = document.querySelector("#image").src;
+                let price = document.querySelector(".price-after-discount").innerHTML;
+                let shopID = document.querySelector("#shopID").value;
+                let productName = document.querySelector(".product-view-title").innerHTML;
+//                let productName = document.querySelector()
+                console.log(shopID)
+                let arr = []
+//                
+                let cart = JSON.parse(window.localStorage.getItem('cart'));
+
+
+                if (cart == null) {
+                    let cartItem = new CartItem(productID, srcImg, quantity, price, shopID, productName);
+
+                    window.localStorage.setItem('cart', JSON.stringify([cartItem]))
+
+
+                } else {
+                    let inCart = false
+                    cart.forEach(item => {
+                        if (item.productID == productID) {
+                            let currentQuantity = parseInt(item.quantity)
+                            item.quantity = currentQuantity + quantity;
+                            inCart = true
+                        }
+
+                    })
+                    if (inCart == false) {
+                        let cartItem = new CartItem(productID, srcImg, quantity, price, shopID, productName);
+                        cart.push(cartItem)
+                    }
+                    window.localStorage.setItem('cart', JSON.stringify(cart))
+
+                }
+                swal("", "Thêm vào giỏ hàng thành công!", "success");
+            })
+    </script>
 </html>

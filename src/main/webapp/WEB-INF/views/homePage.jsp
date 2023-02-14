@@ -219,17 +219,17 @@
                                                                                 el: ".swiper-pagination",
                                                                                 clickable: true,
                                                                             },
-//                                                                            autoplay: {
-//                                                                                delay: 2500,
-//                                                                                disableOnInteraction: false,
-//                                                                            },
+                                                                            autoplay: {
+                                                                                delay: 2500,
+                                                                                disableOnInteraction: false,
+                                                                            }
 
                                                                         });
 
                                                                         // 
                                                                         var swiper = new Swiper(".mySwiper2", {
                                                                             slidesPerView: 4,
-                                                                            grid: {
+                                                                             grid: {
                                                                                 rows: 2,
                                                                             },
                                                                             spaceBetween: 0,
@@ -238,10 +238,10 @@
                                                                                 nextEl: ".swiper-button-next",
                                                                                 prevEl: ".swiper-button-prev",
                                                                             },
-//                                                                            autoplay: {
-//                                                                                delay: 3500,
-//                                                                                disableOnInteraction: false,
-//                                                                            }
+                                                                            autoplay: {
+                                                                                delay: 3500,
+                                                                                disableOnInteraction: false,
+                                                                            }
                                                                         });
 </script>
 

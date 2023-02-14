@@ -5,7 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -24,178 +24,8 @@
     </head>
 
     <body>
-        <header class="header">
-            <div class="header-top">
-                <div class="container">
-                    <div class="header-top-content">
-                        <div class="row">
-                            <div class="col-left">
-                                <div class="col-left-content">Chào mừng Thiện đến với chúng tôi</div>
-                            </div>
-                            <div class="col-right">
-                                <div class="navigation-user">
-                                    <ul class="navigation-user-selection">
-                                        <li class="navigation-user-item">
-                                            <a href="#">
-                                                <i class="fa-solid fa-lock"></i>
-                                                Sign in
-                                            </a>
-                                        </li>
-                                        <li class="navigation-user-item">
-                                            <a href="#" class="navigation-user-action">
-                                                <i class="fa-solid fa-user"></i>
-                                                <span>My Account</span>
-                                                <i class="fa-solid fa-angle-down"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- End header top -->
-            <div class="header-center">
-                <div class="container">
-                    <div class="header-center-row">
-                        <div class="header-center-col">
-                            <div class="header-logo-container">
-                                <a href="" class="logo">
-                                    <img class="header-logo" src="assets/images/logo3.png" alt="">
-                                </a>
-                            </div>
+        <jsp:include page="header.jsp" />
 
-                        </div>
-                        <div class="header-center-col">
-                            <nav class="menu">
-                                <ul class="menu-list">
-                                    <li class="menu-list-item">
-                                        <a class="menu-list-item-action" href="#">Home</a>
-                                    </li>
-                                    <!-- <li class="menu-list-item">
-                                        <span class="badge-hot">Hot</span>
-                                        <a class="menu-list-item-action" href="#">Big Deals</a>
-                                    </li> -->
-                                </ul>
-                            </nav>
-                        </div>
-                        <div class="header-center-col">
-                            <div class="contact-container">
-                                <div class="contact-inner">
-                                    <i class="fa-solid fa-headphones"></i>
-                                    <div class="phone">
-                                        <strong>Contact us: </strong>
-                                        <span class="phone">9999999</span><br>
-                                    </div>
-                                    <div class="email">
-                                        <span>Email: </span>
-                                        <span>adasdasd@gmail.com</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-            <div class="header-bottom">
-                <div class="container">
-                    <div class="row-header-bottom">
-                        <div class="header-bottom-left">
-                            <div>
-                                <a class="menu-title">
-                                    <i class="fa-solid fa-align-left"></i>
-                                    <span>Các loại sản phẩm</span>
-                                    <i class="fa-regular fa-circle-down down"></i>
-                                </a>
-                                <div class="menu-categories is-hover">
-                                    <ul class="menu-categories-list">
-                                        <li class="menu-categories-item">
-                                            <a href="" class="menu-categories-item-action">
-                                                <i class="fa-solid fa-shirt"></i>Fashion
-                                            </a>
-                                        </li>
-                                        <li class="menu-categories-item">
-                                            <a href="" class="menu-categories-item-action">
-                                                <i class="fa-solid fa-kitchen-set"></i>Kitchen
-                                            </a>
-                                        </li>
-                                        <li class="menu-categories-item">
-                                            <a href="" class="menu-categories-item-action">
-                                                <i class="fa-solid fa-computer"></i>Computer
-                                            </a>
-                                        </li>
-                                        <li class="menu-categories-item">
-                                            <a href="" class="menu-categories-item-action">
-                                                <i class="fa-solid fa-bag-shopping"></i>Bags
-                                            </a>
-                                        </li>
-                                        <li class="menu-categories-item">
-                                            <a href="" class="menu-categories-item-action">
-                                                <i class="fa-regular fa-clock"></i>Watches
-                                            </a>
-                                        </li>
-                                        <li class="menu-categories-item">
-                                            <a href="" class="menu-categories-item-action">
-                                                <i class="fa-solid fa-mobile"></i>Smartphone
-                                            </a>
-                                        </li>
-                                        <li class="menu-categories-item">
-                                            <a href="" class="menu-categories-item-action">
-                                                <i class="fa-solid fa-cookie-bite"></i>Foods
-                                            </a>
-                                        </li>
-                                        <li class="menu-categories-item">
-                                            <a href="" class="menu-categories-item-action">
-                                                <i class="fa-solid fa-eye-dropper"></i>Cosmetics
-                                            </a>
-                                        </li>
-                                        <li class="menu-categories-item">
-                                            <a href="" class="menu-categories-item-action">
-                                                <i class="fa-solid fa-eye-dropper"></i>Cosmetics
-                                            </a>
-                                        </li>
-                                        <li class="menu-categories-item">
-                                            <a href="" class="menu-categories-item-action">
-                                                <i class="fa-solid fa-eye-dropper"></i>Cosmetics
-                                            </a>
-                                        </li>
-                                        <li class="menu-categories-item">
-                                            <a href="" class="menu-categories-item-action">
-                                                <i class="fa-solid fa-eye-dropper"></i>Cosmetics
-                                            </a>
-                                        </li>
-                                        <li class="menu-categories-item loadmore">
-                                            <div class="menu-categories-item-action">
-                                                <i class="fa-solid fa-circle-plus"></i>
-                                                <span class="more-view">More Categories</span>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="header-bottom-right">
-                            <div class="row-header-bottom-right">
-                                <div class="header-bottom-search">
-                                    <div class="input-group">
-                                        <input type="text" class="search-input" placeholder="Tìm kiếm...">
-                                        <div class="search-icon">
-                                            <button type="submit" class="search-button"><i
-                                                    class="fa-solid fa-magnifying-glass"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="header-bottom-cart">
-                                    <a href="" class="cart-button"><i class="fa-solid fa-cart-shopping cart-icon"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </header>
         <div class="container">
             <h1 class="cart-title">Giỏ hàng của bạn</h1>
             <div class="cart-content">
@@ -208,155 +38,19 @@
                             <th class="cart-header-item">Tổng</th>
                         </tr>
                     </thead>
-                    <tbody class="cart-list">
-                        <tr class="cart-item">
-                            <td class="cart-item cart-item-image">
-                                <img src="assets/images/bag-thumbnail1.jpg" alt="">
-                            </td>
-                            <td class="cart-item cart-item-title">
-                                <p class="company"><a href="#">Adidas</a></p>
-                                <h4 class="cart-item-name">
-                                    <a href="#">
-                                        avavavav
-                                    </a>
-                                </h4>
-                            </td>
-                            <td class="cart-item cart-item-price">
-                                <span class="cart-item-price-value">500000vnd</span>
-                            </td>
-                            <td class="cart-item cart-item-quantity">
-                                <div class="increment">
-                                    <div style="display: flex; justify-content: center; align-items: center;">
-                                        <div id="increase" onclick="increaseValue()"><i class="fa-solid fa-angle-up"></i>
-                                        </div>
-                                        <input class="form-input" type="number" id="quantity" value="1" min="1">
 
-                                        <div id="decrease" onclick="decreaseValue()"><i class="fa-solid fa-angle-down"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="cart-item cart-item-total">
-                                <span class="cart-item-total">500000vnd</span>
-                                <div class="close">
-                                    <a href="#" class="modal-close-button fa-solid fa-x">
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                        <!--  -->
-                        <tr class="cart-item">
-                            <td class="cart-item cart-item-image">
-                                <img src="assets/images/bag-thumbnail1.jpg" alt="">
-                            </td>
-                            <td class="cart-item cart-item-title">
-                                <p class="company"><a href="#">Adidas</a></p>
-                                <h4 class="cart-item-name">
-                                    <a href="#">
-                                        avavavav
-                                    </a>
-                                </h4>
-                            </td>
-                            <td class="cart-item cart-item-price">
-                                <span class="cart-item-price-value">500000vnd</span>
-                            </td>
-                            <td class="cart-item cart-item-quantity">
-                                <div class="increment">
-                                    <div style="display: flex; justify-content: center; align-items: center;">
-                                        <div id="increase" onclick="increaseValue()"><i class="fa-solid fa-angle-up"></i>
-                                        </div>
-                                        <input class="form-input" type="number" id="quantity" value="1" min="1">
 
-                                        <div id="decrease" onclick="decreaseValue()"><i class="fa-solid fa-angle-down"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="cart-item cart-item-total">
-                                <span class="cart-item-total">500000vnd</span>
-                                <div class="close">
-                                    <a href="#" class="modal-close-button fa-solid fa-x">
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                        <!--  -->
-                        <tr class="cart-item">
-                            <td class="cart-item cart-item-image">
-                                <img src="assets/images/bag-thumbnail1.jpg" alt="">
-                            </td>
-                            <td class="cart-item cart-item-title">
-                                <p class="company"><a href="#">Adidas</a></p>
-                                <h4 class="cart-item-name">
-                                    <a href="#">
-                                        avavavav
-                                    </a>
-                                </h4>
-                            </td>
-                            <td class="cart-item cart-item-price">
-                                <span class="cart-item-price-value">500000vnd</span>
-                            </td>
-                            <td class="cart-item cart-item-quantity">
-                                <div class="increment">
-                                    <div style="display: flex; justify-content: center; align-items: center;">
-                                        <div id="increase" onclick="increaseValue()"><i class="fa-solid fa-angle-up"></i>
-                                        </div>
-                                        <input class="form-input" type="number" id="quantity" value="1" min="1">
 
-                                        <div id="decrease" onclick="decreaseValue()"><i class="fa-solid fa-angle-down"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="cart-item cart-item-total">
-                                <span class="cart-item-total">500000vnd</span>
-                                <div class="close">
-                                    <a href="#" class="modal-close-button fa-solid fa-x">
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                        <!--  -->
-                        <tr class="cart-item">
-                            <td class="cart-item cart-item-image">
-                                <img src="assets/images/bag-thumbnail1.jpg" alt="">
-                            </td>
-                            <td class="cart-item cart-item-title">
-                                <p class="company"><a href="#">Adidas</a></p>
-                                <h4 class="cart-item-name">
-                                    <a href="#">
-                                        avavavav
-                                    </a>
-                                </h4>
-                            </td>
-                            <td class="cart-item cart-item-price">
-                                <span class="cart-item-price-value">500000vnd</span>
-                            </td>
-                            <td class="cart-item cart-item-quantity">
-                                <div class="increment">
-                                    <div style="display: flex; justify-content: center; align-items: center;">
-                                        <div id="increase" onclick="increaseValue()"><i class="fa-solid fa-angle-up"></i>
-                                        </div>
-                                        <input class="form-input" type="number" id="quantity" value="1" min="1">
+                    <!--  -->
 
-                                        <div id="decrease" onclick="decreaseValue()"><i class="fa-solid fa-angle-down"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="cart-item cart-item-total">
-                                <span class="cart-item-total">500000vnd</span>
-                                <div class="close">
-                                    <a href="#" class="modal-close-button fa-solid fa-x">
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                        <!--  -->
-                    </tbody>
+                    <!--  -->
+
                 </table>
 
             </div>
+
+
+
             <div class="cart-totals-container">
                 <ul class="cart-totals">
                     <li class="cart-total">
@@ -380,9 +74,162 @@
             </div>
         </div>
     </body>
+
+    <script src="<c:url value="/assets/Javascript/handleMenuCategories.js" />"></script>
     <script src="<c:url value="/assets/Javascript/handleDetailProductPage.js" />"></script>
-     <script src="<c:url value="/assets/Javascript/handleMenuCategories.js" />"></script>
+    <script>
+        let cart = JSON.parse(window.localStorage.getItem('cart'));
+        let fieldShopID = document.querySelector(".shopID")
+        const unique = [...new Set(cart.map(item => item.shopID))];
+        let cartList = document.querySelector('.cart')
+//        let cart = JSON.parse(window.localStorage.getItem('cart'));
+        console.log(unique);
+        (function render() {
+            unique.forEach(u => {
+
+                fetch("MainController?btnAction=cart&cartAction=render&shopID=" + u, {
+                    method: 'GET'
+                })
+                        .then(res => res.json())
+                        .then(data => {
+                   
+                            cartList.innerHTML += ` <tbody class="cart-name-shop">
+                          
+                        <tr class="cart-item shop-name"><td class="name"><a href="#"><i class="fa-solid fa-store"></i>\${data.shopName}</a></td></tr>`
+                            let htmls = cart.map(item => {
+                                if (data.shopID == item.shopID) {
+                                    return `
+            
+                  
+                    <tr class="cart-item">
+                        <td class="cart-item cart-item-image">
+                            <img src="\${item.srcImg}" alt="">
+                        </td>
+                        <td class="cart-item cart-item-title">
+                           
+                            <h4 class="cart-item-name">
+                     
+                                <a href="<c:url value="MainController?btnAction=product&productAction=showDetail&productID=\${item.productID}" />">
+                            \${item.productName}
+                                </a>
+                            </h4>
+                        </td>
+                        <td class="cart-item cart-item-price">
+                            <span class="cart-item-price-value">\${item.price}</span>
+                        </td>
+                       <input type="hidden" class="productID" value="\${item.productID}"/>
+                        <td class="cart-item cart-item-quantity">
+                            <div class="increment">
+                         
+                                <div class="box-id" style="display: flex; justify-content: center; align-items: center;">
+                                    <div class="increase"  onclick ="increaseValue(this,\${item.productID})"><i class="fa-solid fa-angle-up"></i>
+                                    </div>
+                                    <input class="form-input" type="number" id="quantity" value="\${item.quantity}" min="1">
+
+                                    <div class="decrease" onclick ="decreaseValue(this,\${item.productID})"><i class="fa-solid fa-angle-down"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="cart-item cart-item-total">
+                            <span class="cart-item-total">500000vnd</span>
+                            <div class="close" onclick="deleteAnItem(this,\${item.productID},\${data.shopID})">
+                                <span class="modal-close-button fa-solid fa-x">
+                                </span>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    `
 
 
+                                }
+
+                            })
+                            cartList.innerHTML += `</tbody>`
+                            cartList.innerHTML += htmls.join('')
+
+                        }
+
+
+                        )
+
+
+            })
+        })();
+
+        function increaseValue(btn, productID) {
+            let value = btn.nextElementSibling.value
+            value++
+            setQuantityWithDeIncrease(value, productID)
+            value = isNaN(value) ? 1 : value;
+            btn.nextElementSibling.value = value
+
+        }
+        function decreaseValue(btn, productID) {
+            let value = btn.previousElementSibling.value
+            value--;
+            setQuantityWithDeIncrease(value, productID)
+            value = isNaN(value) ? 1 : value;
+            value < 1 ? value = 1 : value;
+            btn.previousElementSibling.value = value
+        }
+        function setQuantityWithDeIncrease(value, productID) {
+            cart.forEach(item => {
+                console.log(item.productID == productID)
+                console.log(value)
+                if (item.productID == productID) {
+                    item.quantity = value;
+                }
+
+
+            })
+            window.localStorage.setItem('cart', JSON.stringify(cart))
+        }
+//delete a item from cart
+        function deleteAnItem(deleleButton, productID, shopID) {
+
+            swal({
+                title: "Xóa sản phẩm",
+                text: "Bạn có muốn xóa sản phẩm đang chọn?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                    .then((willDelete) => {
+
+
+                        if (willDelete) {
+                            let indexItemInCart = cart.findIndex(item => item.productID == productID)
+                            cart.splice(indexItemInCart, 1)
+                            let isShopStillInCart = cart.findIndex(cartItem => cartItem.shopID == shopID)
+                            console.log(isShopStillInCart < 0)
+                            if (isShopStillInCart < 0) {
+                                deleleButton.parentNode.parentNode.parentNode.previousElementSibling.remove()
+
+                            }
+                            deleleButton.parentNode.parentNode.remove()
+                             window.localStorage.setItem('cart', JSON.stringify(cart))
+                            swal("Đã xóa", {
+                                icon: "success",
+                            });
+                            return res()
+                        } else {
+                            swal("Bạn đã hủy xóa sản phẩm");
+
+
+                        }
+
+
+                    })
+               
+
+
+
+
+        }
+
+
+    </script>
 
 </html>

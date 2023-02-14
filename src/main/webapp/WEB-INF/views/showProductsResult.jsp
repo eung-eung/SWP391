@@ -66,10 +66,10 @@
                         </div>
                         <div class="block-sidebar-content">
                             <ul class="nav-list">
-                                <c:forEach items="${sessionScope.listCategory}" var="categoryItem">
+                                <c:forEach items="${sessionScope.listCategory}" var="c">
                                     <li class="nav-list-item">
-                                        <a class="nav-list-action" href="<c:url value="/MainController?btnAction=product&productAction=showByCateID&categoryID=${categoryItem.categoryID}"></c:url>" class="menu-categories-item-action">
-                                            ${categoryItem.icon}${categoryItem.name}
+                                        <a class="nav-list-action" href="<c:url value="/MainController?btnAction=product&productAction=showByCateID&categoryID=${c.categoryID}"></c:url>" class="menu-categories-item-action">
+                                            ${c.icon}${c.name}
                                         </a>
                                     </li>
                                 </c:forEach>
@@ -206,5 +206,5 @@
         </div>
     </body>
 
-    <script src="<c:url value="/assets/Javascript/handleMenuCategories.js" />"></script>
+
 </html>

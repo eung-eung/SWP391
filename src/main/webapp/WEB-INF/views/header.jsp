@@ -174,7 +174,7 @@
                                     </form>
                                 </div>
                                 <div class="header-bottom-cart">
-                                    <a href="" class="cart-button"><i class="fa-solid fa-cart-shopping cart-icon"></i></a>
+                                    <a href="<c:url value="MainController?btnAction=cart&cartAction=view" />" class="cart-button"><i class="fa-solid fa-cart-shopping cart-icon"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -185,6 +185,7 @@
     </body>
 
     <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script>
 
                                                 // function to get response
@@ -225,7 +226,6 @@
                                           </div>
 
                                       </li>`;
-
                                                         document.querySelector('.email-need-split').innerHTML = res.email.substring(0, res.email.lastIndexOf("@"));
                                                         document.querySelector('#my-avatar-header').style.backgroundImage = "url('" + resUrl + "')";
                                                     }
@@ -249,10 +249,6 @@
                                                 let emailNeedSplit = document.querySelector('.email-need-split').dataset.email;
                                                 let username = emailNeedSplit.substring(0, emailNeedSplit.lastIndexOf("@"));
                                                 usernameDiv.innerHTML = username;
-
-
-
-
                                                 function callSearchControllerAjax(typingValue) {
 
                                                     return new Promise(function (res, rej) {
@@ -269,7 +265,6 @@
 
                                                 }
                                                 ;
-
                                                 function renderSearchResult(typingValueFromInput) {
                                                     if (typingValueFromInput.length === 0) {
                                                         document.querySelector("#searchAjaxResult").innerHTML = "";
@@ -290,6 +285,18 @@
 //                                                    div.innerHTML = htmls.join('');
 
                                                 }
+
+                                                class CartItem {
+                                                    constructor(productID, srcImg, quantity, price, shopID, productName) {
+                                                        this.productID = productID;
+                                                        this.srcImg = srcImg;
+                                                        this.quantity = quantity;
+                                                        this.price = price;
+                                                        this.shopID = shopID;
+                                                        this.productName = productName;
+                                                    }
+                                                }
+
     </script>
     <script src="<c:url value="/assets/Javascript/handleMenuCategories.js" />"></script>
 </html>
