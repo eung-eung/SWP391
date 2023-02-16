@@ -7,7 +7,6 @@ package com.team1.ecommerceplatformm.controller;
 import com.team1.ecommerceplatformm.category.CategoryDAO;
 import com.team1.ecommerceplatformm.category.CategoryDTO;
 import com.team1.ecommerceplatformm.product.ProductDAO;
-import com.team1.ecommerceplatformm.product.ProductDTO;
 import com.team1.ecommerceplatformm.utils.Constrants;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -46,20 +45,17 @@ public class MainController extends HttpServlet {
                 CategoryDAO cateDAO = new CategoryDAO();
                 ArrayList<CategoryDTO> listCategory = new ArrayList<>();
                 ArrayList<CategoryDTO> listPopularCatetory = new ArrayList<>();
-                ArrayList<ProductDTO> listTop20ProductsHaveBannerVertical = new ArrayList<>();
                 listCategory = cateDAO.getAll();
 
                 listPopularCatetory = cateDAO.getTop5CategoriesByTotalSoldCount();
 
-                request.setAttribute("listPopularCatetory", listPopularCatetory);
-                session.setAttribute("listCategory", listCategory);
-                ArrayList<CategoryDTO> listCategoryHaveNoVerticalBanner = cateDAO.getAll();;
+                ArrayList<CategoryDTO> listCategoryHaveNoVerticalBanner = cateDAO.getAll();
 
                 listCategoryHaveNoVerticalBanner.removeIf(cate -> cate.getBannerVertical() == null);
-
+                request.setAttribute("listPopularCatetory", listPopularCatetory);
+                session.setAttribute("listCategory", listCategory);
                 request.setAttribute("listCategoryHaveNoVerticalBanner", listCategoryHaveNoVerticalBanner);
                 request.setAttribute("listTop20ProductsHaveBannerVertical",
-                        //                        new ArrayList<>());
                         proDAO.getAllTOP20BestSellingProductsByCategoryIDs(listCategoryHaveNoVerticalBanner));
                 url = Constrants.HOME_PAGE;
             } else {

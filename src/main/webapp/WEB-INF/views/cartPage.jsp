@@ -83,6 +83,7 @@
         const unique = [...new Set(cart.map(item => item.shopID))];
         let cartList = document.querySelector('.cart')
 //        let cart = JSON.parse(window.localStorage.getItem('cart'));
+
         console.log(unique);
         (function render() {
             unique.forEach(u => {
@@ -92,7 +93,7 @@
                 })
                         .then(res => res.json())
                         .then(data => {
-                   
+
                             cartList.innerHTML += ` <tbody class="cart-name-shop">
                           
                         <tr class="cart-item shop-name"><td class="name"><a href="#"><i class="fa-solid fa-store"></i>\${data.shopName}</a></td></tr>`
@@ -124,9 +125,9 @@
                                 <div class="box-id" style="display: flex; justify-content: center; align-items: center;">
                                     <div class="increase"  onclick ="increaseValue(this,\${item.productID})"><i class="fa-solid fa-angle-up"></i>
                                     </div>
-                                    <input class="form-input" type="number" id="quantity" value="\${item.quantity}" min="1">
+                                    <input class="form-input quantity-input" type="number" id="quantity" value="\${item.quantity}" oninput="handleOnInputQuantity(\${item.productID})" min="1">
 
-                                    <div class="decrease" onclick ="decreaseValue(this,\${item.productID})"><i class="fa-solid fa-angle-down"></i>
+                                    <div class="decrease" onclick ="decreaseValue(this,\${item.productID},\${data.shopID})"><i class="fa-solid fa-angle-down"></i>
                                     </div>
                                 </div>
                             </div>
@@ -157,18 +158,48 @@
 
             })
         })();
-
+        function handleOnInputQuantity(productID) {
+            let inputQuantity = document.querySelectorAll(".quantity-input")
+            inputQuantity.forEach(input => {
+                input.addEventListener("input", function () {
+                    if (this.value < 0) {
+                        this.value = Math.abs(this.value)
+                    } else if (this.value == 0) {
+                        this.value = 1
+                    }
+                    setQuantityWithDeIncrease(this.value,productID)
+                })
+            })
+        }
         function increaseValue(btn, productID) {
             let value = btn.nextElementSibling.value
             value++
-            setQuantityWithDeIncrease(value, productID)
-            value = isNaN(value) ? 1 : value;
-            btn.nextElementSibling.value = value
 
+            value = isNaN(value) ? 1 : value;
+            fetch("MainController?btnAction=product&productAction=showQuantity&productID=" + productID, {
+                method: 'GET'
+            })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data < value) {
+                            swal("", "Sản phẩm này chỉ còn " + data, "error");
+                            value = value - 1
+
+                        }
+                        setQuantityWithDeIncrease(value, productID)
+                        btn.nextElementSibling.value = value
+                    })
+
+//            setQuantityWithDeIncrease(value, productID)
         }
-        function decreaseValue(btn, productID) {
+        function decreaseValue(btn, productID, shopID) {
             let value = btn.previousElementSibling.value
             value--;
+            if (value == 0) {
+                console.log("delete thôi")
+                deleteAnItem(btn.parentNode.parentNode.parentNode.nextElementSibling.childNodes[3], productID, shopID)
+
+            }
             setQuantityWithDeIncrease(value, productID)
             value = isNaN(value) ? 1 : value;
             value < 1 ? value = 1 : value;
@@ -191,13 +222,12 @@
 
             swal({
                 title: "Xóa sản phẩm",
-                text: "Bạn có muốn xóa sản phẩm đang chọn?",
+                text: "Bạn có muốn xóa?",
                 icon: "warning",
                 buttons: true,
                 dangerMode: true,
             })
                     .then((willDelete) => {
-
 
                         if (willDelete) {
                             let indexItemInCart = cart.findIndex(item => item.productID == productID)
@@ -209,20 +239,24 @@
 
                             }
                             deleleButton.parentNode.parentNode.remove()
-                             window.localStorage.setItem('cart', JSON.stringify(cart))
+                            window.localStorage.setItem('cart', JSON.stringify(cart))
                             swal("Đã xóa", {
                                 icon: "success",
                             });
-                            return res()
+
+
                         } else {
                             swal("Bạn đã hủy xóa sản phẩm");
 
 
                         }
 
-
                     })
-               
+
+
+
+
+
 
 
 

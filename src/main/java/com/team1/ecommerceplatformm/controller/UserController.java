@@ -101,8 +101,6 @@ public class UserController extends HttpServlet {
                     session.setAttribute("user", u);
                     break;
                 }
-                default:
-                    throw new AssertionError();
             }
 
         } catch (IllegalArgumentException ex) {

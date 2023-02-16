@@ -4,8 +4,7 @@
     Author     : boyvi
 --%>
 
-<%@page import="com.team1.ecommerceplatformm.product.ProductDTO"%>
-<%@page import="com.team1.ecommerceplatformm.imageProduct.ImageProductDAO"%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -140,7 +139,7 @@
 
                                 <div class="swiper mySwiper2 mySwiper2-css swiper-initialized swiper-horizontal swiper-grid swiper-grid-column">
                                     <div class="swiper-wrapper" id="swiper-wrapper-b9be9737473a2aeb" aria-live="polite" style="width: 1508px; transform: translate3d(0px, 0px, 0px);">
-                                        <c:forEach var="product" items="${productList}" varStatus="loop">
+                                        <c:forEach  items="${productList}" var="product" varStatus="loop">
                                             <div class="swiper-slide slide-product">
                                                 <div class="slide-product-block">
                                                     <div class="slide-product-content">
@@ -152,27 +151,27 @@
                                                         </div>
                                                         <div class="bottom-block">
                                                             <h4 class="card-title">
-                                                             <a href="<c:url value="MainController?btnAction=product&productAction=showDetail&productID=${product.productID}"></c:url>">${product.name}</a>
-                                                    
-                                                            </h4>
-                                                            <div class="ratings">
-                                                                <div class="product-rating">
-                                                                    <span class="rating-small">
-                                                                        <span class="icon"><i class="fa-regular fa-star"></i></span>
-                                                                        <span class="icon"><i class="fa-regular fa-star"></i></span>
-                                                                        <span class="icon"><i class="fa-regular fa-star"></i></span>
-                                                                        <span class="icon"><i class="fa-regular fa-star"></i></span>
-                                                                        <span class="icon"><i class="fa-regular fa-star"></i></span>
-                                                                    </span>
+                                                                <a href="<c:url value="MainController?btnAction=product&productAction=showDetail&productID=${product.productID}"></c:url>">${product.name}</a>
+
+                                                                </h4>
+                                                                <div class="ratings">
+                                                                    <div class="product-rating">
+                                                                        <span class="rating-small">
+                                                                            <span class="icon"><i class="fa-regular fa-star"></i></span>
+                                                                            <span class="icon"><i class="fa-regular fa-star"></i></span>
+                                                                            <span class="icon"><i class="fa-regular fa-star"></i></span>
+                                                                            <span class="icon"><i class="fa-regular fa-star"></i></span>
+                                                                            <span class="icon"><i class="fa-regular fa-star"></i></span>
+                                                                        </span>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="price-block">
-                                                                <span id="price-after-discount${loop.index}-${product.productID}"  class="price price-after-discount">300000vnd</span>
+                                                                <div class="price-block">
+                                                                    <span id="price-after-discount${loop.index}-${product.productID}"  class="price price-after-discount">300000vnd</span>
                                                                 <span id='price-without-discount${loop.index}-${product.productID}'  class="price price-without-discount">
                                                                     <script id='tmp'>
                                                                         document.querySelector("#price-without-discount${loop.index}-${product.productID}").innerHTML = formatter.format(${product.price});
                                                                         document.querySelector("#price-after-discount${loop.index}-${product.productID}").innerHTML = formatter.format(${product.price * (1-product.discount)});
-                                                                        
+
                                                                     </script>
                                                                 </span>
                                                             </div>
@@ -182,11 +181,11 @@
                                                 </div>
                                             </div>
                                         </c:forEach>
-                                        <script id='tmp2'>
-                                            document.querySelectorAll("#tmp").forEach(i => i.remove());
-                                            document.querySelector("#tmp2").remove();
-                                            
-                                        </script>
+                                        <!--                                        <script id='tmp2'>
+                                                                                    document.querySelectorAll("#tmp").forEach(i => i.remove());
+                                                                                    document.querySelector("#tmp2").remove();
+                                                                                    
+                                                                                </script>-->
                                     </div>
                                     <div class="swiper-button-next" tabindex="0" role="button" aria-label="Next slide" aria-controls="swiper-wrapper-b9be9737473a2aeb" aria-disabled="false"></div>
                                     <div class="swiper-button-prev swiper-button-disabled" tabindex="-1" role="button" aria-label="Previous slide" aria-controls="swiper-wrapper-b9be9737473a2aeb" aria-disabled="true"></div>
@@ -229,7 +228,7 @@
                                                                         // 
                                                                         var swiper = new Swiper(".mySwiper2", {
                                                                             slidesPerView: 4,
-                                                                             grid: {
+                                                                            grid: {
                                                                                 rows: 2,
                                                                             },
                                                                             spaceBetween: 0,

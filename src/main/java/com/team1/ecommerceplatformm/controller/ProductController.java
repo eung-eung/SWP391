@@ -41,6 +41,7 @@ public class ProductController extends HttpServlet {
         ImageProductDAO imageDao = new ImageProductDAO();
         String productAction = request.getParameter("productAction");
         System.out.println(productAction);
+        boolean isForward = false;
         String url = "";
         Gson gson = new Gson();
         try {
@@ -54,6 +55,7 @@ public class ProductController extends HttpServlet {
                     imageList = imageDao.getAllMainImages();
                     request.setAttribute("imageList", imageList);
                     request.setAttribute("productListByCateID", productListByCateID);
+                    isForward = true;
                     url = Constrants.SHOW_PRODUCT_PAGE;
                     break;
                 }
@@ -66,23 +68,32 @@ public class ProductController extends HttpServlet {
                     request.setAttribute("listNotMainImg", listNotMainImg);
                     request.setAttribute("listImgs", listImgs);
                     request.setAttribute("productDetail", pro);
-
+                    isForward = true;
                     url = Constrants.SHOW_PRODUCT_DETAIL_PAGE;
                     break;
                 }
-                case "showName": {
+//                case "showName": {
+//                    int productID = Integer.parseInt(request.getParameter("productID"));
+//                    ProductDTO pro = productDao.get(productID);
+//                    response.getWriter().println(gson.toJson(pro));
+//                    break;
+//                }
+                case "showQuantity": {
                     int productID = Integer.parseInt(request.getParameter("productID"));
                     ProductDTO pro = productDao.get(productID);
-                    response.getWriter().println(gson.toJson(pro));
+                    System.out.println("aaaaaaaa" + pro.getQuanity());
+                    response.getWriter().println(gson.toJson(pro.getQuanity()));
                     break;
                 }
             }
 
         } catch (Exception ex) {
             ex.printStackTrace();
-        } finally {
+        }
+        if (isForward) {
             request.getRequestDispatcher(url).forward(request, response);
         }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
