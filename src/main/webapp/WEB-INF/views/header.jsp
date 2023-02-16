@@ -18,6 +18,12 @@
         <script src="https://kit.fontawesome.com/330a21053c.js" crossorigin="anonymous"></script>
         <title>JSP Page</title>
     </head>
+            <script>
+            const formatter = new Intl.NumberFormat('vi-VN', {
+                style: 'currency',
+                currency: 'VND',
+            });
+        </script>
     <body>
         <header class="header">
             <div class="header-top">

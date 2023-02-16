@@ -64,7 +64,7 @@
                     <li class="cart-total">
                         <div class="cart-total-label">Tổng cộng:</div>
                         <div class="cart-total-value total">
-                            <span>100000vnd</span>
+                            <span></span>
                         </div>
                     </li>
                 </ul>
@@ -84,24 +84,23 @@
         let cartList = document.querySelector('.cart')
 //        let cart = JSON.parse(window.localStorage.getItem('cart'));
 
-        console.log(unique);
-        (function render() {
-            unique.forEach(u => {
 
-                fetch("MainController?btnAction=cart&cartAction=render&shopID=" + u, {
-                    method: 'GET'
-                })
-                        .then(res => res.json())
-                        .then(data => {
+        unique.forEach(u => {
 
-                            cartList.innerHTML += ` <tbody class="cart-name-shop">
+            fetch("MainController?btnAction=cart&cartAction=render&shopID=" + u, {
+                method: 'GET'
+            })
+                    .then(res => res.json())
+                    .then(data => {
+
+                        cartList.innerHTML += ` <tbody class="cart-name-shop">
                           
                         <tr class="cart-item shop-name"><td class="name"><a href="#"><i class="fa-solid fa-store"></i>\${data.shopName}</a></td></tr>`
-                            let htmls = cart.map(item => {
-                                if (data.shopID == item.shopID) {
-                                    return `
+                        let htmls = cart.map(item => {
+                            console.log(parseInt(item.price.trim().replace(".0", "")))
+                            if (data.shopID == item.shopID) {
+                                return `
             
-                  
                     <tr class="cart-item">
                         <td class="cart-item cart-item-image">
                             <img src="\${item.srcImg}" alt="">
@@ -116,7 +115,7 @@
                             </h4>
                         </td>
                         <td class="cart-item cart-item-price">
-                            <span class="cart-item-price-value">\${item.price}</span>
+                            <span class="cart-item-price-value">\${formatter.format(parseInt(item.price.trim().replace(".0","")))}</span>
                         </td>
                        <input type="hidden" class="productID" value="\${item.productID}"/>
                         <td class="cart-item cart-item-quantity">
@@ -125,7 +124,7 @@
                                 <div class="box-id" style="display: flex; justify-content: center; align-items: center;">
                                     <div class="increase"  onclick ="increaseValue(this,\${item.productID})"><i class="fa-solid fa-angle-up"></i>
                                     </div>
-                                    <input class="form-input quantity-input" type="number" id="quantity" value="\${item.quantity}" oninput="handleOnInputQuantity(\${item.productID})" min="1">
+                                    <input class="form-input quantity-input" type="number" id="quantity" value="\${item.quantity}" onchange="handleOnChangeQuantity(this,\${item.productID})"  min="1">
 
                                     <div class="decrease" onclick ="decreaseValue(this,\${item.productID},\${data.shopID})"><i class="fa-solid fa-angle-down"></i>
                                     </div>
@@ -133,7 +132,7 @@
                             </div>
                         </td>
                         <td class="cart-item cart-item-total">
-                            <span class="cart-item-total">500000vnd</span>
+                            <span class="cart-item-total">\${formatter.format(item.price * item.quantity)}</span>
                             <div class="close" onclick="deleteAnItem(this,\${item.productID},\${data.shopID})">
                                 <span class="modal-close-button fa-solid fa-x">
                                 </span>
@@ -142,35 +141,56 @@
                     </tr>
                     
                     `
-
-
-                                }
-
-                            })
-                            cartList.innerHTML += `</tbody>`
-                            cartList.innerHTML += htmls.join('')
-
-                        }
-
-
-                        )
-
-
-            })
-        })();
-        function handleOnInputQuantity(productID) {
-            let inputQuantity = document.querySelectorAll(".quantity-input")
-            inputQuantity.forEach(input => {
-                input.addEventListener("input", function () {
-                    if (this.value < 0) {
-                        this.value = Math.abs(this.value)
-                    } else if (this.value == 0) {
-                        this.value = 1
+                            }
+                        })
+                        cartList.innerHTML += `</tbody>`
+                        cartList.innerHTML += htmls.join('')
                     }
-                    setQuantityWithDeIncrease(this.value,productID)
-                })
+                    )
+        })
+
+
+        function handleOnChangeQuantity(btn, productID) {
+
+            fetch("MainController?btnAction=product&productAction=showQuantity&productID=" + productID, {
+                method: 'GET'
             })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data < btn.value) {
+                            swal("", "Sản phẩm này chỉ còn " + data, "error");
+                            btn.value = data
+                        }
+                        handleTotalItem(btn, btn.value)
+                        setQuantityWithDeIncrease(btn.value, productID)
+                        calculateTotal()
+                    })
+                   
+//                    calculateTotal()
+
+
+
         }
+
+
+
+
+
+//        function handleOnInputQuantity(productID) {
+//            let inputQuantity = document.querySelectorAll(".quantity-input")
+//            inputQuantity.forEach(input => {
+//                input.addEventListener("input", function () {
+//                    if (this.value < 0) {
+//                        this.value = Math.abs(this.value)
+//                    } else if (this.value == 0) {
+//                        this.value = 1
+//                    }
+////                    handleTotalItem(this, this.value)
+//                    setQuantityWithDeIncrease(this.value, productID)
+//                })
+//            })
+////            calculateTotal()
+//        }
         function increaseValue(btn, productID) {
             let value = btn.nextElementSibling.value
             value++
@@ -186,8 +206,10 @@
                             value = value - 1
 
                         }
+                        handleTotalItem(btn, value)
                         setQuantityWithDeIncrease(value, productID)
                         btn.nextElementSibling.value = value
+//                        calculateTotal()
                     })
 
 //            setQuantityWithDeIncrease(value, productID)
@@ -197,18 +219,24 @@
             value--;
             if (value == 0) {
                 console.log("delete thôi")
+                value = 1;
                 deleteAnItem(btn.parentNode.parentNode.parentNode.nextElementSibling.childNodes[3], productID, shopID)
 
             }
+
+            handleTotalItem(btn, value)
             setQuantityWithDeIncrease(value, productID)
+
             value = isNaN(value) ? 1 : value;
+
             value < 1 ? value = 1 : value;
             btn.previousElementSibling.value = value
+
         }
         function setQuantityWithDeIncrease(value, productID) {
             cart.forEach(item => {
-                console.log(item.productID == productID)
-                console.log(value)
+//                console.log(item.productID == productID)
+//                console.log(value)
                 if (item.productID == productID) {
                     item.quantity = value;
                 }
@@ -216,6 +244,7 @@
 
             })
             window.localStorage.setItem('cart', JSON.stringify(cart))
+            calculateTotal()
         }
 //delete a item from cart
         function deleteAnItem(deleleButton, productID, shopID) {
@@ -252,18 +281,32 @@
                         }
 
                     })
+        }
+        function handleTotalItem(btn, quantity) {
+//            const f = Intl.
+            let currentPrice = btn.parentNode.parentNode.parentNode.parentNode.childNodes[5].innerText
+            let totalPriceEachItemByQuantity = btn.parentNode.parentNode.parentNode.nextElementSibling.childNodes[1]
+            totalPriceEachItemByQuantity.innerText = formatter.format(parseInt(currentPrice.trim().replace(".", "")) * quantity)
 
+        }
+//        document.querySelector('.checkout-button').addEventListener('click', function (e) {
 
+//            e.preventDefault()
+//            console.log('click')
+        function calculateTotal() {
 
-
-
-
-
+            let total = cart.reduce(function (total, currentItem) {
+                console.log("item " + currentItem)
+                console.log("quantity " + currentItem.quantity)
+                return total + (currentItem.price * currentItem.quantity)
+            }, 0)
+//            console.log(formatter.format(total))
+            document.querySelector(".total").innerHTML = `<span>` + formatter.format(total) + `</span>`
 
 
         }
-
-
+        window.onload = calculateTotal()
+//        })
     </script>
 
 </html>

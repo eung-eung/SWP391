@@ -27,12 +27,7 @@
     <body>
 
         <jsp:include page="header.jsp"/>
-        <script>
-            const formatter = new Intl.NumberFormat('vi-VN', {
-                style: 'currency',
-                currency: 'VND',
-            });
-        </script>
+
         <section class="slideShow">
             <div class="container">
                 <div class="row-slideShow">
