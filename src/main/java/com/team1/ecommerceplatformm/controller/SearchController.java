@@ -52,6 +52,7 @@ public class SearchController extends HttpServlet {
 //            set list anh main + list san pham duoc search
             request.setAttribute("listMainImg", listMainImg);
             request.setAttribute("listSearched", list);
+            request.setAttribute("searchValue", searchValue);
         } catch (SQLException ex) {
             Logger.getLogger(SearchController.class.getName()).log(Level.SEVERE, null, ex);
         }

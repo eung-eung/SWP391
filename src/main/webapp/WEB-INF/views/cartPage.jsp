@@ -161,11 +161,16 @@
                             swal("", "Sản phẩm này chỉ còn " + data, "error");
                             btn.value = data
                         }
+                        if (btn.value < 0) {
+                            btn.value = Math.abs(btn.value)
+                        } else if (btn.value == 0) {
+                            btn.value = 1
+                        }
                         handleTotalItem(btn, btn.value)
                         setQuantityWithDeIncrease(btn.value, productID)
                         calculateTotal()
                     })
-                   
+
 //                    calculateTotal()
 
 

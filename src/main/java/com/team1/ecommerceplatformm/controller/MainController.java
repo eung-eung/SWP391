@@ -84,6 +84,11 @@ public class MainController extends HttpServlet {
                         url = Constrants.CART_CONTROLLER;
                         break;
                     }
+                    case "address": {
+                        System.out.println("vào address main");
+                        url = Constrants.ADDRESS_CONTROLLER;
+                        break;
+                    }
                 }
             }
         } catch (Exception ex) {

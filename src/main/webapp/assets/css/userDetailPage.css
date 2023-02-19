@@ -74,3 +74,29 @@ button#submit:hover,
 button#submit:focus {
     background-color: #F082AC;
 }
+
+
+.label{
+    display: inline-block;
+    min-width: 170px;
+}
+select{
+    width: 400px;
+
+}
+.address-modal .address-modal-item{
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+}
+.nav-list-item.active a{
+    color: #ff5c00 !important;
+ 
+}
+
+.user-detail.active{
+    display: block;
+}
+.user-detail{
+    display: none;
+}

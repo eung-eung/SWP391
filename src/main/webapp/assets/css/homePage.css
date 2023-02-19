@@ -234,9 +234,8 @@ body {
     margin-left: 20px;
 }
 
-.header-bottom-cart {
-    grid-column: 3/4;
-    justify-self: center;
+.header-bottom-cart, .header-bottom-admin,.header-bottom-shop {
+display: inline-block;
 }
 
 .input-group {

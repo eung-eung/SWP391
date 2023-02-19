@@ -15,15 +15,16 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;1,100;1,300&display=swap"
               rel="stylesheet">
+
         <script src="https://kit.fontawesome.com/330a21053c.js" crossorigin="anonymous"></script>
         <title>JSP Page</title>
     </head>
-            <script>
-            const formatter = new Intl.NumberFormat('vi-VN', {
-                style: 'currency',
-                currency: 'VND',
-            });
-        </script>
+    <script>
+        const formatter = new Intl.NumberFormat('vi-VN', {
+            style: 'currency',
+            currency: 'VND',
+        });
+    </script>
     <body>
         <header class="header">
             <div class="header-top">
@@ -56,7 +57,7 @@
                                                     </span>
 
                                                     <div class="dropdown-action">
-                                                        <a href="<c:url value="/MainController?btnAction=user&userAction=profile" />">Thông tin của tôi</a>
+                                                        <a href="<c:url value="/MainController?btnAction=user&userAction=profile#profile" />">Thông tin của tôi</a>
                                                         <a href="<c:url value="/MainController?btnAction=user&userAction=logout"></c:url>">Đăng xuất</a>
 
                                                         </div>
@@ -179,8 +180,27 @@
                                         </div>
                                     </form>
                                 </div>
-                                <div class="header-bottom-cart">
-                                    <a href="<c:url value="MainController?btnAction=cart&cartAction=view" />" class="cart-button"><i class="fa-solid fa-cart-shopping cart-icon"></i></a>
+                                <div style="    grid-column: 3/4;
+                                     justify-self: center;">
+                                    <div class="header-bottom-cart">
+                                        <a href="<c:url value="MainController?btnAction=cart&cartAction=view" />" class="cart-button"><i class="fa-solid fa-cart-shopping cart-icon"></i></a>
+
+
+
+                                    </div>
+                                    <div class="header-bottom-admin">
+                                        <c:if test="${sessionScope.user.roleID == 4}">
+                                            <a href="" class="cart-button"><i class="fa-solid fa-user-shield"></i></a>
+                                            </c:if>
+                                    </div>
+                                    <div class="header-bottom-shop">
+                                        <c:if test="${sessionScope.user.roleID == 3}">
+                                            <a href="" class="cart-button"><i class="fa-solid fa-shop"></i></a>
+                                            </c:if>
+                                    </div>
+                                    <div class="header-bottom-admin">
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -209,7 +229,7 @@
 
 
                                                     ).then(res => {
-                                                        console.log(res.avatarUrl)
+                                                        console.log(res)
                                                         const  resUrl = res.avatarUrl;
                                                         document.querySelector('.navigation-user-selection').innerHTML =
                                                                 `<li class="navigation-user-item">
@@ -234,6 +254,14 @@
                                       </li>`;
                                                         document.querySelector('.email-need-split').innerHTML = res.email.substring(0, res.email.lastIndexOf("@"));
                                                         document.querySelector('#my-avatar-header').style.backgroundImage = "url('" + resUrl + "')";
+                                                        if (res.roleID == 4) {
+                                                            console.log("4")
+                                                            document.querySelector(".header-bottom-shop").innerHTML = `<a href="" class="cart-button"><i class="fa-solid fa-shop"></i></a>`
+
+                                                        } else if (res.roleID == 3) {
+                                                            console.log(3)
+                                                            document.querySelector(".header-bottom-admin").innerHTML = `  <a href="" class="cart-button"><i class="fa-solid fa-user-shield"></i></a>`
+                                                        }
                                                     }
                                                     )
                                                 }

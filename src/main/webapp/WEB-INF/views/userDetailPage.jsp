@@ -14,6 +14,9 @@
         <link type="text/css" rel="stylesheet" href="<c:url value="/assets/css/detailProduct.css" />" />
         <link type="text/css" rel="stylesheet" href="<c:url value="/assets/css/homePage.css" />" />
         <link type="text/css" rel="stylesheet" href="<c:url value="/assets/css/userDetailPage.css" />" />
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
         <title>JSP Page</title>
     </head>
     <body>
@@ -32,39 +35,44 @@
                     <!-- left: sidebar -->
                     <div class="sidebar-categories">
                         <div class="block-sidebar-title">
-                            <h5 class="sidebar-title"><i class="fa-regular fa-gem"></i>Tài khoản của tui</h5>
+                            <h5 class="sidebar-title"><i class="fa-regular fa-gem"></i>Tài khoản của tôi</h5>
                         </div>
                         <div class="block-sidebar-content">
                             <ul class="nav-list">
 
 
 
+                                <li class="nav-list-item active">
+                                    <a href="#profile" class="nav-list-action"  class="menu-categories-item-action">
+                                        Hồ sơ
+                                    </a>
+
+                                </li>
+
                                 <li class="nav-list-item">
-                                    <a class="nav-list-action" href="<c:url value="/MainController?btnAction=product&productAction=showByCateID&categoryID=${categoryItem.categoryID}"></c:url>" class="menu-categories-item-action">
-                                            Hồ sơ
-                                        </a>
-
-                                    </li>
-
-                                </ul>
-                            </div>
+                                    <a href="#address"class="nav-list-action" class="menu-categories-item-action">
+                                        Địa chỉ
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
-                        <!-- right:detail-block -->
-                        <div class="user-detail-container">
-                            <div class="user-detail">
-                                <div class="nav-user-detail">
-                                    <h3 class="user-detail-title">Hồ sơ của tui</h3>
+                    </div>
+                    <!-- right:detail-block -->
+                    <div class="user-detail-container">
+                        <div class="user-detail active" id="profile">
+                            <div class="nav-user-detail">
+                                <h3 class="user-detail-title">Hồ sơ của tôi</h3>
 
-                                </div>
-                                <div class="modals">
-                                    <div class="profile-modal">
-                                        <div class="profile">
+                            </div>
+                            <div class="modals">
+                                <div class="profile-modal">
+                                    <div class="profile">
 
-                                            <div class="profile-items">
-                                                <div class="profile-item">
-                                                    <label>Email Đăng Nhập</label>
-                                                </div>
-                                                <div class="profile-item">
+                                        <div class="profile-items">
+                                            <div class="profile-item">
+                                                <label>Email Đăng Nhập</label>
+                                            </div>
+                                            <div class="profile-item">
                                                 ${sessionScope.user.email}
                                             </div>
 
@@ -109,22 +117,203 @@
                                 <!--  -->
                             </div>
                         </div>
+
+                        <div class="user-detail" id="address">
+                            <div class="nav-user-detail">
+                                <h3 class="user-detail-title">Địa chỉ</h3>
+
+                            </div>
+                            <div class="address-modal">
+                                <form>
+                                    <div class="address-modal-item">
+                                        <span class="label">Tỉnh/Thành phố:</span>
+                                        <select  id="city" onchange="handleOnChangeCity(this.value)">
+                                            <!--<option  value="one">Chọn Tỉnh/Thành phố</option>-->
+                                        </select>
+                                    </div>
+                                    <div class="address-modal-item">
+                                        <span class="label">Quận/Huyện:</span>
+                                        <select id="district" onchange="handleOnChangeDistrict(this.value)">
+                                            <!--<option value="one">Chọn Quận/Huyện</option>-->
+
+                                        </select>
+                                    </div>
+                                    <div class="address-modal-item">
+                                        <span class="label">Phường/Xã:</span>
+                                        <select id="ward">
+                                            <!--<option value="one">Chọn Phường/Xã</option>-->
+                                        </select>
+                                    </div>
+                                    <div class="address-modal-item">
+                                        <span class="label">Địa chỉ:</span>
+                                        <textarea placeholder="Nhập địa chỉ" rows="5"></textarea>
+                                    </div>
+                                    <button type="button" id="submit">Lưu</button>
+                                </form>
+                            </div>
+                        </div>
+
                     </div>
 
                 </div>
-
             </div>
-        </div>
-
+        
     </body>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script><!-- jQuery base library needed -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script> 
     <script src="<c:url value="/assets/Javascript/handleImageInUserDetail.js" />"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script>
-                                                const fileInput = document.querySelector("#input-avatar");
-                                                console.log(document.querySelector("#my-image"))
-                                                document.querySelector("#my-image").addEventListener("click", () => fileInput.click());
+//                                            var $disabledResults = $(".js-example-disabled-results");
+//                                            $disabledResults.select2();
+//                                            $('#city').select2({})
+                                            $("#ward").select2();
+                                            $("#district").select2();
+                                            $("#city").select2();
 
 
+
+//                                console.log("click")
+
+
+                                            function handleOnChangeCity(value, districtID) {
+
+                                                fetch("MainController?btnAction=address&addressAction=district&cityID=" + value, {
+                                                    method: 'GET'
+                                                })
+                                                        .then(res => res.json())
+                                                        .then(data => {
+                                                            let htmls = data.map(district => {
+                                                                return`<option value="\${district.districtID}">\${district.name}</option>`
+                                                            })
+                                                            document.querySelector("#district").innerHTML = htmls.join('')
+                                                            if (districtID) {
+                                                                $('#district').val(districtID)
+                                                            }
+
+                                                        })
+                                                document.querySelector("#ward").innerHTML = ""
+
+                                            }
+
+
+
+                                            function handleOnChangeDistrict(value, wardID) {
+                                                console.log(value)
+                                                fetch("MainController?btnAction=address&addressAction=ward&districtID=" + value, {
+                                                    method: 'GET'
+                                                })
+                                                        .then(res => res.json())
+                                                        .then(data => {
+                                                            console.log(data)
+                                                            let htmls = data.map(ward => {
+                                                                return`<option value="\${ward.wardID}">\${ward.name}</option>`
+                                                            })
+
+                                                            document.querySelector("#ward").innerHTML = htmls.join('')
+                                                            if (wardID) {
+                                                                $('#ward').val(wardID);
+                                                            }
+
+                                                        })
+                                            }
+
+                                            const fileInput = document.querySelector("#input-avatar");
+                                            console.log(document.querySelector("#my-image"))
+                                            document.querySelector("#my-image").addEventListener("click", () => fileInput.click());
+
+
+                                            window.onload = function () {
+                                                console.log("load")
+                                                if (${sessionScope.user.wardID != 0}) {
+
+
+                                                    fetch("MainController?btnAction=address&addressAction=getWard&wardID=" + ${sessionScope.user.wardID}, {
+                                                        method: 'GET'
+                                                    })
+                                                            .then(res => res.json())
+                                                            .then(ward => {
+                                                                console.log(ward)
+                                                                console.log(ward.districtID, ward.wardID)
+                                                                handleOnChangeDistrict(ward.districtID, ward.wardID)
+
+                                                                return new Promise(function (res) {
+
+                                                                    return res(
+                                                                            fetch("MainController?btnAction=address&addressAction=getDistrict&districtID=" + ward.districtID, {
+                                                                                method: 'GET'
+                                                                            }))
+                                                                })
+                                                            })
+                                                            .then(data =>
+//                                                                
+                                                                data.json()
+                                                            )
+                                                            .then(district =>
+                                                            {
+                                                                console.log(district)
+                                                                console.log(district.cityID, district.districtID)
+                                                                handleOnChangeCity(district.cityID, district.districtID)
+
+                                                                return new Promise(function (res) {
+
+                                                                    return res(
+                                                                            fetch("MainController?btnAction=address&addressAction=getCity&cityID=" + district.cityID, {
+                                                                                method: 'GET'
+                                                                            }))
+                                                                })
+                                                            }
+                                                            )
+                                                            .then(res => res.json())
+                                                            .then(city => {
+                                                                document.querySelector("#city").innerHTML = "<option value='\${city.cityID}'>" + city.name + "</option>"
+                                                                showCity(city.cityID)
+                                                            })
+                                                } else {
+                                                    showCity()
+
+                                                }
+
+
+                                            }
+                                            function showCity(cityID) {
+                                                fetch("MainController?btnAction=address&addressAction=city", {
+                                                    method: 'GET'
+                                                }).then(res => res.json())
+                                                        .then(data => {
+                                                            console.log(data)
+                                                            $('#city').on("select2:open", function (e) {
+                                                                let htmls = data.map(city => {
+                                                                    return `<option value="\${city.cityID}">\${city.name}</option>`
+                                                                })
+                                                                document.querySelector("#city").innerHTML = htmls.join('')
+
+
+                                                            })
+                                                            if (!cityID) {
+                                                                cityID = {}
+                                                                document.querySelector("#city").innerHTML = "<option>Chọn thành phố</option>"
+                                                            } else {
+                                                                $('city').val(cityID).trigger('change');
+                                                            }
+
+
+                                                        });
+                                            }
+                                            const navListItems = document.querySelectorAll(".nav-list-item")
+                                            const userDetails = document.querySelectorAll(".user-detail")
+                                            navListItems.forEach((item, index) => {
+                                                item.addEventListener('click', function () {
+                                                    navListItems.forEach((_item, _index) => {
+                                                        _item.classList.remove("active")
+                                                        userDetails[_index].classList.remove("active")
+                                                    })
+                                                    item.classList.add("active")
+                                                    userDetails[index].classList.add("active")
+                                                })
+                                            })
     </script>
 
 
@@ -146,17 +335,14 @@
             messagingSenderId: "703858060708",
             appId: "1:703858060708:web:ad4795d735b1fd6882a531"
         };
-
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const storage = getStorage();
         const listRef = ref(storage, 'userID-${sessionScope.user.userID}/avatar');
         console.log(listRef);
-
         document.querySelector('#submit').addEventListener('click', function () {
 
             const avatar = document.querySelector('#input-avatar').files[0];
-
             listAll(listRef)
                     .then((res) => {
                         res.items.forEach((itemRef) => {
@@ -169,7 +355,6 @@
                     }).catch((error) => {
                 // Uh-oh, an error occurred!
             });
-
 //        // Create a child reference
             const imageRef = ref(storage, avatar.name);
             const storageRef = ref(storage, 'userID-${sessionScope.user.userID}/avatar/' + avatar.name);
