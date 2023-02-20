@@ -146,9 +146,9 @@
                                     </div>
                                     <div class="address-modal-item">
                                         <span class="label">Địa chỉ:</span>
-                                        <textarea placeholder="Nhập địa chỉ" rows="5"></textarea>
+                                        <textarea class="address" placeholder="Nhập địa chỉ" rows="5">${sessionScope.user.address}</textarea>
                                     </div>
-                                    <button type="button" id="submit">Lưu</button>
+                                    <button type="button" id="submitAddress">Lưu</button>
                                 </form>
                             </div>
                         </div>
@@ -157,7 +157,7 @@
 
                 </div>
             </div>
-        
+
     </body>
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
@@ -169,6 +169,29 @@
 //                                            var $disabledResults = $(".js-example-disabled-results");
 //                                            $disabledResults.select2();
 //                                            $('#city').select2({})
+
+                                            document.querySelector("#submitAddress").addEventListener("click", function () {
+                                                let addressDetail = document.querySelector(".address").value
+                                                let wardID = document.querySelector("#ward").value
+                                                let xml = new XMLHttpRequest();
+                                                xml.open('GET', "MainController?btnAction=address&addressAction=update&wardID=" + wardID + "&address=" + addressDetail, true)
+                                                xml.onreadystatechange = function () {
+                                                    if (this.readyState == 4) {
+                                                        if (this.status < 300) {
+
+                                                            return swal("Cập nhật thành công!", "", "success");
+                                                        } else {
+                                                            return  swal("Cập nhật không thành công!", "", "danger");
+                                                        }
+                                                    }
+
+                                                }
+                                                //yêu cầu gửi đi
+                                                xml.send();
+
+                                            })
+
+
                                             $("#ward").select2();
                                             $("#district").select2();
                                             $("#city").select2();
@@ -289,15 +312,18 @@
                                                                     return `<option value="\${city.cityID}">\${city.name}</option>`
                                                                 })
                                                                 document.querySelector("#city").innerHTML = htmls.join('')
-
-
+//                                                                $('#city').val(cityID)
+                                                                if (!cityID) {
+                                                                    cityID = {}
+                                                                    document.querySelector("#city").innerHTML = "<option>Chọn thành phố</option>"
+                                                                } else {
+                                                                    $('#city').val(cityID).trigger('change')
+                                                                    
+                                                                }
                                                             })
-                                                            if (!cityID) {
-                                                                cityID = {}
-                                                                document.querySelector("#city").innerHTML = "<option>Chọn thành phố</option>"
-                                                            } else {
-                                                                $('city').val(cityID).trigger('change');
-                                                            }
+
+//
+
 
 
                                                         });
@@ -341,68 +367,99 @@
         const listRef = ref(storage, 'userID-${sessionScope.user.userID}/avatar');
         console.log(listRef);
         document.querySelector('#submit').addEventListener('click', function () {
-
+            var http = new XMLHttpRequest();
             const avatar = document.querySelector('#input-avatar').files[0];
-            listAll(listRef)
-                    .then((res) => {
-                        res.items.forEach((itemRef) => {
-                            // All the items under listRef.
-                            deleteObject(itemRef)
-                                    .then(() => {
-                                        console.log('deleted')
-                                    })
-                        });
-                    }).catch((error) => {
-                // Uh-oh, an error occurred!
-            });
+            console.log("avatar")
+            console.log(avatar)
+            if (avatar != undefined) {
+                listAll(listRef)
+                        .then((res) => {
+                            res.items.forEach((itemRef) => {
+                                // All the items under listRef.
+                                deleteObject(itemRef)
+                                        .then(() => {
+                                            console.log('deleted')
+                                        })
+                            });
+                        })
+                const storageRef = ref(storage, 'userID-${sessionScope.user.userID}/avatar/' + avatar.name);
+                uploadBytes(storageRef, avatar)
+
+                        .then((snapshot) => {
+                            console.log(snapshot)
+                            console.log('Uploaded');
+                            return snapshot
+                        })
+                        .then(snapshot => {
+                            return getDownloadURL(snapshot.ref)
+                        })
+                        .then(url => {
+                            console.log(url)
+
+                            // Yêu cầu GET vs API, cbi yêu cầu để kết nối
+                            http.open('GET', 'MainController?btnAction=user&userAction=updateProfile&urlAvatar=' + url
+                                    + '&email=' + '${sessionScope.user.email}'
+                                    + '&phone=' + document.querySelector('#phone').value
+                                    + '&username=' + document.querySelector('#username').value
+//                                + '&token=' + getParameterByName('token', url)
+                                    , true)//true: bất đồng bộ( call api delay vài giây thì các code dưới vẫn chạy bt)
+
+                            http.onreadystatechange = function () {
+                                //trường hợp đã gửi req thành công và nhận dc response
+                                //và status < 300: không lỗi thì cho resolve để .then
+                                //trả về resolve or reject tùy vào if else dưới
+                                //
+                                if (this.readyState == 4) {
+                                    if (this.status < 300) {
+
+                                        return swal("Updated succesfully!", "", "success");
+                                    } else {
+                                        return  swal("Updated unsuccesfully!", "", "danger");
+                                    }
+                                }
+
+                            }
+                            //yêu cầu gửi đi
+                            http.send();
+                            return url
+                        })
+                        .then(url => {
+                            document.querySelector('#my-avatar-header').style.backgroundImage = "url('" + url + "')";
+                        })
+            } else {
+                let url = document.querySelector('#my-image').style.backgroundImage.slice(5, -2)
+                http.open('GET', 'MainController?btnAction=user&userAction=updateProfile&urlAvatar=' + url
+                        + '&email=' + '${sessionScope.user.email}'
+                        + '&phone=' + document.querySelector('#phone').value
+                        + '&username=' + document.querySelector('#username').value
+//                                + '&token=' + getParameterByName('token', url)
+                        , true)//true: bất đồng bộ( call api delay vài giây thì các code dưới vẫn chạy bt)
+
+                http.onreadystatechange = function () {
+                    //trường hợp đã gửi req thành công và nhận dc response
+                    //và status < 300: không lỗi thì cho resolve để .then
+                    //trả về resolve or reject tùy vào if else dưới
+                    //
+                    if (this.readyState == 4) {
+                        if (this.status < 300) {
+
+                            return swal("Updated succesfully!", "", "success");
+                        } else {
+                            return  swal("Updated unsuccesfully!", "", "danger");
+                        }
+                    }
+
+                }
+                //yêu cầu gửi đi
+                http.send();
+            }
+
 //        // Create a child reference
-            const imageRef = ref(storage, avatar.name);
-            const storageRef = ref(storage, 'userID-${sessionScope.user.userID}/avatar/' + avatar.name);
+//            const imageRef = ref(storage, avatar.name);
+
 //                                                    const desertRef = ref(storage, 'userID-${sessionScope.user.userID}/avatar');
 
-            uploadBytes(storageRef, avatar)
-                    .then((snapshot) => {
-                        console.log(snapshot)
-                        console.log('Uploaded');
-                        return snapshot
-                    })
-                    .then(snapshot => {
-                        return getDownloadURL(snapshot.ref)
-                    })
-                    .then(url => {
-                        console.log(url)
 
-                        var http = new XMLHttpRequest();
-                        // Yêu cầu GET vs API, cbi yêu cầu để kết nối
-                        http.open('GET', 'MainController?btnAction=user&userAction=updateProfile&urlAvatar=' + url
-                                + '&email=' + '${sessionScope.user.email}'
-                                + '&phone=' + document.querySelector('#phone').value
-                                + '&username=' + document.querySelector('#username').value
-//                                + '&token=' + getParameterByName('token', url)
-                                , true)//true: bất đồng bộ( call api delay vài giây thì các code dưới vẫn chạy bt)
-
-                        http.onreadystatechange = function () {
-                            //trường hợp đã gửi req thành công và nhận dc response
-                            //và status < 300: không lỗi thì cho resolve để .then
-                            //trả về resolve or reject tùy vào if else dưới
-                            //
-                            if (this.readyState == 4) {
-                                if (this.status < 300) {
-
-                                    return swal("Updated succesfully!", "", "success");
-                                } else {
-                                    return  swal("Updated unsuccesfully!", "", "danger");
-                                }
-                            }
-
-                        }
-                        //yêu cầu gửi đi
-                        http.send();
-                        return url
-                    })
-                    .then(url => {
-                        document.querySelector('#my-avatar-header').style.backgroundImage = "url('" + url + "')";
-                    })
 
         })
 

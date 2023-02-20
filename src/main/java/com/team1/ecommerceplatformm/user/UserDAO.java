@@ -93,6 +93,15 @@ public class UserDAO extends AbstractDAO<UserDTO> {
         stm.executeUpdate();
         stm.close();
     }
+    public void updateWardAndAddress(String email, int wardID, String address) throws SQLException {
+        PreparedStatement stm = conn.prepareStatement("update [User]\n"
+                + "  set ward_id = ?,address=? where email = ?");
+        stm.setInt(1, wardID);
+        stm.setString(2, address);
+        stm.setString(3, email);
+        stm.executeUpdate();
+        stm.close();
+    }
     public static void main(String[] args) throws SQLException {
         UserDAO udao = new UserDAO();
         try {

@@ -78,7 +78,10 @@
                     </div>
                     <!-- right:detail-block -->
                     <div class="product-detail-container">
-                        <h3 style="padding: 16px">Kết quả tìm kiếm cho `${param.searchValue}`</h3>
+                        <c:if test="${ not empty param.searchValue}">
+                            <h3 style="padding: 16px">Kết quả tìm kiếm cho `${param.searchValue}`</h3>
+                        </c:if>
+
                         <div class="product-detail-by-category">
                             <div class="nav-product-detail">
                                 <h3 class="product-category-title">

@@ -75,7 +75,7 @@
                     <div class="product-detail-container">
 
                         <!-- left: right-detail-block/images -->
-
+                        ${productDetail.categoryID}
                         <div class="product-view-images">
                             <div class="product-view-image">
                                 <div class="product-view-image-main">
@@ -148,6 +148,7 @@
                                 <div class="product-view-price">
                                     <span class="price price-after-discount">${productDetail.price}</span>
                                     <!--<span class="price price-without-discount">400000vnd</span>-->
+                                    <script>document.querySelector(".price-after-discount").innerHTML = formatter.format(${productDetail.price})</script>
                                 </div>
                                 <!-- end product-price -->
 
@@ -276,317 +277,10 @@
                     </div>
 
                     <div class="swiper mySwiper2 related-product-list">
-                        <div class="swiper-wrapper">
-                            <div class="swiper-slide slide-product">
-                                <div class="slide-product-block">
-                                    <div class="slide-product-content">
-                                        <div class="top-block">
-                                            <a href="" class="slide-product-content-image">
-                                                <img src="assets/images/item-content.jpg" alt="">
-                                            </a>
+                        <div class="swiper-wrapper list-recom">
 
-                                        </div>
-                                        <div class="bottom-block">
-                                            <h4 class="card-title">
-                                                <a href="#">ABVBDU</a>
-                                            </h4>
-                                            <div class="ratings">
-                                                <div class="product-rating">
-                                                    <span class="rating-small">
-                                                        <span class="icon"><i
-                                                                class="fa-solid fa-star rating-star-full"></i></span>
-                                                        <span class="icon"><i
-                                                                class="fa-solid fa-star rating-star-full"></i></span>
-                                                        <span class="icon"><i
-                                                                class="fa-solid fa-star rating-star-full"></i></span>
-                                                        <span class="icon"><i
-                                                                class="fa-solid fa-star rating-star-full"></i></span>
-                                                        <span class="icon"><i class="fa-regular fa-star"></i></span>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="price-block">
-                                                <span class="price price-after-discount">300000vnd</span>
-                                                <span class="price price-without-discount">500000vnd</span>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                             <!--  -->
-                            <div class="swiper-slide slide-product">
-                                <div class="slide-product-block">
-                                    <div class="slide-product-content">
-                                        <div class="top-block">
-                                            <a href="#" class="slide-product-content-image">
-                                                <img src="assets/images/item-content.jpg" alt="">
-                                            </a>
 
-                                        </div>
-                                        <div class="bottom-block">
-                                            <h4 class="card-title">
-                                                <a href="#">ABVBDU</a>
-                                            </h4>
-                                            <div class="ratings">
-                                                <div class="product-rating">
-                                                    <span class="rating-small">
-                                                        <span class="icon"><i
-                                                                class="fa-solid fa-star rating-star-full"></i></span>
-                                                        <span class="icon"><i
-                                                                class="fa-solid fa-star rating-star-full"></i></span>
-                                                        <span class="icon"><i
-                                                                class="fa-solid fa-star rating-star-full"></i></span>
-                                                        <span class="icon"><i
-                                                                class="fa-solid fa-star rating-star-full"></i></span>
-                                                        <span class="icon"><i
-                                                                class="fa-solid fa-star rating-star-full"></i></span>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="price-block">
-                                                <span class="price price-after-discount">300000vnd</span>
-                                                <span class="price price-without-discount">500000vnd</span>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--  -->
-                            <div class="swiper-slide slide-product">
-                                <div class="slide-product-block">
-                                    <div class="slide-product-content">
-                                        <div class="top-block">
-                                            <a href="#" class="slide-product-content-image">
-                                                <img src="assets/images/item-content.jpg" alt="">
-                                            </a>
-
-                                        </div>
-                                        <div class="bottom-block">
-                                            <h4 class="card-title">
-                                                <a href="#">ABVBDU</a>
-                                            </h4>
-                                            <div class="ratings">
-                                                <div class="product-rating">
-                                                    <span class="rating-small">
-                                                        <span class="icon"><i
-                                                                class="fa-solid fa-star rating-star-full"></i></span>
-                                                        <span class="icon"><i
-                                                                class="fa-solid fa-star rating-star-full"></i></span>
-                                                        <span class="icon"><i
-                                                                class="fa-solid fa-star rating-star-full"></i></span>
-                                                        <span class="icon"><i
-                                                                class="fa-solid fa-star rating-star-full"></i></span>
-                                                        <span class="icon"><i
-                                                                class="fa-solid fa-star rating-star-full"></i></span>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="price-block">
-                                                <span class="price price-after-discount">300000vnd</span>
-                                                <span class="price price-without-discount">500000vnd</span>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--  -->
-                            <div class="swiper-slide slide-product">
-                                <div class="slide-product-block">
-                                    <div class="slide-product-content">
-                                        <div class="top-block">
-                                            <a href="#" class="slide-product-content-image">
-                                                <img src="assets/images/item-content.jpg" alt="">
-                                            </a>
-
-                                        </div>
-                                        <div class="bottom-block">
-                                            <h4 class="card-title">
-                                                <a href="#">ABVBDU</a>
-                                            </h4>
-                                            <div class="ratings">
-                                                <div class="product-rating">
-                                                    <span class="rating-small">
-                                                        <span class="icon"><i
-                                                                class="fa-solid fa-star rating-star-full"></i></span>
-                                                        <span class="icon"><i
-                                                                class="fa-solid fa-star rating-star-full"></i></span>
-                                                        <span class="icon"><i
-                                                                class="fa-solid fa-star rating-star-full"></i></span>
-                                                        <span class="icon"><i
-                                                                class="fa-solid fa-star rating-star-full"></i></span>
-                                                        <span class="icon"><i
-                                                                class="fa-solid fa-star rating-star-full"></i></span>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="price-block">
-                                                <span class="price price-after-discount">300000vnd</span>
-                                                <span class="price price-without-discount">500000vnd</span>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--  -->
-                            <div class="swiper-slide slide-product">
-                                <div class="slide-product-block">
-                                    <div class="slide-product-content">
-                                        <div class="top-block">
-                                            <a href="#" class="slide-product-content-image">
-                                                <img src="assets/images/item-content.jpg" alt="">
-                                            </a>
-
-                                        </div>
-                                        <div class="bottom-block">
-                                            <h4 class="card-title">
-                                                <a href="#">ABVBDU</a>
-                                            </h4>
-                                            <div class="ratings">
-                                                <div class="product-rating">
-                                                    <span class="rating-small">
-                                                        <span class="icon"><i
-                                                                class="fa-solid fa-star rating-star-full"></i></span>
-                                                        <span class="icon"><i
-                                                                class="fa-solid fa-star rating-star-full"></i></span>
-                                                        <span class="icon"><i
-                                                                class="fa-solid fa-star rating-star-full"></i></span>
-                                                        <span class="icon"><i
-                                                                class="fa-solid fa-star rating-star-full"></i></span>
-                                                        <span class="icon"><i
-                                                                class="fa-solid fa-star rating-star-full"></i></span>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="price-block">
-                                                <span class="price price-after-discount">300000vnd</span>
-                                                <span class="price price-without-discount">500000vnd</span>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--  -->
-                            <div class="swiper-slide slide-product">
-                                <div class="slide-product-block">
-                                    <div class="slide-product-content">
-                                        <div class="top-block">
-                                            <a href="#" class="slide-product-content-image">
-                                                <img src="assets/images/item-content.jpg" alt="">
-                                            </a>
-
-                                        </div>
-                                        <div class="bottom-block">
-                                            <h4 class="card-title">
-                                                <a href="#">ABVBDU</a>
-                                            </h4>
-                                            <div class="ratings">
-                                                <div class="product-rating">
-                                                    <span class="rating-small">
-                                                        <span class="icon"><i
-                                                                class="fa-solid fa-star rating-star-full"></i></span>
-                                                        <span class="icon"><i
-                                                                class="fa-solid fa-star rating-star-full"></i></span>
-                                                        <span class="icon"><i
-                                                                class="fa-solid fa-star rating-star-full"></i></span>
-                                                        <span class="icon"><i
-                                                                class="fa-solid fa-star rating-star-full"></i></span>
-                                                        <span class="icon"><i
-                                                                class="fa-solid fa-star rating-star-full"></i></span>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="price-block">
-                                                <span class="price price-after-discount">300000vnd</span>
-                                                <span class="price price-without-discount">500000vnd</span>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--  -->
-                            <div class="swiper-slide slide-product">
-                                <div class="slide-product-block">
-                                    <div class="slide-product-content">
-                                        <div class="top-block">
-                                            <a href="#" class="slide-product-content-image">
-                                                <img src="assets/images/item-content.jpg" alt="">
-                                            </a>
-
-                                        </div>
-                                        <div class="bottom-block">
-                                            <h4 class="card-title">
-                                                <a href="#">ABVBDU</a>
-                                            </h4>
-                                            <div class="ratings">
-                                                <div class="product-rating">
-                                                    <span class="rating-small">
-                                                        <span class="icon"><i
-                                                                class="fa-solid fa-star rating-star-full"></i></span>
-                                                        <span class="icon"><i
-                                                                class="fa-solid fa-star rating-star-full"></i></span>
-                                                        <span class="icon"><i
-                                                                class="fa-solid fa-star rating-star-full"></i></span>
-                                                        <span class="icon"><i
-                                                                class="fa-solid fa-star rating-star-full"></i></span>
-                                                        <span class="icon"><i
-                                                                class="fa-solid fa-star rating-star-full"></i></span>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="price-block">
-                                                <span class="price price-after-discount">300000vnd</span>
-                                                <span class="price price-without-discount">500000vnd</span>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--  -->
-                            <div class="swiper-slide slide-product">
-                                <div class="slide-product-block">
-                                    <div class="slide-product-content">
-                                        <div class="top-block">
-                                            <a href="#" class="slide-product-content-image">
-                                                <img src="assets/images/item-content.jpg" alt="">
-                                            </a>
-
-                                        </div>
-                                        <div class="bottom-block">
-                                            <h4 class="card-title">
-                                                <a href="#">ABVBDU</a>
-                                            </h4>
-                                            <div class="ratings">
-                                                <div class="product-rating">
-                                                    <span class="rating-small">
-                                                        <span class="icon"><i
-                                                                class="fa-solid fa-star rating-star-full"></i></span>
-                                                        <span class="icon"><i
-                                                                class="fa-solid fa-star rating-star-full"></i></span>
-                                                        <span class="icon"><i
-                                                                class="fa-solid fa-star rating-star-full"></i></span>
-                                                        <span class="icon"><i
-                                                                class="fa-solid fa-star rating-star-full"></i></span>
-                                                        <span class="icon"><i
-                                                                class="fa-solid fa-star rating-star-full"></i></span>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="price-block">
-                                                <span class="price price-after-discount">300000vnd</span>
-                                                <span class="price price-without-discount">500000vnd</span>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
 
                     </div>
@@ -664,10 +358,15 @@
                 let productID = document.querySelector("#productID").value;
                 let srcImg = document.querySelector("#image").src;
                 let price = document.querySelector(".price-after-discount").innerHTML;
+
                 let shopID = document.querySelector("#shopID").value;
                 let productName = document.querySelector(".product-view-title").innerHTML;
 //                let productName = document.querySelector()
                 console.log(shopID)
+                if (${empty sessionScope.user}) {
+                    swal("", "Vui lòng đăng nhập để có thể thêm vào giỏ hàng", "warning");
+                    return
+                }
                 let arr = []
 //                
                 let cart = JSON.parse(window.localStorage.getItem('cart'));
@@ -698,5 +397,54 @@
                 }
                 swal("", "Thêm vào giỏ hàng thành công!", "success");
             })
+
+            fetch("MainController?btnAction=product&productAction=showSameCategoryProduct&categoryID=" + ${productDetail.categoryID}, {
+                method: 'GET'
+            })
+                    .then(res => res.json())
+                    .then(products => {
+                        console.log(products)
+                        let htmls = products.map(product => {
+                            return `<div class="swiper-slide slide-product">
+                                <div class="slide-product-block">
+                                    <div class="slide-product-content">
+                                        <div class="top-block">
+                                            <a href="<c:url value="MainController?btnAction=product&productAction=showDetail&productID=\${product.productID}"></c:url>" class="slide-product-content-image">
+                                                <img src="\${product.mainImg}" alt="">
+                                            </a>
+
+                                        </div>
+                                        <div class="bottom-block">
+                                            <h4 class="card-title">
+                                                <a href="<c:url value="MainController?btnAction=product&productAction=showDetail&productID=\${product.productID}"></c:url>">\${product.name}</a>
+                                            </h4>
+                                            <div class="ratings">
+                                                <div class="product-rating">
+                                                    <span class="rating-small">
+                                                        <span class="icon"><i
+                                                                class="fa-solid fa-star rating-star-full"></i></span>
+                                                        <span class="icon"><i
+                                                                class="fa-solid fa-star rating-star-full"></i></span>
+                                                        <span class="icon"><i
+                                                                class="fa-solid fa-star rating-star-full"></i></span>
+                                                        <span class="icon"><i
+                                                                class="fa-solid fa-star rating-star-full"></i></span>
+                                                        <span class="icon"><i class="fa-regular fa-star"></i></span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="price-block">
+                                                <span class="price price-after-discount">\${formatter.format(product.price)}</span>
+                                         
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`
+                        })
+                        document.querySelector(".list-recom").innerHTML = htmls.join("")
+//                        document.querySelectorAll(".price")
+                    })
     </script>
 </html>

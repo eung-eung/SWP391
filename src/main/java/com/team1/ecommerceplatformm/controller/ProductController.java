@@ -85,6 +85,13 @@ public class ProductController extends HttpServlet {
                     response.getWriter().println(gson.toJson(pro.getQuanity()));
                     break;
                 }
+                case "showSameCategoryProduct": {
+                    int categoryId = Integer.parseInt(request.getParameter("categoryID"));
+                    ArrayList<ProductDTO> list20 = productDao.getTOP20BestSellingProductsByCategoryID(categoryId);
+                    response.getWriter().println(gson.toJson(list20));
+                    break;
+                    
+                }
             }
 
         } catch (Exception ex) {

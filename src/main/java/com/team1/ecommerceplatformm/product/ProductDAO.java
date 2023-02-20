@@ -203,14 +203,14 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
         return list;
     }
 
-    public ArrayList<ProductDTO> getTOP20BestSellingProductsByCategoryID(int CategoryID) throws SQLException {
+    public ArrayList<ProductDTO> getTOP20BestSellingProductsByCategoryID(int categoryID) throws SQLException {
         PreparedStatement stm = conn.prepareStatement("SELECT TOP (20) [product_id]\n"
                 + "      ,[category_id]\n"
                 + "      ,[price]\n"
                 + "      ,[name]\n"
                 + "  FROM [EcommmercePlatform].[dbo].[Product] WHERE category_id = ?"
         );
-        stm.setInt(1, CategoryID);
+        stm.setInt(1, categoryID);
         ResultSet rs = stm.executeQuery();
         ArrayList<ProductDTO> list = new ArrayList<>();
         ImageProductDAO imageProductDAO = new ImageProductDAO();

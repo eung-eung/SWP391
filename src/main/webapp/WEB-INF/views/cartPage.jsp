@@ -49,7 +49,7 @@
 
             </div>
 
-
+            
 
             <div class="cart-totals-container">
                 <ul class="cart-totals">
@@ -57,8 +57,8 @@
                         <div class="cart-total-label">
                             <strong>Địa chỉ giao hàng:</strong>
                         </div>
-                        <div class="cart-total-value">
-                            <a href="#">Thêm địa chỉ:</a>
+                        <div class="cart-total-value cart-address">
+                            <a href="<c:url value="/MainController?btnAction=user&userAction=profile#profile" />">Thêm địa chỉ:</a>
                         </div>
                     </li>
                     <li class="cart-total">
@@ -115,7 +115,7 @@
                             </h4>
                         </td>
                         <td class="cart-item cart-item-price">
-                            <span class="cart-item-price-value">\${formatter.format(parseInt(item.price.trim().replace(".0","")))}</span>
+                            <span class="cart-item-price-value">\${item.price}</span>
                         </td>
                        <input type="hidden" class="productID" value="\${item.productID}"/>
                         <td class="cart-item cart-item-quantity">
@@ -132,7 +132,7 @@
                             </div>
                         </td>
                         <td class="cart-item cart-item-total">
-                            <span class="cart-item-total">\${formatter.format(item.price * item.quantity)}</span>
+                            <span class="cart-item-total">\${formatter.format(parseInt(item.price.replaceAll(".","")) * item.quantity)}</span>
                             <div class="close" onclick="deleteAnItem(this,\${item.productID},\${data.shopID})">
                                 <span class="modal-close-button fa-solid fa-x">
                                 </span>
@@ -258,8 +258,23 @@
                 title: "Xóa sản phẩm",
                 text: "Bạn có muốn xóa?",
                 icon: "warning",
-                buttons: true,
                 dangerMode: true,
+                buttons: {
+                    cancel: {
+                        text: "Hủy",
+                        value: null,
+                        visible: true,
+                        className: "",
+                        closeModal: true,
+                    },
+                    confirm: {
+                        text: "Xác nhận",
+                        value: true,
+                        visible: true,
+                        className: "",
+                        closeModal: true
+                    }
+                }
             })
                     .then((willDelete) => {
 
@@ -272,8 +287,10 @@
                                 deleleButton.parentNode.parentNode.parentNode.previousElementSibling.remove()
 
                             }
+
                             deleleButton.parentNode.parentNode.remove()
                             window.localStorage.setItem('cart', JSON.stringify(cart))
+                            calculateTotal()
                             swal("Đã xóa", {
                                 icon: "success",
                             });
@@ -289,9 +306,10 @@
         }
         function handleTotalItem(btn, quantity) {
 //            const f = Intl.
-            let currentPrice = btn.parentNode.parentNode.parentNode.parentNode.childNodes[5].innerText
+            let currentPrice = btn.parentNode.parentNode.parentNode.parentNode.childNodes[5].childNodes[1].innerHTML
+
             let totalPriceEachItemByQuantity = btn.parentNode.parentNode.parentNode.nextElementSibling.childNodes[1]
-            totalPriceEachItemByQuantity.innerText = formatter.format(parseInt(currentPrice.trim().replace(".", "")) * quantity)
+            totalPriceEachItemByQuantity.innerHTML = formatter.format(parseInt(currentPrice.trim().replaceAll(".", "")) * quantity)
 
         }
 //        document.querySelector('.checkout-button').addEventListener('click', function (e) {
@@ -301,17 +319,54 @@
         function calculateTotal() {
 
             let total = cart.reduce(function (total, currentItem) {
-                console.log("item " + currentItem)
+                console.log("item " + formatter.format(1000 + parseInt(currentItem.price.replaceAll(".", "")) * currentItem.quantity))
+
                 console.log("quantity " + currentItem.quantity)
-                return total + (currentItem.price * currentItem.quantity)
+                return total + parseInt(currentItem.price.replaceAll(".", "")) * currentItem.quantity
             }, 0)
 //            console.log(formatter.format(total))
             document.querySelector(".total").innerHTML = `<span>` + formatter.format(total) + `</span>`
+//            console.log("length: " + cart.length)
 
 
         }
-        window.onload = calculateTotal()
-//        })
+        
+        window.onload = function () {
+            calculateTotal()
+            if (${sessionScope.user.wardID} !== 0) {
+                fetch("MainController?btnAction=address&addressAction=getWard&wardID=" + ${sessionScope.user.wardID}, {
+                    method: 'GET'
+                })
+                        .then(res => res.json())
+                        .then(ward => {
+                            document.querySelector(".cart-address").innerHTML = "Phường/Xã: " + ward.name + " - "
+                            return new Promise(function (res) {
+                                return res(fetch("MainController?btnAction=address&addressAction=getDistrict&districtID=" + ward.districtID, {
+                                    method: 'GET'
+                                }))
+                            })
+                                    .then(res => res.json())
+                                    .then(district => {
+                                        document.querySelector(".cart-address").innerHTML += "Quận/Huyện: " + district.name + " - "
+                                        return new Promise(function (res) {
+                                            return res(fetch("MainController?btnAction=address&addressAction=getCity&cityID=" + district.cityID, {
+                                                method: 'GET'
+                                            }))
+                                        })
+                                    })
+                                    .then(res => res.json())
+                                    .then(city => {
+                                        document.querySelector(".cart-address").innerHTML += "Tỉnh/Thành Phố: " + city.name
+                                        document.querySelector(".cart-address").innerHTML += `<a href="<c:url value="/MainController?btnAction=user&userAction=profile#profile" />">Sửa địa chỉ</a>`
+                                    })
+                        }
+
+
+                        )
+            }
+        }
+
+        
     </script>
 
 </html>

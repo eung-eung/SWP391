@@ -41,7 +41,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 
 
 /* CSS */
-button#submit {
+button#submit, #submitAddress {
     background-color: #EA4C89;
     border-radius: 8px;
     border-style: none;

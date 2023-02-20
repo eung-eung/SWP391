@@ -207,3 +207,6 @@ tr {
 .cart{
     width: 100%;
 }
+.cart-item-total{
+    width: 20%;
+}
