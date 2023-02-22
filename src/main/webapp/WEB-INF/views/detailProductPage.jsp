@@ -365,7 +365,8 @@
                 console.log(shopID)
                 if (${empty sessionScope.user}) {
                     swal("", "Vui lòng đăng nhập để có thể thêm vào giỏ hàng", "warning");
-                    return
+//                    return
+
                 }
                 let arr = []
 //                

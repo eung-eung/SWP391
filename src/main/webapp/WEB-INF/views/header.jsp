@@ -183,10 +183,7 @@
                                 <div style="    grid-column: 3/4;
                                      justify-self: center;">
                                     <div class="header-bottom-cart">
-                                        <a href="<c:url value="MainController?btnAction=cart&cartAction=view" />" class="cart-button"><i class="fa-solid fa-cart-shopping cart-icon"></i></a>
-
-
-
+                                        <a href="#" class="cart-button"><i class="fa-solid fa-cart-shopping cart-icon"></i></a>
                                     </div>
                                     <div class="header-bottom-admin">
                                         <c:if test="${sessionScope.user.roleID == 4}">
@@ -213,7 +210,20 @@
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script>
+                                                function  stopGoToCart(e) {
 
+                                                    if (${empty sessionScope.user}) {
+                                                        swal("", "Vui lòng đăng nhập", "warning");
+                                                        e.preventDefault();
+                                                    }
+
+
+
+                                                }
+                                                document.querySelector(".header-bottom-cart").addEventListener("click", stopGoToCart)
+                                                if (${not empty sessionScope.user}) {
+                                                    document.querySelector(".cart-button").href = "<c:url value="MainController?btnAction=cart&cartAction=view" />"
+                                                }
                                                 // function to get response
                                                 function loginByGoogle(response) {
                                                     console.log(response)
@@ -231,6 +241,8 @@
                                                     ).then(res => {
                                                         console.log(res)
                                                         const  resUrl = res.avatarUrl;
+                                                        document.querySelector(".header-bottom-cart").removeEventListener("click", stopGoToCart)
+                                                        document.querySelector(".cart-button").href = "<c:url value="MainController?btnAction=cart&cartAction=view" />"
                                                         document.querySelector('.navigation-user-selection').innerHTML =
                                                                 `<li class="navigation-user-item">
                  <span class="email-need-split" data-email="${res.email}"></span>

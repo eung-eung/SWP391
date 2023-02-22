@@ -17,6 +17,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;1,100;1,300&display=swap"
               rel="stylesheet">
         <script src="https://kit.fontawesome.com/330a21053c.js" crossorigin="anonymous"></script>
+        <script src="https://www.paypal.com/sdk/js?client-id=AVPNRTv0apljAkWHaqZyMDTbKipmIQ_HpbKISKwAdC4_IJtCIVck8tSG8M7k6DgiCZEvrctor-faOGWT&currency=USD"></script>
         <link type="text/css" rel="stylesheet" href="<c:url value="/assets/css/homePage.css" />" />
         <link type="text/css" rel="stylesheet" href="<c:url value="/assets/css/cartPage.css" />" />
         <link type="text/css" rel="stylesheet" href="<c:url value="/assets/css/detailProduct.css" />" />
@@ -49,7 +50,7 @@
 
             </div>
 
-            
+
 
             <div class="cart-totals-container">
                 <ul class="cart-totals">
@@ -70,7 +71,8 @@
                 </ul>
             </div>
             <div class="cart-action">
-                <a href="#" class="checkout-button">Thanh Toán</a>
+                <!--<a href="#" class="checkout-button">Thanh Toán</a>-->
+                <div id="paypal-button-container"></div>
             </div>
         </div>
     </body>
@@ -78,10 +80,16 @@
     <script src="<c:url value="/assets/Javascript/handleMenuCategories.js" />"></script>
     <script src="<c:url value="/assets/Javascript/handleDetailProductPage.js" />"></script>
     <script>
+//        let cart = JSON.parse(window.localStorage.getItem('cart'));
+
+    </script>
+
+    <script>
         let cart = JSON.parse(window.localStorage.getItem('cart'));
         let fieldShopID = document.querySelector(".shopID")
         const unique = [...new Set(cart.map(item => item.shopID))];
         let cartList = document.querySelector('.cart')
+        let total = 0;
 //        let cart = JSON.parse(window.localStorage.getItem('cart'));
 
 
@@ -168,7 +176,8 @@
                         }
                         handleTotalItem(btn, btn.value)
                         setQuantityWithDeIncrease(btn.value, productID)
-                        calculateTotal()
+                        total = calculateTotal()
+                        document.querySelector(".total").innerHTML = `<span>` + formatter.format(total) + `</span>`
                     })
 
 //                    calculateTotal()
@@ -249,7 +258,8 @@
 
             })
             window.localStorage.setItem('cart', JSON.stringify(cart))
-            calculateTotal()
+            total = calculateTotal()
+            document.querySelector(".total").innerHTML = `<span>` + formatter.format(total) + `</span>`
         }
 //delete a item from cart
         function deleteAnItem(deleleButton, productID, shopID) {
@@ -325,14 +335,76 @@
                 return total + parseInt(currentItem.price.replaceAll(".", "")) * currentItem.quantity
             }, 0)
 //            console.log(formatter.format(total))
-            document.querySelector(".total").innerHTML = `<span>` + formatter.format(total) + `</span>`
+            return total
 //            console.log("length: " + cart.length)
 
 
         }
-        
+
+        var myHeaders = new Headers();
+        myHeaders.append("apikey", "0glu83Z8MQm554mvJYUFnrcIo8Ih2SBP");
+
+        var requestOptions = {
+            method: 'GET',
+            redirect: 'follow',
+            headers: myHeaders
+        };
+
+        const getTotal = () => {
+
+            return  new Promise(function (res) {
+                return res(calculateTotal())
+            })
+        }
         window.onload = function () {
-            calculateTotal()
+            total = calculateTotal()
+            console.log(total)
+            getTotal()
+                    .then(total => {
+
+                        document.querySelector("#paypal-button-container").innerHTML = `<div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>`
+                        return new Promise(function (res) {
+                            return res(fetch("https://api.apilayer.com/exchangerates_data/convert?to=USD&from=VND&amount=" + total, requestOptions))
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data.result)
+                        return new Promise(function (res) {
+                            return res(data)
+                        })
+
+                    })
+                    .then(rs => {
+                        document.querySelector("#paypal-button-container").innerHTML = ""
+                        console.log(rs.result)
+                        paypal.Buttons({
+                            // Order is created on the server and the order id is returned
+                            createOrder: function (data, actions) {
+                                return actions.order.create(
+                                        {
+                                            purchase_units: [{
+                                                    amount: {
+                                                        value: Math.ceil(rs.result),
+                                                    }
+                                                }]
+                                        })
+                            },
+                            // Finalize the transaction on the server after payer approval
+                            onApprove: function (data, actions) {
+                                return actions.order.capture().then(function (details) {
+                                    swal("Thanh toán thành công", "Cảm ơn bạn!", "success");
+                                })
+                            }
+                        }).render('#paypal-button-container');
+
+
+
+
+                    }
+                    )
+                    .catch(error => console.log('error', error));
+            document.querySelector(".total").innerHTML = `<span>` + formatter.format(total) + `</span>`
             if (${sessionScope.user.wardID} !== 0) {
                 fetch("MainController?btnAction=address&addressAction=getWard&wardID=" + ${sessionScope.user.wardID}, {
                     method: 'GET'
@@ -366,7 +438,11 @@
             }
         }
 
-        
+
+
+
+
+
     </script>
 
 </html>
