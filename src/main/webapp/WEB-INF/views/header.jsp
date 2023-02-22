@@ -147,7 +147,7 @@
 
                                         <c:forEach items="${sessionScope.listCategory}" var="categoryItem">
                                             <li class="menu-categories-item">
-                                                <a href="<c:url value="/MainController?btnAction=product&productAction=showByCateID&categoryID=${categoryItem.categoryID}"></c:url>" class="menu-categories-item-action">
+                                                <a href="<c:url value="/MainController?btnAction=product&productAction=showByCateID&categoryID=${categoryItem.categoryID}&orderBy=popular"></c:url>" class="menu-categories-item-action">
                                                     ${categoryItem.icon}${categoryItem.name}
                                                 </a>
                                             </li>
@@ -174,7 +174,7 @@
                                             <div id="searchAjaxResult"></div>
                                             <div class="search-icon">
                                                 <button type="submit" class="search-button" name="btnAction" value="search"><i
-                                                        class="fa-solid fa-magnifying-glass"></i></button>
+                                                        class="fa-solid fa-magnifying-glass"></i><input type="text" name="orderBy" value="popular" hidden></button>
                                             </div>
 
                                         </div>

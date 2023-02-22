@@ -20,6 +20,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  *
@@ -45,6 +47,7 @@ public class SearchController extends HttpServlet {
         ArrayList<ProductDTO> list = new ArrayList<>();
 
         String searchValue = request.getParameter("searchValue").trim();
+        String sort = request.getParameter("orderBy");
         System.out.println("aaa" + searchValue);
         try {
             list = dao.getAllProductByName(searchValue);
@@ -53,6 +56,17 @@ public class SearchController extends HttpServlet {
             request.setAttribute("listMainImg", listMainImg);
             request.setAttribute("listSearched", list);
             request.setAttribute("searchValue", searchValue);
+            
+
+            switch (sort) {
+                case "asc":
+                    Collections.sort(list, Comparator.comparing(ProductDTO::getPrice));
+                    break;
+                case "desc":
+                    Collections.sort(list, Comparator.comparing(ProductDTO::getPrice).reversed());
+                    break;
+            }
+
         } catch (SQLException ex) {
             Logger.getLogger(SearchController.class.getName()).log(Level.SEVERE, null, ex);
         }

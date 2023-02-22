@@ -94,14 +94,36 @@
                                 <div class="sort-by">
                                     <label for="sort">Sort By:</label>
                                     <select id="sort">
-                                        <option selected value="rating-bestSelling">Phổ biến</option>
-                                        <option value="price-ascending">Giá tăng dần</option>
-                                        <option value="price-descending">Giá giảm dần</option>
-                                    </select>
+                                        <option selected hidden value="">
+                                            <c:set var="selectSort" value="${param.orderBy}" />
+                                            <jsp:useBean id="selectSort" type="java.lang.String" />
+                                            <c:if test='<%=selectSort.equalsIgnoreCase("popular")%>'>Phổ biến</c:if>
+                                            <c:if test='<%=selectSort.equalsIgnoreCase("asc")%>'>Giá tăng dần</c:if>
+                                            <c:if test='<%=selectSort.equalsIgnoreCase("desc")%>'>Giá giảm dần</c:if>
+                                            </option>
+                                            <option value="popular">Phổ biến</option>
+                                            <option value="asc">Giá tăng dần</option>
+                                            <option value="desc">Giá giảm dần</option>
+                                        </select>
+
+                                    </div>
+
+                                    <script>
+                                        document.querySelector('#sort').addEventListener('change', (event) => {
+                                            let url = window.location.href;
+                                            let locate = url.indexOf("&orderBy");
+                                            if (locate === -1) {
+                                                url = url + "&orderBy=" + event.target.value;
+                                            } else {
+                                                url = url.slice(0, locate) + "&orderBy=" + event.target.value;
+                                            }
+
+                                            location.href = url;
+                                        });
+                                    </script>
 
                                 </div>
-                            </div>
-                            <div class="products-list">
+                                <div class="products-list">
 
                                 <c:forEach items="${productListByCateID}" varStatus="loop"  var="productByCateID">
 

@@ -17,6 +17,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  *
@@ -40,6 +42,7 @@ public class ProductController extends HttpServlet {
         ProductDAO productDao = new ProductDAO();
         ImageProductDAO imageDao = new ImageProductDAO();
         String productAction = request.getParameter("productAction");
+        String sort = request.getParameter("orderBy");
         System.out.println(productAction);
         boolean isForward = false;
         String url = "";
@@ -57,6 +60,15 @@ public class ProductController extends HttpServlet {
                     request.setAttribute("productListByCateID", productListByCateID);
                     isForward = true;
                     url = Constrants.SHOW_PRODUCT_PAGE;
+                    
+                    switch(sort){
+                        case "asc" :
+                            Collections.sort(productListByCateID, Comparator.comparing(ProductDTO::getPrice));
+                            break;
+                        case "desc" :
+                            Collections.sort(productListByCateID, Comparator.comparing(ProductDTO::getPrice).reversed());
+                            break;
+                    }
                     break;
                 }
                 case "showDetail": {
