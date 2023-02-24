@@ -95,13 +95,19 @@ public class ImageProductDAO extends AbstractDAO<ImageProductDTO> {
 
     @Override
     public void delete(ImageProductDTO t) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            PreparedStatement stm = conn.prepareStatement("delete from image_product where image_id = ?");
+            stm.setInt(1, t.getImageID());
+            stm.executeUpdate();
+        } catch (Exception e) {
+            System.err.println("Loi ben delete image product" + e);
+        }
     }
 
     public static void main(String[] args) {
         try {
             ImageProductDAO dao = new ImageProductDAO();
-          ArrayList<ImageProductDTO> l = dao.getAllImagesIsNotMain(452);
+            ArrayList<ImageProductDTO> l = dao.getAllImagesIsNotMain(452);
             for (ImageProductDTO imageProductDTO : l) {
                 System.out.println(imageProductDTO);
             }

@@ -89,10 +89,14 @@ public class MainController extends HttpServlet {
                         url = Constrants.ADDRESS_CONTROLLER;
                         break;
                     }
-                    case "shop":{
+                    case "shop": {
                         System.out.println("vào shop controlller main");
-                    url = Constrants.SHOP_CONTROLLER;
-                    break;
+                        url = Constrants.SHOP_CONTROLLER;
+                        break;
+                    }
+                    case "manageProduct": {
+                        url = Constrants.PRODUCT_MANAGER_CONTROLLER;
+                        break;
                     }
                 }
             }

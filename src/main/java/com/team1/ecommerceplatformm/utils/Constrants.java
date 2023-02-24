@@ -19,6 +19,8 @@ public class Constrants {
     public final static String CART_CONTROLLER = "CartController";
     public final static String SHOP_CONTROLLER = "ShopController";
     public final static String ADDRESS_CONTROLLER = "AddressController";
+    public final static String PRODUCT_MANAGER_CONTROLLER = "ProductManagerController";
+    public final static String SHOW_TRANSACTION_HISTORY_PAGE = "WEB-INF/views/showTransactionHistory.jsp";
     public final static String SHOW_PRODUCT_PAGE = "WEB-INF/views/showProductsResult.jsp";
     public final static String SHOW_REGISTER_SHOP_PAGE = "WEB-INF/views/registerShopPage.jsp";
     public final static String SHOW_USER_PROFILE_PAGE = "WEB-INF/views/userDetailPage.jsp";
@@ -26,4 +28,12 @@ public class Constrants {
     public final static String SHOW_STORE_PAGE = "WEB-INF/views/storePage.jsp";
     public final static String HOME_PAGE = "WEB-INF/views/homePage.jsp";
     public final static String SHOW_PRODUCT_DETAIL_PAGE = "WEB-INF/views/detailProductPage.jsp";
+
+    public final static String MANAGE_PRODUCT = "WEB-INF/views/ManagerProduct.jsp";
+    public final static String UPDATE_PRODUCT = "WEB-INF/views/UpdateProduct.jsp";
+    public final static String UPLOAD_IMAGE = "WEB-INF/views/iploadimage.jsp";
+    public final static String DASHBOARD = "WEB-INF/views/DashBoard.jsp";
+
+    public final static String URLFIREBASE = "D:\\FPT SPRING 2023\\SWP391\\EcommercePlatformm\\src\\main\\webapp\\assets\\thucaixemsao.json";
+    public final static String URLFIREBASE_URL = "https://tesst-8ebfb-default-rtdb.firebaseio.com/";
 }

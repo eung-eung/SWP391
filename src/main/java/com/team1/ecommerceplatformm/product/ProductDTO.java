@@ -4,7 +4,9 @@
  */
 package com.team1.ecommerceplatformm.product;
 
+import com.team1.ecommerceplatformm.imageProduct.ImageProductDTO;
 import java.sql.Date;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,5 +40,10 @@ public class ProductDTO {
     private int soldCount;
     private boolean authen;
     private String mainImg;
+
+//    private ImageProductDTO mainImg;
+    private String shopName;
+    private String categoryName;
+    private List<ImageProductDTO> Imgs;
 
 }

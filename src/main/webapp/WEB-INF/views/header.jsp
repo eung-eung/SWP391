@@ -58,6 +58,7 @@
 
                                                     <div class="dropdown-action">
                                                         <a href="<c:url value="/MainController?btnAction=user&userAction=profile#profile" />">Thông tin của tôi</a>
+                                                        <a href="<c:url value="/MainController?btnAction=user&userAction=transaction"></c:url>">Lịch sử giao dịch</a>
                                                         <a href="<c:url value="/MainController?btnAction=user&userAction=logout"></c:url>">Đăng xuất</a>
 
                                                         </div>
@@ -184,6 +185,7 @@
                                      justify-self: center;
                                      display: flex;
                                      align-items: center;">
+                                    ${sessionScope.user.roleID}
                                     <div class="header-bottom-cart">
                                         <a href="#" class="cart-button"><i class="fa-solid fa-cart-shopping cart-icon"></i></a>
                                     </div>
@@ -194,7 +196,7 @@
                                     </div>
                                     <div class="header-bottom-shop">
                                         <c:if test="${sessionScope.user.roleID == 3}">
-                                            <a href="" class="cart-button"><i class="fa-solid fa-shop"></i></a>
+                                            <a href="MainController?btnAction=manageProduct" class="cart-button"><i class="fa-solid fa-shop"></i></a>
                                             </c:if>
                                     </div>
                                     <div class="header-bottom-shop">
@@ -282,11 +284,11 @@
                                                         document.querySelector('#my-avatar-header').style.backgroundImage = "url('" + resUrl + "')";
                                                         if (res.roleID == 4) {
                                                             console.log("4")
-                                                            document.querySelector(".header-bottom-shop").innerHTML = `<a href="" class="cart-button"><i class="fa-solid fa-shop"></i></a>`
+                                                            document.querySelector(".header-bottom-shop").innerHTML = `  <a href="" class="cart-button"><i class="fa-solid fa-user-shield"></i></a>`
 
                                                         } else if (res.roleID == 3) {
                                                             console.log(3)
-                                                            document.querySelector(".header-bottom-admin").innerHTML = `  <a href="" class="cart-button"><i class="fa-solid fa-user-shield"></i></a>`
+                                                            document.querySelector(".header-bottom-admin").innerHTML = `<a href="" class="cart-button"><i class="fa-solid fa-shop"></i></a>`
                                                         }
                                                         location.reload()
                                                     }
