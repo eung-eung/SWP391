@@ -158,7 +158,7 @@
             </div>
         </div>
 
-     
+                                        ${sessionScope.user}
     </body>
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
@@ -170,7 +170,6 @@
 //                                            var $disabledResults = $(".js-example-disabled-results");
 //                                            $disabledResults.select2();
 //                                            $('#city').select2({})
-
                                             document.querySelector("#submitAddress").addEventListener("click", function () {
                                                 let addressDetail = document.querySelector(".address").value
                                                 let wardID = document.querySelector("#ward").value
@@ -190,23 +189,14 @@
                                                             return  swal("Cập nhật không thành công!", "", "danger");
                                                         }
                                                     }
-
                                                 }
                                                 //yêu cầu gửi đi
                                                 xml.send();
-
                                             })
-
-
                                             $("#ward").select2();
                                             $("#district").select2();
                                             $("#city").select2();
-
-
-
 //                                console.log("click")
-
-
                                             function handleOnChangeCity(value, districtID) {
 //                                                document.querySelector("#ward").innerHTML = ""
                                                 fetch("MainController?btnAction=address&addressAction=district&cityID=" + value, {
@@ -223,14 +213,8 @@
                                                                 $('#district').val(districtID)
 //              
                                                             }
-
                                                         })
-
-
                                             }
-
-
-
                                             function handleOnChangeDistrict(value, wardID) {
                                                 console.log(value)
                                                 fetch("MainController?btnAction=address&addressAction=ward&districtID=" + value, {
@@ -240,23 +224,19 @@
                                                         .then(data => {
                                                             console.log(data)
                                                             let htmls = data.map(ward => {
-                                                                return`<option value="\${ward.wardID}">\${ward.name}</option>`
+                                                                console.log(`\${ward.wardID == wardID  ? 'selected' : ''}`)
+                                                                return`<option \${ward.wardID == wardID ? 'selected' : ''} value="\${ward.wardID}">\${ward.name}</option>`
                                                             })
-
+                                                            
                                                             document.querySelector("#ward").innerHTML = htmls.join('')
+//                                                             $("#ward").select2();
 
-                                                            if (wardID) {
-                                                                $('#ward').val(wardID);
-                                                            }
-
-                                                        })
+                                                                  $('#ward').val(wardID);
+                                                   })
                                             }
-
                                             const fileInput = document.querySelector("#input-avatar");
                                             console.log(document.querySelector("#my-image"))
                                             document.querySelector("#my-image").addEventListener("click", () => fileInput.click());
-
-
                                             window.onload = function () {
                                                 console.log("load")
                                                 if (${not empty sessionScope.user.wardID}) {
@@ -268,9 +248,7 @@
                                                                 console.log(ward)
                                                                 console.log(ward.districtID, ward.wardID)
                                                                 handleOnChangeDistrict(ward.districtID, ward.wardID)
-
                                                                 return new Promise(function (res) {
-
                                                                     return res(
                                                                             fetch("MainController?btnAction=address&addressAction=getDistrict&districtID=" + `\${ward.districtID}`, {
                                                                                 method: 'GET'
@@ -286,11 +264,9 @@
                                                                 console.log(district)
                                                                 console.log(district.cityID, district.districtID)
                                                                 handleOnChangeCity(district.cityID, district.districtID)
-
                                                                 return new Promise(function (res) {
-
                                                                     return res(
-                                                                            fetch("MainController?btnAction=address&addressAction=getCity&cityID=" + district.cityID, {
+                                                                            fetch("MainController?btnAction=address&addressAction=getCity&cityID=" + `\${district.cityID}`, {
                                                                                 method: 'GET'
                                                                             }))
                                                                 })
@@ -305,11 +281,7 @@
                                                 } else {
                                                     console.log("asdadads")
                                                     showCity()
-
-
                                                 }
-
-
                                             }
                                             function showCity(cityID) {
                                                 fetch("MainController?btnAction=address&addressAction=city", {
@@ -328,14 +300,9 @@
                                                                     $('#city').val("<option>Chọn thành phố</option>")
                                                                 } else {
                                                                     $('#city').val(cityID).trigger('change')
-
                                                                 }
                                                             })
-
 //
-
-
-
                                                         });
                                             }
                                             const navListItems = document.querySelectorAll(".nav-list-item")
@@ -354,14 +321,11 @@
 
 
     <script type="module">
-
-
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
         import { listAll, getStorage, ref, getDownloadURL, deleteObject, uploadBytesResumable, uploadBytes } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-storage.js";
         // TODO: Add SDKs for Firebase products that you want to use
         // https://firebase.google.com/docs/web/setup#available-libraries
-
         // Your web app's Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyDME5p-3eVnBjOe1PMqhAGZgeTQrg64_rA",
@@ -394,7 +358,6 @@
                         })
                 const storageRef = ref(storage, 'userID-${sessionScope.user.userID}/avatar/' + avatar.name);
                 uploadBytes(storageRef, avatar)
-
                         .then((snapshot) => {
                             console.log(snapshot)
                             console.log('Uploaded');
@@ -405,7 +368,6 @@
                         })
                         .then(url => {
                             console.log(url)
-
                             // Yêu cầu GET vs API, cbi yêu cầu để kết nối
                             http.open('GET', 'MainController?btnAction=user&userAction=updateProfile&urlAvatar=' + url
                                     + '&email=' + '${sessionScope.user.email}'
@@ -413,7 +375,6 @@
                                     + '&username=' + document.querySelector('#username').value
 //                                + '&token=' + getParameterByName('token', url)
                                     , true)//true: bất đồng bộ( call api delay vài giây thì các code dưới vẫn chạy bt)
-
                             http.onreadystatechange = function () {
                                 //trường hợp đã gửi req thành công và nhận dc response
                                 //và status < 300: không lỗi thì cho resolve để .then
@@ -421,13 +382,11 @@
                                 //
                                 if (this.readyState == 4) {
                                     if (this.status < 300) {
-
                                         return swal("Updated succesfully!", "", "success");
                                     } else {
                                         return  swal("Updated unsuccesfully!", "", "danger");
                                     }
                                 }
-
                             }
                             //yêu cầu gửi đi
                             http.send();
@@ -444,7 +403,6 @@
                         + '&username=' + document.querySelector('#username').value
 //                                + '&token=' + getParameterByName('token', url)
                         , true)//true: bất đồng bộ( call api delay vài giây thì các code dưới vẫn chạy bt)
-
                 http.onreadystatechange = function () {
                     //trường hợp đã gửi req thành công và nhận dc response
                     //và status < 300: không lỗi thì cho resolve để .then
@@ -452,29 +410,18 @@
                     //
                     if (this.readyState == 4) {
                         if (this.status < 300) {
-
                             return swal("Updated succesfully!", "", "success");
                         } else {
                             return  swal("Updated unsuccesfully!", "", "danger");
                         }
                     }
-
                 }
                 //yêu cầu gửi đi
                 http.send();
             }
-
 //        // Create a child reference
 //            const imageRef = ref(storage, avatar.name);
-
 //                                                    const desertRef = ref(storage, 'userID-${sessionScope.user.userID}/avatar');
-
-
-
         })
-
-
-
-
     </script>
 </html>
