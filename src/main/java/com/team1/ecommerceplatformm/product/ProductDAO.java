@@ -233,7 +233,8 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
         return list;
     }
 
-    public ArrayList<ProductDTO> getAllByIdUser(int user, int status) throws SQLException {
+
+   public ArrayList<ProductDTO> getAllByIdUser(int user, int status) throws SQLException {
         PreparedStatement stm = conn.prepareStatement(""
                 + " \n"
                 + "SELECT p.[product_id]\n"
@@ -285,6 +286,105 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
         rs.close();
         stm.close();
         return list;
+    }
+=======
+    public ArrayList<ArrayList<ProductDTO>> getAllTOP20BestSellingProductsByCategoryIDs(ArrayList<CategoryDTO> listCate) throws SQLException {
+        ArrayList<ArrayList<ProductDTO>> list = new ArrayList<>();
+        for (CategoryDTO category : listCate) {
+            list.add(getTOP20BestSellingProductsByCategoryID(category.getCategoryID()));
+        }
+        return list;
+    }
+    
+    public ArrayList<ProductDTO> getAllProductByShopId(int shopId) throws SQLException{
+        PreparedStatement stm =  conn.prepareStatement("SELECT [product_id]\n"
+                + "      ,[shop_id]\n"
+                + "      ,[category_id]\n"
+                + "      ,[user_admin_id]\n"
+                + "      ,[price]\n"
+                + "      ,[name]\n"
+                + "      ,[description]\n"
+                + "      ,[quantity]\n"
+                + "      ,[status]\n"
+                + "      ,[create_at]\n"
+                + "      ,[approve_at]\n"
+                + "      ,[discount]\n"
+                + "      ,[sold_count]\n"
+                + "      ,[authen]   FROM [EcommmercePlatform].[dbo].[Product] where [shop_id] = ?");
+        stm.setInt(1, shopId);
+        ResultSet rs = stm.executeQuery();
+        ArrayList<ProductDTO> list = new ArrayList<>();
+        while (rs.next()) {
+            ProductDTO dto = new ProductDTO();
+            dto.setProductID(rs.getInt("product_id"));
+            dto.setShopID(rs.getInt("shop_id"));
+            dto.setCategoryID(rs.getInt("category_id"));
+            dto.setUserAdminID(rs.getInt("user_admin_id"));
+            dto.setPrice(rs.getDouble("price"));
+            dto.setName(rs.getString("name"));
+            dto.setDescription(rs.getString("description"));
+            dto.setQuanity(rs.getInt("quantity"));
+            dto.setStatus(rs.getBoolean("status"));
+            dto.setCreateAt(rs.getDate("create_at"));
+            dto.setApproveAt(rs.getDate("approve_at"));
+            dto.setDiscount(rs.getFloat("discount"));
+            dto.setSoldCount(rs.getInt("sold_count"));
+            dto.setAuthen(rs.getBoolean("authen"));
+            list.add(dto);
+        }
+        return list;
+    }
+
+    @Override
+    public ProductDTO get(int id) throws SQLException {
+        PreparedStatement stm = conn.prepareStatement(""
+                + "SELECT p.[product_id]\n"
+                + "      ,p.[shop_id]\n"
+                + "	  ,s.shop_name\n"
+                + "      ,p.[category_id]\n"
+                + "	  ,c.[name] as 'category_name'\n"
+                + "      ,p.[user_admin_id] \n"
+                + "      ,p.[price]\n"
+                + "      ,p.[name] as 'product_name'\n"
+                + "      ,p.[description]\n"
+                + "      ,p.[quantity]\n"
+                + "      ,p.[status]\n"
+                + "      ,p.[create_at]\n"
+                + "      ,p.[approve_at]\n"
+                + "      ,p.[discount]\n"
+                + "      ,p.[sold_count]\n"
+                + "      ,p.[authen]\n"
+                + "  FROM [Product] p JOIN Shop s ON p.shop_id = s.shop_id \n"
+                + "  JOIN Category c ON p.category_id = c.category_id"
+                + " where p.product_id = ?");
+        stm.setInt(1, id);
+        ResultSet rs = stm.executeQuery();
+        ImageProductDAO imgDao = new ImageProductDAO();
+        ProductDTO dto = new ProductDTO();
+        if (rs.next()) {
+            dto.setProductID(rs.getInt("product_id"));
+            dto.setShopID(rs.getInt("shop_id"));
+            dto.setCategoryID(rs.getInt("category_id"));
+            dto.setUserAdminID(rs.getInt("user_admin_id"));
+            dto.setPrice(rs.getDouble("price"));
+            dto.setName(rs.getString("product_name"));
+            dto.setDescription(rs.getString("description"));
+            dto.setQuanity(rs.getInt("quantity"));
+            dto.setStatus(rs.getBoolean("status"));
+            dto.setCreateAt(rs.getDate("create_at"));
+            dto.setApproveAt(rs.getDate("approve_at"));
+            dto.setDiscount(rs.getFloat("discount"));
+            dto.setSoldCount(rs.getInt("sold_count"));
+            dto.setAuthen(rs.getBoolean("authen"));
+
+            dto.setShopName(rs.getString("shop_name"));
+            dto.setCategoryName(rs.getString("category_name"));
+            dto.setMainImg(imgDao.getMainImageByProductID( dto.getProductID()).getUrl());
+            
+            dto.setImgs(imgDao.getAllImagesIsNotMain(id));
+            
+        }
+        return dto;
     }
 
     public ArrayList<ArrayList<ProductDTO>> getAllTOP20BestSellingProductsByCategoryIDs(ArrayList<CategoryDTO> listCate) throws SQLException {

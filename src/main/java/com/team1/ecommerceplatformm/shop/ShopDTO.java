@@ -26,4 +26,5 @@ public class ShopDTO {
     private int userID;
     private Date createAt;
     private String shopName;
+    private boolean status;
 }
