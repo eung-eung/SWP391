@@ -8,6 +8,7 @@ import com.team1.ecommerceplatformm.common.AbstractDAO;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,7 +19,28 @@ public class ShopDAO extends AbstractDAO<ShopDTO> {
 
     @Override
     public List<ShopDTO> getAll() throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        PreparedStatement stm = conn.prepareStatement("SELECT "
+                + "[shop_id]"
+                + " , [user_id]"
+                + " ,[created_at]"
+                + " , [shop_name]"
+                + " , [status]"
+                + "FROM [Shop]");
+        ResultSet rs = stm.executeQuery();
+        ArrayList<ShopDTO> list  = new ArrayList<>();
+        while (rs.next()){
+            ShopDTO dto = new ShopDTO();
+            dto.setShopID(rs.getInt("shop_id"));
+            dto.setUserID(rs.getInt("user_id"));
+            dto.setShopName(rs.getString("shop_name"));
+            dto.setCreateAt(rs.getDate("created_at"));
+            dto.setStatus(rs.getBoolean("status"));
+            list.add(dto);
+        }
+        rs.close();
+        stm.close();
+        return list;
+        
     }
 
     @Override
