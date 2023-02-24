@@ -19,15 +19,17 @@
         <script src="https://kit.fontawesome.com/330a21053c.js" crossorigin="anonymous"></script>
         <script src="https://www.paypal.com/sdk/js?client-id=AVPNRTv0apljAkWHaqZyMDTbKipmIQ_HpbKISKwAdC4_IJtCIVck8tSG8M7k6DgiCZEvrctor-faOGWT&currency=USD"></script>
         <link type="text/css" rel="stylesheet" href="<c:url value="/assets/css/homePage.css" />" />
-        <link type="text/css" rel="stylesheet" href="<c:url value="/assets/css/cartPage.css" />" />
         <link type="text/css" rel="stylesheet" href="<c:url value="/assets/css/detailProduct.css" />" />
+        <link type="text/css" rel="stylesheet" href="<c:url value="/assets/css/cartPage.css" />" />
+
         <title>Document</title>
     </head>
 
     <body>
         <jsp:include page="header.jsp" />
 
-        <div class="container">
+        <div class="container cart-container">
+
             <h1 class="cart-title">Giỏ hàng của bạn</h1>
             <div class="cart-content">
                 <table class="cart">
@@ -71,19 +73,70 @@
                 </ul>
             </div>
             <div class="cart-action">
-                <!--<a href="#" class="checkout-button">Thanh Toán</a>-->
-                <div id="paypal-button-container"></div>
+                <div class="checkout-button">Thanh Toán</div>
+
             </div>
+            <div class="overlay"></div>
+            <div class="cart-action cart-paypal">
+                <a href="#" class="modal-close-button fa-solid fa-x">
+                </a>
+                <div id="paypal-button-container"></div>
+
+            </div>
+
         </div>
     </body>
 
-    <script src="<c:url value="/assets/Javascript/handleMenuCategories.js" />"></script>
-    <script src="<c:url value="/assets/Javascript/handleDetailProductPage.js" />"></script>
+
+    
+   
     <script>
-//        let cart = JSON.parse(window.localStorage.getItem('cart'));
+        let background = document.querySelector(".overlay");
+        let checkoutBtn = document.querySelector(".checkout-button");
+        let modalPayPal = document.querySelector(".cart-paypal");
+        let closeModalButton = document.querySelector(".modal-close-button");
+
+        (function handleFormBackground() {
+
+
+
+            checkoutBtn.addEventListener("click", () => {
+                background.style.display = "block";
+                modalPayPal.classList.add("open");
+                if (modalPayPal.classList.contains("open")) {
+                    modalPayPal.style.cssText = `
+    display: block;
+    opacicty: 1;
+    visibility: visible;
+    top: 150px;                                          
+    left: 50%;
+    margin: 0 auto;
+    max-height: 90%;
+    max-width: 95%;
+    outline: 0;
+    overflow: hidden;
+    padding: 0;
+    right: 0;
+    top: 50% !important;
+    transform: translate(-50%, -50%);
+    position: fixed;
+    overflow-y:scroll`
+                }
+            })
+
+            closeModalButton.addEventListener("click", () => {
+                modalPayPal.classList.remove("open");
+                background.style.display = "none";
+                if (!modalPayPal.classList.contains("open")) {
+                    modalPayPal.style.cssText = ``;
+
+                }
+            });
+        })();
+
 
     </script>
-
+ 
     <script>
         let cart = JSON.parse(window.localStorage.getItem('cart'));
         let fieldShopID = document.querySelector(".shopID")
@@ -91,6 +144,15 @@
         let cartList = document.querySelector('.cart')
         let total = 0;
 //        let cart = JSON.parse(window.localStorage.getItem('cart'));
+
+        if (cart.length == 0) {
+            document.querySelector(".cart-container").innerHTML = `<div class='empty-cart-img'>
+            <img class='empty-img' src="assets/images/emptyCart.png" alt="alt"/>
+<a href='<c:url value="MainController" />' class='href-homePage'>Đi mua sắm</a>
+ </div>
+        
+`
+        }
 
 
         unique.forEach(u => {
@@ -187,24 +249,6 @@
         }
 
 
-
-
-
-//        function handleOnInputQuantity(productID) {
-//            let inputQuantity = document.querySelectorAll(".quantity-input")
-//            inputQuantity.forEach(input => {
-//                input.addEventListener("input", function () {
-//                    if (this.value < 0) {
-//                        this.value = Math.abs(this.value)
-//                    } else if (this.value == 0) {
-//                        this.value = 1
-//                    }
-////                    handleTotalItem(this, this.value)
-//                    setQuantityWithDeIncrease(this.value, productID)
-//                })
-//            })
-////            calculateTotal()
-//        }
         function increaseValue(btn, productID) {
             let value = btn.nextElementSibling.value
             value++
@@ -300,11 +344,19 @@
 
                             deleleButton.parentNode.parentNode.remove()
                             window.localStorage.setItem('cart', JSON.stringify(cart))
-                            calculateTotal()
+                            let total = calculateTotal()
+                            document.querySelector(".total").innerHTML = `<span>` + formatter.format(total) + `</span>`
                             swal("Đã xóa", {
                                 icon: "success",
                             });
-
+                            if (cart.length == 0) {
+                                document.querySelector(".cart-container").innerHTML = `<div class='empty-cart-img'>
+            <img class='empty-img' src="assets/images/emptyCart.png" alt="alt"/>
+<a href='<c:url value="MainController" />' class='href-homePage'>Đi mua sắm</a>
+ </div>
+        
+`
+                            }
 
                         } else {
                             swal("Bạn đã hủy xóa sản phẩm");
@@ -359,6 +411,42 @@
         window.onload = function () {
             total = calculateTotal()
             console.log(total)
+            document.querySelector(".total").innerHTML = `<span>` + formatter.format(total) + `</span>`
+            if (${sessionScope.user.wardID} !== 0) {
+                fetch("MainController?btnAction=address&addressAction=getWard&wardID=" + `${sessionScope.user.wardID}`, {
+                    method: 'GET'
+                })
+                        .then(res => res.json())
+                        .then(ward => {
+                            document.querySelector(".cart-address").innerHTML = "Phường/Xã: " + ward.name + " - "
+                            return new Promise(function (res) {
+                                return res(fetch("MainController?btnAction=address&addressAction=getDistrict&districtID=" + `\${ward.districtID}`, {
+                                    method: 'GET'
+                                }))
+                            })
+                                    .then(res => res.json())
+                                    .then(district => {
+                                        document.querySelector(".cart-address").innerHTML += "Quận/Huyện: " + district.name + " - "
+                                        return new Promise(function (res) {
+                                            return res(fetch("MainController?btnAction=address&addressAction=getCity&cityID=" + `\${district.cityID}`, {
+                                                method: 'GET'
+                                            }))
+                                        })
+                                    })
+                                    .then(res => res.json())
+                                    .then(city => {
+                                        document.querySelector(".cart-address").innerHTML += "Tỉnh/Thành Phố: " + city.name
+                                        document.querySelector(".cart-address").innerHTML += `<a href="<c:url value="/MainController?btnAction=user&userAction=profile#profile" />">Sửa địa chỉ</a>`
+                                    })
+                        }
+
+
+                        )
+            }
+        }
+
+        document.querySelector(".checkout-button").addEventListener('click', function () {
+            console.log("click")
             getTotal()
                     .then(total => {
 
@@ -393,52 +481,36 @@
                             // Finalize the transaction on the server after payer approval
                             onApprove: function (data, actions) {
                                 return actions.order.capture().then(function (details) {
+
                                     swal("Thanh toán thành công", "Cảm ơn bạn!", "success");
+                                    modalPayPal.classList.remove("open");
+                                    background.style.display = "none";
+                                    if (!modalPayPal.classList.contains("open")) {
+                                        modalPayPal.style.cssText = ``;
+                                    }
+
                                 })
+                                        .then(() => {
+                                            console.log("aaaa")
+                                            let total = calculateTotal();
+                                            fetch("MainController?btnAction=cart&cartAction=orderPaypal&total=" + total)
+                                        })
+                                        .then(() => {
+                                            localStorage.removeItem("cart")
+                                            cartList.innerHTML = ""
+                                            document.querySelector(".checkout-button").style.display = "none"
+                                            document.querySelector(".total").innerHTML = ""
+                                        })
                             }
                         }).render('#paypal-button-container');
 
+                    })
 
 
 
-                    }
-                    )
                     .catch(error => console.log('error', error));
             document.querySelector(".total").innerHTML = `<span>` + formatter.format(total) + `</span>`
-            if (${sessionScope.user.wardID} !== 0) {
-                fetch("MainController?btnAction=address&addressAction=getWard&wardID=" + ${sessionScope.user.wardID}, {
-                    method: 'GET'
-                })
-                        .then(res => res.json())
-                        .then(ward => {
-                            document.querySelector(".cart-address").innerHTML = "Phường/Xã: " + ward.name + " - "
-                            return new Promise(function (res) {
-                                return res(fetch("MainController?btnAction=address&addressAction=getDistrict&districtID=" + ward.districtID, {
-                                    method: 'GET'
-                                }))
-                            })
-                                    .then(res => res.json())
-                                    .then(district => {
-                                        document.querySelector(".cart-address").innerHTML += "Quận/Huyện: " + district.name + " - "
-                                        return new Promise(function (res) {
-                                            return res(fetch("MainController?btnAction=address&addressAction=getCity&cityID=" + district.cityID, {
-                                                method: 'GET'
-                                            }))
-                                        })
-                                    })
-                                    .then(res => res.json())
-                                    .then(city => {
-                                        document.querySelector(".cart-address").innerHTML += "Tỉnh/Thành Phố: " + city.name
-                                        document.querySelector(".cart-address").innerHTML += `<a href="<c:url value="/MainController?btnAction=user&userAction=profile#profile" />">Sửa địa chỉ</a>`
-                                    })
-                        }
-
-
-                        )
-            }
-        }
-
-
+        })
 
 
 

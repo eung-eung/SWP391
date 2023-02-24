@@ -181,19 +181,26 @@
                                     </form>
                                 </div>
                                 <div style="    grid-column: 3/4;
-                                     justify-self: center;">
+                                     justify-self: center;
+                                     display: flex;
+                                     align-items: center;">
                                     <div class="header-bottom-cart">
                                         <a href="#" class="cart-button"><i class="fa-solid fa-cart-shopping cart-icon"></i></a>
                                     </div>
                                     <div class="header-bottom-admin">
                                         <c:if test="${sessionScope.user.roleID == 4}">
-                                            <a href="" class="cart-button"><i class="fa-solid fa-user-shield"></i></a>
+                                            <a "#" class="cart-button"><i class="fa-solid fa-user-shield"></i></a>
                                             </c:if>
                                     </div>
                                     <div class="header-bottom-shop">
                                         <c:if test="${sessionScope.user.roleID == 3}">
                                             <a href="" class="cart-button"><i class="fa-solid fa-shop"></i></a>
                                             </c:if>
+                                    </div>
+                                    <div class="header-bottom-shop">
+                                        <c:if test="${sessionScope.user.roleID == 2}">
+                                            <a href="<c:url value="MainController?btnAction=shop&shopAction=register" />" class="register-shop">Đăng ký cửa hàng</a>
+                                        </c:if>
                                     </div>
                                     <div class="header-bottom-admin">
 
@@ -206,14 +213,18 @@
             </div>
         </header>
     </body>
-
+    <script src="<c:url value="/assets/Javascript/handleMenuCategories.js" />"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script>
+
                                                 function  stopGoToCart(e) {
 
                                                     if (${empty sessionScope.user}) {
                                                         swal("", "Vui lòng đăng nhập", "warning");
+                                                        e.preventDefault();
+                                                    } else if (${sessionScope.user.roleID ==3} || ${sessionScope.user.roleID ==4}) {
+                                                        swal("", "Hãy chuyển sang tài khoản người mua", "warning");
                                                         e.preventDefault();
                                                     }
 
@@ -226,6 +237,7 @@
                                                 }
                                                 // function to get response
                                                 function loginByGoogle(response) {
+
                                                     console.log(response)
                                                     const responsePayload = decodeJwtResponse(response.credential);
                                                     console.log(responsePayload)
@@ -240,6 +252,8 @@
 
                                                     ).then(res => {
                                                         console.log(res)
+//                                                        let isLogined = true
+//                                                        window.localStorage.setItem("isLogin", true)
                                                         const  resUrl = res.avatarUrl;
                                                         document.querySelector(".header-bottom-cart").removeEventListener("click", stopGoToCart)
                                                         document.querySelector(".cart-button").href = "<c:url value="MainController?btnAction=cart&cartAction=view" />"
@@ -274,6 +288,7 @@
                                                             console.log(3)
                                                             document.querySelector(".header-bottom-admin").innerHTML = `  <a href="" class="cart-button"><i class="fa-solid fa-user-shield"></i></a>`
                                                         }
+                                                        location.reload()
                                                     }
                                                     )
                                                 }
@@ -344,5 +359,5 @@
                                                 }
 
     </script>
-    <script src="<c:url value="/assets/Javascript/handleMenuCategories.js" />"></script>
+
 </html>

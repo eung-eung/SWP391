@@ -123,8 +123,11 @@ public class AddressController extends HttpServlet {
             }
             case "update": {
                 try {
-                    int wardID = Integer.parseInt(request.getParameter("wardID"));
+                    String wardID = request.getParameter("wardID");
+                    System.out.println("wardID"+ wardID);
+           
                     String address = request.getParameter("address");
+                             System.out.println("add"+ address);
                     HttpSession session = request.getSession();
                     UserDTO dto = (UserDTO) session.getAttribute("user");
                     System.out.println("ss addressL " + dto);
@@ -140,8 +143,7 @@ public class AddressController extends HttpServlet {
 
             }
 
-            default:
-                throw new AssertionError();
+   
         }
         System.out.println("vào addresscontroller");
     }

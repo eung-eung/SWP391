@@ -7,10 +7,13 @@ package com.team1.ecommerceplatformm.controller;
 import com.google.gson.Gson;
 import com.team1.ecommerceplatformm.imageProduct.ImageProductDAO;
 import com.team1.ecommerceplatformm.imageProduct.ImageProductDTO;
+import com.team1.ecommerceplatformm.order.OrderDAO;
+import com.team1.ecommerceplatformm.order.OrderDTO;
 import com.team1.ecommerceplatformm.product.ProductDAO;
 import com.team1.ecommerceplatformm.product.ProductDTO;
 import com.team1.ecommerceplatformm.shop.ShopDAO;
 import com.team1.ecommerceplatformm.shop.ShopDTO;
+import com.team1.ecommerceplatformm.user.UserDTO;
 import com.team1.ecommerceplatformm.utils.Constrants;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -51,8 +54,6 @@ public class CartController extends HttpServlet {
         Gson gson = new Gson();
         switch (cartAction) {
             case "view": {
-
-                
                 request.getRequestDispatcher(Constrants.SHOW_CART_PAGE).forward(request, response);
                 break;
 
@@ -72,9 +73,35 @@ public class CartController extends HttpServlet {
                 }
             }
 
-            case "add": {
+            case "orderPaypal": {
+                try {
+                    int paymentId = 1;
+                    UserDTO dto = (UserDTO) session.getAttribute("user");
+                    int userId = dto.getUserID();
+                    String wardId = dto.getWardID();
+                    String address = dto.getAddress();
+//                    double transactionFee = Double.parseDouble(request.getParameter("total"));
+                    System.out.println("uID: " + userId);
+                    System.out.println("wa"+ wardId);
+                    System.out.println("addres" + address);
+//                    System.out.println("fee"+transactionFee);
+//                tạo new order
+                    OrderDAO orderDAO = new OrderDAO();
+                    OrderDTO orderDTO = new OrderDTO();
+                    orderDTO.setAddress(address);
+                    orderDTO.setWardId(wardId);
+//                    orderDTO.setTransactionFee(transactionFee);
+                    orderDTO.setUserId(userId);
+                    orderDTO.setPaymentId(paymentId);
 
-                break;
+                    orderDAO.save(orderDTO);
+//                    System.out.println("total: " + transactionFee);
+
+                    System.out.println("Vào order case của cart controller");
+                    break;
+                } catch (SQLException ex) {
+                    Logger.getLogger(CartController.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
 
         }

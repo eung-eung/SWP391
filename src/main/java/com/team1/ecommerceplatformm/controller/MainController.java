@@ -89,6 +89,11 @@ public class MainController extends HttpServlet {
                         url = Constrants.ADDRESS_CONTROLLER;
                         break;
                     }
+                    case "shop":{
+                        System.out.println("vào shop controlller main");
+                    url = Constrants.SHOP_CONTROLLER;
+                    break;
+                    }
                 }
             }
         } catch (Exception ex) {

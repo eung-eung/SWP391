@@ -78,7 +78,7 @@
                             <c:forEach items="${listPopularCatetory}" var="popuCate">
                                 <div class="banner">
                                     <div class="banner-image">
-                                        <a href="<c:url value="MainController?btnAction=product&productAction=showByCateID&categoryID=${popuCate.categoryID}"></c:url>">
+                                        <a href="<c:url value="MainController?btnAction=product&productAction=showByCateID&categoryID=${popuCate.categoryID}&orderBy=popular"></c:url>">
                                             <img class="img-popu-cate" src="assets/images/${popuCate.banner}.jpg" alt="${popuCate.name}">
                                         </a>
                                     </div>
@@ -108,7 +108,7 @@
                                             <a href="#" class="tab-title">BestSelling</a>
                                         </li>
                                         <li class="tab">
-                                            <a href="<c:url value="/MainController?btnAction=product&productAction=showByCateID&categoryID=${listCategoryHaveNoVerticalBanner[loop.index].categoryID}" />" class="tab-title">Xem tất cả</a>
+                                            <a href="<c:url value="/MainController?btnAction=product&productAction=showByCateID&categoryID=${listCategoryHaveNoVerticalBanner[loop.index].categoryID}&orderBy=popular" />" class="tab-title">Xem tất cả</a>
                                         </li>
 
                                     </ul>
@@ -122,7 +122,7 @@
                                 <div class="list-product-image">
                                     <div class="banner">
                                         <div class="banner-image">
-                                            <a href="<c:url value="/MainController?btnAction=product&productAction=showByCateID&categoryID=${listCategoryHaveNoVerticalBanner[loop.index].categoryID}" />"><img src="assets/images/${listCategoryHaveNoVerticalBanner[loop.index].bannerVertical}.jpg" alt=""></a>
+                                            <a href="<c:url value="/MainController?btnAction=product&productAction=showByCateID&categoryID=${listCategoryHaveNoVerticalBanner[loop.index].categoryID}&orderBy=popular" />"><img src="assets/images/${listCategoryHaveNoVerticalBanner[loop.index].bannerVertical}.jpg" alt=""></a>
                                         </div>
                                         <div class="gif-box">
                                             <div class="gif-background">

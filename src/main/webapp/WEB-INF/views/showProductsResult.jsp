@@ -68,7 +68,7 @@
                             <ul class="nav-list">
                                 <c:forEach items="${sessionScope.listCategory}" var="c">
                                     <li class="nav-list-item">
-                                        <a class="nav-list-action" href="<c:url value="/MainController?btnAction=product&productAction=showByCateID&categoryID=${c.categoryID}"></c:url>" class="menu-categories-item-action">
+                                        <a class="nav-list-action" href="<c:url value="/MainController?btnAction=product&productAction=showByCateID&categoryID=${c.categoryID}&orderBy=popular"></c:url>" class="menu-categories-item-action">
                                             ${c.icon}${c.name}
                                         </a>
                                     </li>

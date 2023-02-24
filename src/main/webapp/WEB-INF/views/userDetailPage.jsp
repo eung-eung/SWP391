@@ -154,10 +154,11 @@
                         </div>
 
                     </div>
-
                 </div>
             </div>
+        </div>
 
+     
     </body>
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
@@ -173,12 +174,17 @@
                                             document.querySelector("#submitAddress").addEventListener("click", function () {
                                                 let addressDetail = document.querySelector(".address").value
                                                 let wardID = document.querySelector("#ward").value
+                                                let districtID = document.querySelector("#district").value
+                                                if (wardID == '' || districtID == '') {
+                                                    return  swal("Không được để trống!", "", "danger");
+                                                }
                                                 let xml = new XMLHttpRequest();
+                                                console.log("wardID click" + wardID)
+                                                console.log("address click" + addressDetail)
                                                 xml.open('GET', "MainController?btnAction=address&addressAction=update&wardID=" + wardID + "&address=" + addressDetail, true)
                                                 xml.onreadystatechange = function () {
                                                     if (this.readyState == 4) {
                                                         if (this.status < 300) {
-
                                                             return swal("Cập nhật thành công!", "", "success");
                                                         } else {
                                                             return  swal("Cập nhật không thành công!", "", "danger");
@@ -202,7 +208,7 @@
 
 
                                             function handleOnChangeCity(value, districtID) {
-
+//                                                document.querySelector("#ward").innerHTML = ""
                                                 fetch("MainController?btnAction=address&addressAction=district&cityID=" + value, {
                                                     method: 'GET'
                                                 })
@@ -212,12 +218,14 @@
                                                                 return`<option value="\${district.districtID}">\${district.name}</option>`
                                                             })
                                                             document.querySelector("#district").innerHTML = htmls.join('')
+                                                            $('#district').val(districtID).trigger("change")
                                                             if (districtID) {
                                                                 $('#district').val(districtID)
+//              
                                                             }
 
                                                         })
-                                                document.querySelector("#ward").innerHTML = ""
+
 
                                             }
 
@@ -236,6 +244,7 @@
                                                             })
 
                                                             document.querySelector("#ward").innerHTML = htmls.join('')
+
                                                             if (wardID) {
                                                                 $('#ward').val(wardID);
                                                             }
@@ -250,10 +259,8 @@
 
                                             window.onload = function () {
                                                 console.log("load")
-                                                if (${sessionScope.user.wardID != 0}) {
-
-
-                                                    fetch("MainController?btnAction=address&addressAction=getWard&wardID=" + ${sessionScope.user.wardID}, {
+                                                if (${not empty sessionScope.user.wardID}) {
+                                                    fetch("MainController?btnAction=address&addressAction=getWard&wardID=" + `${sessionScope.user.wardID}`, {
                                                         method: 'GET'
                                                     })
                                                             .then(res => res.json())
@@ -265,7 +272,7 @@
                                                                 return new Promise(function (res) {
 
                                                                     return res(
-                                                                            fetch("MainController?btnAction=address&addressAction=getDistrict&districtID=" + ward.districtID, {
+                                                                            fetch("MainController?btnAction=address&addressAction=getDistrict&districtID=" + `\${ward.districtID}`, {
                                                                                 method: 'GET'
                                                                             }))
                                                                 })
@@ -291,11 +298,14 @@
                                                             )
                                                             .then(res => res.json())
                                                             .then(city => {
+                                                                console.log("test:" + city.name)
                                                                 document.querySelector("#city").innerHTML = "<option value='\${city.cityID}'>" + city.name + "</option>"
                                                                 showCity(city.cityID)
                                                             })
                                                 } else {
+                                                    console.log("asdadads")
                                                     showCity()
+
 
                                                 }
 
@@ -315,10 +325,10 @@
 //                                                                $('#city').val(cityID)
                                                                 if (!cityID) {
                                                                     cityID = {}
-                                                                    document.querySelector("#city").innerHTML = "<option>Chọn thành phố</option>"
+                                                                    $('#city').val("<option>Chọn thành phố</option>")
                                                                 } else {
                                                                     $('#city').val(cityID).trigger('change')
-                                                                    
+
                                                                 }
                                                             })
 

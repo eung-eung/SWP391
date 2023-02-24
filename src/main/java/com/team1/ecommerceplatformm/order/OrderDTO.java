@@ -2,30 +2,36 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.team1.ecommerceplatformm.user;
+package com.team1.ecommerceplatformm.order;
 
-import java.util.Date;
+import java.sql.Date;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+
 /**
  *
  * @author boyvi
  */
-@Getter @Setter
-@NoArgsConstructor
+@Getter
 @AllArgsConstructor
+@NoArgsConstructor
+@Setter
 @ToString
-public class UserDTO {
-    private int userID;
-    private String wardID;
-    private int roleID;
-    private String email;
-    private String phone;
-    private Date yob;
+public class OrderDTO {
+
+    private String orderId;
+    private String deliveryId;
+    private int userId;
+    private String wardId;
+    private Date orderDate;
+    private double transactionFee;
+    private double shipFee;
     private String address;
-    private String avatarUrl;
-    private String username;
+    private int status;
+    private Date shippedDate;
+    private int paymentId;
+
 }
