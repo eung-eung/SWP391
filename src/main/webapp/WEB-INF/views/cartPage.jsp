@@ -88,8 +88,8 @@
     </body>
 
 
-    
-   
+
+
     <script>
         let background = document.querySelector(".overlay");
         let checkoutBtn = document.querySelector(".checkout-button");
@@ -136,16 +136,16 @@
 
 
     </script>
- 
+
     <script>
         let cart = JSON.parse(window.localStorage.getItem('cart'));
         let fieldShopID = document.querySelector(".shopID")
-        const unique = [...new Set(cart.map(item => item.shopID))];
+
         let cartList = document.querySelector('.cart')
         let total = 0;
 //        let cart = JSON.parse(window.localStorage.getItem('cart'));
 
-        if (cart.length == 0) {
+        if ( cart == null) {
             document.querySelector(".cart-container").innerHTML = `<div class='empty-cart-img'>
             <img class='empty-img' src="assets/images/emptyCart.png" alt="alt"/>
 <a href='<c:url value="MainController" />' class='href-homePage'>Đi mua sắm</a>
@@ -154,7 +154,7 @@
 `
         }
 
-
+        const unique = [...new Set(cart.map(item => item.shopID))];
         unique.forEach(u => {
 
             fetch("MainController?btnAction=cart&cartAction=render&shopID=" + u, {
@@ -349,7 +349,7 @@
                             swal("Đã xóa", {
                                 icon: "success",
                             });
-                            if (cart.length == 0) {
+                            if (cart.length == null) {
                                 document.querySelector(".cart-container").innerHTML = `<div class='empty-cart-img'>
             <img class='empty-img' src="assets/images/emptyCart.png" alt="alt"/>
 <a href='<c:url value="MainController" />' class='href-homePage'>Đi mua sắm</a>
@@ -491,9 +491,18 @@
 
                                 })
                                         .then(() => {
-                                            console.log("aaaa")
-                                            let total = calculateTotal();
-                                            fetch("MainController?btnAction=cart&cartAction=orderPaypal&total=" + total)
+//                                            console.log("aaaa")
+//                                            let total = calculateTotal();
+                                            const map = new Map();
+                                            cart.forEach(item => {
+                                                map.set(item.productID, item.quantity)
+                                            })
+                                            const obj = Object.fromEntries(map)
+                                            console.log(map)
+                                            console.log(JSON.stringify(obj))
+                                            fetch("MainController?btnAction=cart&cartAction=orderPaypal&cart=" + encodeURIComponent(JSON.stringify(obj)), {
+                                                method: 'POST'
+                                            })
                                         })
                                         .then(() => {
                                             localStorage.removeItem("cart")

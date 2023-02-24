@@ -5,25 +5,24 @@
 package com.team1.ecommerceplatformm.controller;
 
 import com.google.gson.Gson;
-import com.team1.ecommerceplatformm.imageProduct.ImageProductDAO;
-import com.team1.ecommerceplatformm.imageProduct.ImageProductDTO;
+import com.google.gson.reflect.TypeToken;
 import com.team1.ecommerceplatformm.order.OrderDAO;
 import com.team1.ecommerceplatformm.order.OrderDTO;
-import com.team1.ecommerceplatformm.product.ProductDAO;
-import com.team1.ecommerceplatformm.product.ProductDTO;
+import com.team1.ecommerceplatformm.orderDetails.OrderDetailsDTO;
 import com.team1.ecommerceplatformm.shop.ShopDAO;
 import com.team1.ecommerceplatformm.shop.ShopDTO;
 import com.team1.ecommerceplatformm.user.UserDTO;
 import com.team1.ecommerceplatformm.utils.Constrants;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.lang.reflect.Type;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -81,9 +80,25 @@ public class CartController extends HttpServlet {
                     String wardId = dto.getWardID();
                     String address = dto.getAddress();
 //                    double transactionFee = Double.parseDouble(request.getParameter("total"));
-                    System.out.println("uID: " + userId);
-                    System.out.println("wa"+ wardId);
-                    System.out.println("addres" + address);
+//                    Map<String, String> m = new HashMap<>();
+                    String m = request.getParameter("cart");
+                    System.out.println("m " + m);
+                    Map<Integer, Integer> map = new HashMap<>();
+                    ArrayList<OrderDetailsDTO> listDetail = new ArrayList<>();
+                    Type type = new TypeToken<Map<Integer, Integer>>() {
+                    }.getType();
+                    map = gson.fromJson(m, type);
+                    System.out.println("a");
+                    map.forEach((k, v) -> {
+                        OrderDetailsDTO dDto = new OrderDetailsDTO();
+                        dDto.setProductId(k);
+                        dDto.setQuantity(v);
+                        listDetail.add(dDto);
+                        System.out.println("k ="+k +",v= "+ v);
+                    });
+
+                    //                    ArrayList<OrderDetailsDTO> l = new ArrayList<>();
+                    //                    l = re
 //                    System.out.println("fee"+transactionFee);
 //                tạo new order
                     OrderDAO orderDAO = new OrderDAO();
@@ -93,7 +108,7 @@ public class CartController extends HttpServlet {
 //                    orderDTO.setTransactionFee(transactionFee);
                     orderDTO.setUserId(userId);
                     orderDTO.setPaymentId(paymentId);
-
+                    orderDTO.setOrderDetails(listDetail);
                     orderDAO.save(orderDTO);
 //                    System.out.println("total: " + transactionFee);
 

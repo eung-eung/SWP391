@@ -5,6 +5,8 @@
 package com.team1.ecommerceplatformm.orderDetails;
 
 import com.team1.ecommerceplatformm.common.AbstractDAO;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -12,7 +14,7 @@ import java.util.List;
  *
  * @author boyvi
  */
-public class OrderDetailsDAO extends AbstractDAO<OrderDetailsDTO>{
+public class OrderDetailsDAO extends AbstractDAO<OrderDetailsDTO> {
 
     @Override
     public List<OrderDetailsDTO> getAll() throws SQLException {
@@ -26,7 +28,16 @@ public class OrderDetailsDAO extends AbstractDAO<OrderDetailsDTO>{
 
     @Override
     public void save(OrderDetailsDTO t) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        PreparedStatement stm = conn.prepareStatement("   insert into [OrderDetails]  "
+                + "([order_id],[product_id],[quantity]) "
+                + "values ((SELECT MAX(order_id)\n"
+                + "FROM [Order]), ?,?)");
+        stm.setInt(1, t.getProductId());
+        stm.setInt(2, t.getQuantity());
+        stm.executeUpdate();
+        stm.close();
+//        conn.close();
+        
     }
 
     @Override
@@ -38,5 +49,5 @@ public class OrderDetailsDAO extends AbstractDAO<OrderDetailsDTO>{
     public void delete(OrderDetailsDTO t) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
 }

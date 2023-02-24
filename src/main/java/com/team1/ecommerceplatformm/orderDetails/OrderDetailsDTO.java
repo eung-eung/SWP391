@@ -23,6 +23,15 @@ public class OrderDetailsDTO {
     private int orderId;
     private int productId;
     private int quantity;
+
+
     private float discount;
     private double price;
+
+    public OrderDetailsDTO(int productId, int quantity) {
+        this.productId = productId;
+        this.quantity = quantity;
+    }
+    
+    
 }

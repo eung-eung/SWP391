@@ -4,7 +4,9 @@
  */
 package com.team1.ecommerceplatformm.order;
 
+import com.team1.ecommerceplatformm.orderDetails.OrderDetailsDTO;
 import java.sql.Date;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,5 +35,5 @@ public class OrderDTO {
     private int status;
     private Date shippedDate;
     private int paymentId;
-
+    private List<OrderDetailsDTO> orderDetails;
 }
