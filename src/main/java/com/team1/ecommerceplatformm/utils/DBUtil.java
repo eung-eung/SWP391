@@ -15,7 +15,7 @@ import java.sql.SQLException;
 public class DBUtil {
     public static Connection getConnection() {
         String url = "jdbc:sqlserver://localhost;databaseName=EcommmercePlatform;trustServerCertificate=true"
-                + ";user=sa;password=12345";
+                + ";user=sa;password=123";
         Connection conn = null;
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");

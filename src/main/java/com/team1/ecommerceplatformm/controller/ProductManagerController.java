@@ -19,6 +19,7 @@ import com.team1.ecommerceplatformm.product.ProductDAO;
 import com.team1.ecommerceplatformm.product.ProductDTO;
 import com.team1.ecommerceplatformm.shop.ShopDAO;
 import com.team1.ecommerceplatformm.shop.ShopDTO;
+import com.team1.ecommerceplatformm.user.UserDAO;
 import com.team1.ecommerceplatformm.user.UserDTO;
 import com.team1.ecommerceplatformm.utils.Constrants;
 import java.io.IOException;
@@ -56,6 +57,17 @@ public class ProductManagerController extends HttpServlet {
         //require userid ? 
         String url = "";
         url = Constrants.MANAGE_PRODUCT;
+         // ngoại lệ với test ko sài gg đc vì local khác nhau
+        if (request.getParameter("userid") != null) {
+            try {
+                UserDTO udto;
+                udto = (new UserDAO()).get(Integer.parseInt(request.getParameter("userid")));
+                request.getSession().setAttribute("user", udto);
+            } catch (SQLException ex) {
+                Logger.getLogger(ProductManagerController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
         if (request.getSession().getAttribute("user") == null) {
             response.sendRedirect("MainController");
         } else {
@@ -90,14 +102,12 @@ public class ProductManagerController extends HttpServlet {
             }
             request.setAttribute("shop", crshop);
             request.setAttribute("listcate", listcate);
-            System.out.println("listProduct ");
-            System.out.println(listProduct);
             request.setAttribute("prolist", listProduct);
             request.setAttribute("userId", crshop.getUserID());
 
-//            System.err.println(crshop.toString());
-//            System.err.println(listcate.toString());
-//            System.err.println(listProduct.size());
+            System.err.println(crshop.toString());
+            System.err.println(listcate.toString());
+            System.err.println(listProduct.size());
 //        listProduct.get(0).getName()
             request.getRequestDispatcher(url).forward(request, response);
         }
@@ -117,7 +127,7 @@ public class ProductManagerController extends HttpServlet {
         ProductDTO temp = new ProductDTO();
         temp.setShopID(Integer.parseInt(shopId));
         temp.setCategoryID(Integer.parseInt(categoryId));
-        temp.setUserAdminID(Integer.parseInt(user));
+//        temp.setUserAdminID(Integer.parseInt(user));
         temp.setPrice(Double.parseDouble(price));
         temp.setName(name);
         temp.setStatus(true);
@@ -125,15 +135,16 @@ public class ProductManagerController extends HttpServlet {
         temp.setQuanity(Integer.parseInt(quantity));
         System.out.println(temp.toString());
         new ProductDAO().save(temp);
+
         try {
             int pId = new ProductDAO().getProductIdNew(temp);
-            
+
             // xử lý ảnh
             byte[] img = null;
-            
+
             // ảnh chính
             String mainImage = null;
-            // ảnh phụ
+            // ảnh phụ 
             List<String> Images = new ArrayList<>();
             List<Part> fileParts = (List<Part>) request.getParts();
             // lấy tất cả ảnh trả về từ giao diện
@@ -150,7 +161,7 @@ public class ProductManagerController extends HttpServlet {
                     // Xử lý ảnh tại đây
                     fileContent = filePart.getInputStream();
                     img = IOUtils.readFully(fileContent, fileContent.available());
-                    
+
                     try {
                         serviceAccount = new FileInputStream(Constrants.URLFIREBASE);
                         options = new FirebaseOptions.Builder()
@@ -164,7 +175,7 @@ public class ProductManagerController extends HttpServlet {
                     }
                     String encodedString = Base64.getEncoder().encodeToString(img);
                     String url = "data:image/png;base64," + encodedString;
-                    
+
                     database = FirebaseDatabase.getInstance(Constrants.URLFIREBASE_URL);
                     rootRef = database.getReference("mynode");
                     studentsRef = rootRef.child(pId + "");
@@ -180,21 +191,17 @@ public class ProductManagerController extends HttpServlet {
                             if (databaseError != null) {
                                 System.out.println("Data luu that bai" + databaseError.getMessage());
                             } else {
-                                try {
-                                    System.out.println("Data Luu thanh cong");
-                                    
-                                    imgtemp.setProductID(pId);
-                                    
-                                    imgtemp.setUrl(url);
-                                    System.err.println("Data saves ql:" + imgtemp.toString());
-                                    new ImageProductDAO().save(imgtemp);
-                                } catch (SQLException ex) {
-                                    Logger.getLogger(ProductManagerController.class.getName()).log(Level.SEVERE, null, ex);
-                                }
+                                System.out.println("Data Luu thanh cong");
+
+                                imgtemp.setProductID(pId);
+
+                                imgtemp.setUrl(url);
+                                System.err.println("Data saves ql:" + imgtemp.toString());
+                                new ImageProductDAO().save(imgtemp);
                             }
                         }
                     });
-                    
+
                 }
 
             }
@@ -202,7 +209,6 @@ public class ProductManagerController extends HttpServlet {
             Logger.getLogger(ProductManagerController.class.getName()).log(Level.SEVERE, null, ex);
         }
         response.sendRedirect("ProductManagerController?userid=" + user);
-//request.getRequestDispatcher(Constrants.MANAGE_PRODUCT).forward(request, response);
     }
 
 }

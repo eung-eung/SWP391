@@ -70,7 +70,7 @@
                                 <label>MainImg:</label><br/>
 
                                 <input hidden="true" form="imgupload" type="text" value="${product.getMainImg()}" name="imageid">
-                                <img   src="${product.getMainImg()}" alt="alt" style="max-height: 240px;max-width: 240px;"> 
+                                <img   src="${product.getMainImg().getUrl()}" alt="alt" style="max-height: 240px;max-width: 240px;"> 
                                 <label><br/>
                                     <input class="" form="imgupload"  type="file" value="Update Image"
                                            accept="image/*" name="img_item" id="file1" style="display:none" onchange="submitFormById('imgupload')" >

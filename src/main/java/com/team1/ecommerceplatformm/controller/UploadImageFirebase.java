@@ -1,4 +1,5 @@
-package com.team1.ecommerceplatformm;
+package com.team1.ecommerceplatformm.controller;
+
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.*;
@@ -135,7 +136,7 @@ public class UploadImageFirebase extends HttpServlet {
             return;
         }
         String url = "";
-        url = Constrants.UPLOAD_IMAGE;
+        url = Constrants.Upload_Image;
         try {
             request.setAttribute("listimage", new ImageProductDAO().getAll());
 //            new ImageProductDAO().getAll().get(0).getUrl()

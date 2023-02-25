@@ -76,6 +76,7 @@
                     <thead>
                         <tr>
                             <th>STT</th> 
+                            <th hidden>Shop Name</th>
                             <th>Category Name</th> 
                             <th>Price</th>
                             <th>Name</th>
@@ -87,18 +88,18 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <fmt:setLocale value="vi_VN"/>
                         <c:forEach var="product" begin="1" end="${prolist.size()}" step="1" varStatus="loop">
                             <tr>
                                 <td>${loop.index}</td>
                                 <td hidden>${prolist[loop.index - 1].getProductID()}</td>
+                                <td hidden>${prolist[loop.index - 1].getShopName()}</td>
                                 <td>${prolist[loop.index - 1].getCategoryName()}</td> 
-                                <td><fmt:formatNumber type="currency" value="${prolist[loop.index - 1].getPrice()}" /></td>
+                                <td><fmt:formatNumber type="currency" value="${prolist[loop.index - 1].getPrice()}" currencySymbol="VND"/></td>
                                 <td>
                                     ${prolist[loop.index - 1].getName()}
                                 </td>
                                 <td>
-                                    <textarea readonly  class="limited-textarea form-control"  form="form${prolist[loop.index - 1].getProductID()}"  name="Description" rows="4" cols="50">${prolist[loop.index - 1].getDescription()}</textarea> 
+                                    <textarea readonly class="limited-textarea" form="form${prolist[loop.index - 1].getProductID()}"  name="Description" rows="4" cols="50">${prolist[loop.index - 1].getDescription()}</textarea> 
                                 </td>
                                 <td>${prolist[loop.index - 1].getQuanity()}</td>
                                 <td>${prolist[loop.index - 1].getCreateAt()}</td> 

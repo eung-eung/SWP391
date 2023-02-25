@@ -84,8 +84,16 @@ public class ImageProductDAO extends AbstractDAO<ImageProductDTO> {
     }
 
     @Override
-    public void save(ImageProductDTO t) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void save(ImageProductDTO t)  {
+        try {
+            PreparedStatement stm = conn.prepareStatement("insert into image_product(product_id,url,is_main_img) values(?,?,?)");
+            stm.setInt(1, t.getProductID());
+            stm.setString(2, t.getUrl());
+            stm.setBoolean(3, t.isMainImage());
+            stm.executeUpdate();
+        } catch (Exception e) {
+            System.err.println("Loi ben save image product" + e);
+        }
     }
 
     @Override

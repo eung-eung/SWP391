@@ -94,7 +94,7 @@
                     <!--                    <script>
                                             var index = 0;
                     
-                                        </script>-->
+                                        </script>--> 
                     <c:forEach items="${listTop20ProductsHaveBannerVertical}" var="productList" varStatus="loop">
                         <div class="list-product">
                             <div class="list-product-header">
@@ -122,7 +122,7 @@
                                 <div class="list-product-image">
                                     <div class="banner">
                                         <div class="banner-image">
-                                            <a href="<c:url value="/MainController?btnAction=product&productAction=showByCateID&categoryID=${listCategoryHaveNoVerticalBanner[loop.index].categoryID}&orderBy=popular" />"><img src="assets/images/${listCategoryHaveNoVerticalBanner[loop.index].bannerVertical}.jpg" alt=""></a>
+                                            <a href="<c:url value="/MainController?btnAction=product&productAction=showByCateID&categoryID=${listCategoryHaveNoVerticalBanner[loop.index].categoryID}&orderBy=popular" />"><img src="assets/images/${listCategoryHaveNoVerticalBanner[loop.index].bannerVertical}.jpg" alt="bi ngu"></a>
                                         </div>
                                         <div class="gif-box">
                                             <div class="gif-background">
@@ -140,7 +140,7 @@
                                                     <div class="slide-product-content">
                                                         <div class="top-block">
                                                             <a href="<c:url value="MainController?btnAction=product&productAction=showDetail&productID=${product.productID}"></c:url>" class="slide-product-content-image">
-                                                                <img src="${product.mainImg}" alt="">
+                                                                <img src="${product.getMainImg().getUrl()}" alt="">
                                                             </a>
 
                                                         </div>

@@ -19,7 +19,7 @@ public class Constrants {
     public final static String CART_CONTROLLER = "CartController";
     public final static String SHOP_CONTROLLER = "ShopController";
     public final static String ADDRESS_CONTROLLER = "AddressController";
-      public final static String ADMIN_CONTROLLER = "AdminController";
+    public final static String ADMIN_CONTROLLER = "AdminController";
     public final static String PRODUCT_MANAGER_CONTROLLER = "ProductManagerController";
     public final static String SHOW_TRANSACTION_HISTORY_PAGE = "WEB-INF/views/showTransactionHistory.jsp";
     public final static String SHOW_PRODUCT_PAGE = "WEB-INF/views/showProductsResult.jsp";
@@ -35,6 +35,6 @@ public class Constrants {
     public final static String UPLOAD_IMAGE = "WEB-INF/views/iploadimage.jsp";
     public final static String DASHBOARD = "WEB-INF/views/DashBoard.jsp";
 
-    public final static String URLFIREBASE = "D:\\FPT SPRING 2023\\SWP391\\EcommercePlatformm\\src\\main\\webapp\\assets\\thucaixemsao.json";
+    public final static String URLFIREBASE = "D:\\SWP391\\thucaixemsao.json";
     public final static String URLFIREBASE_URL = "https://tesst-8ebfb-default-rtdb.firebaseio.com/";
 }

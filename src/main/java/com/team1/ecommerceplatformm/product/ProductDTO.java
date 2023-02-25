@@ -39,7 +39,7 @@ public class ProductDTO {
     private float discount;
     private int soldCount;
     private boolean authen;
-    private String mainImg;
+    private ImageProductDTO mainImg;
 
 //    private ImageProductDTO mainImg;
     private String shopName;

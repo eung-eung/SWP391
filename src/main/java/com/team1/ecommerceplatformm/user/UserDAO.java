@@ -105,19 +105,52 @@ public class UserDAO extends AbstractDAO<UserDTO> {
     }
 
     public static void main(String[] args) throws SQLException {
-        UserDAO udao = new UserDAO();
-        try {
-            udao.getAll().forEach(System.out::println);
-            udao.updateProfile("test", "test update dao", "113", "eqwerqwer");
-        } catch (SQLException ex) {
-            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        UserDAO udao = new UserDAO();
+//        try {
+//            udao.getAll().forEach(System.out::println);
+//            udao.updateProfile("test", "test update dao", "113", "eqwerqwer");
+//        } catch (SQLException ex) {
+//            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+//        }
 
     }
 
     @Override
-    public UserDTO get(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public UserDTO get(int id) throws SQLException {
+         PreparedStatement stm = conn.prepareStatement("SELECT "
+                + "[user_id]\n"
+                + "      ,[ward_id]\n"
+                + "      ,[role_id]\n"
+                + "      ,[email]\n"
+                + "      ,[phone]\n"
+                + "      ,[yob]\n"
+                + "      ,[address]\n"
+                + "      ,[avatar]\n"
+                + "      ,[username]\n"
+                + "  FROM [User]"
+                 + " where [user_id] = ?");
+         stm.setInt(1, id);
+        ResultSet rs = stm.executeQuery();
+        UserDTO u = new UserDTO();
+         if(rs.next()) {
+            u.setUserID(rs.getInt("user_id"));
+            u.setWardID(rs.getString("ward_id"));
+            u.setRoleID(rs.getInt("role_id"));
+            u.setEmail(rs.getString("email"));
+            String phone = rs.getString("phone");
+            if (phone != null) {
+                phone = phone.trim();
+            }
+            u.setPhone(phone);
+            u.setYob(rs.getDate("yob"));
+            u.setAddress(rs.getString("address"));
+            u.setAvatarUrl(rs.getString("avatar"));
+            u.setUsername(rs.getString("username"));
+           
+        }
+        rs.close();
+        stm.close();
+        return u;
     }
 
     @Override

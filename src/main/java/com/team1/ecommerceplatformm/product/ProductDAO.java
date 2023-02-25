@@ -225,7 +225,7 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
             dto.setCategoryID(rs.getInt("category_id"));
             dto.setPrice(rs.getDouble("price"));
             dto.setName(rs.getString("name"));
-            dto.setMainImg(imageProductDAO.getMainImageByProductID(productID).getUrl());
+            dto.setMainImg(imageProductDAO.getMainImageByProductID(productID));
             list.add(dto);
         }
         rs.close();
@@ -330,7 +330,7 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
             dto.setDiscount(rs.getFloat("discount"));
             dto.setSoldCount(rs.getInt("sold_count"));
             dto.setAuthen(rs.getBoolean("authen"));
-            dto.setMainImg(imageProductDAO.getMainImageByProductID(rs.getInt("product_id")).getUrl());
+            dto.setMainImg(imageProductDAO.getMainImageByProductID(rs.getInt("product_id")));
             list.add(dto);
         }
         return list;
@@ -380,8 +380,8 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
 
             dto.setShopName(rs.getString("shop_name"));
             dto.setCategoryName(rs.getString("category_name"));
-            dto.setMainImg(imgDao.getMainImageByProductID(dto.getProductID()).getUrl());
-
+            dto.setMainImg(imgDao.getMainImageByProductID(dto.getProductID()));
+            System.out.println(dto.getMainImg().getUrl());
             dto.setImgs(imgDao.getAllImagesIsNotMain(id));
 
         }
@@ -453,11 +453,10 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
                 + "WHERE \n"
                 + "    p.shop_id = ? \n"
                 + "AND p.category_id = ?\n"
-                + "AND p.user_admin_id = ?\n"
                 + "ORDER BY p.[product_id] DESC");
         stm.setInt(1, productDTO.getShopID());
         stm.setInt(2, productDTO.getCategoryID());
-        stm.setInt(3, productDTO.getUserAdminID());
+//        stm.setInt(3, productDTO.getUserAdminID());
         ResultSet rs = stm.executeQuery();
         ImageProductDAO imgDao = new ImageProductDAO();
         ProductDTO dto = new ProductDTO();
@@ -470,19 +469,62 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
     @Override
     public void save(ProductDTO t) {
         try {
-            PreparedStatement stm = conn.prepareStatement("INSERT INTO Product (shop_id, category_id, price, name, description, quantity, status, create_at, approve_at, discount, sold_count, authen) \n"
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, null, null, 0, 0);");
-            stm.setInt(1, t.getShopID());
-            stm.setInt(2, t.getCategoryID());
-            stm.setDouble(3, t.getPrice());
-            stm.setString(4, t.getName());
-            stm.setString(5, t.getDescription());
-            stm.setInt(6, t.getQuanity());
-            stm.setBoolean(7, t.isStatus());
+//            PreparedStatement stm = conn.prepareStatement(""
+//                    + "INSERT INTO Product ("
+//                    + "shop_id, category_id, "
+//                    + "price, name, "
+//                    + "description, "
+//                    + "quantity, status, "
+//                    + "create_at, approve_at, "
+//                    + "discount, sold_count, "
+//                    + "authen) \n"
+//                    + "VALUES (?, ?, "
+//                    + "?, ?, "
+//                    + "?, ?, "
+//                    + "?, ?, "
+//                    + "null, null, "
+//                    + "0, 0);");
+//            stm.setInt(1, t.getShopID());
+//            stm.setInt(2, t.getCategoryID());
+//            stm.setDouble(3, t.getPrice());
+//            stm.setString(4, t.getName());
+//            stm.setString(5, t.getDescription());
+//            stm.setInt(6, t.getQuanity());
+//            stm.setBoolean(7, t.isStatus());
+//            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+//            LocalDateTime now = LocalDateTime.now();
+//            stm.setString(8, dtf.format(now));
+////            stm.setString(9, dtf.format(now));
+
+            PreparedStatement stm = conn.prepareStatement(""
+                    + "INSERT INTO Product ("
+                    + "shop_id, category_id, "
+                    + "  price,"
+                    + " name, description, "
+                    + "quantity, status, "
+                    + "create_at, approve_at, "
+                    + "discount, sold_count, "
+                    + "authen) \n"
+                    + "VALUES (?, ?, "
+                    + "  ?, "
+                    + "?, ?, "
+                    + "?, ?, "
+                    + "?, null, "
+                    + "null, 0, "
+                    + "1);");
+            int count = 1;
+            stm.setInt(count++, t.getShopID());
+            stm.setInt(count++, t.getCategoryID());
+//            stm.setInt(count++, t.getUserAdminID());
+            stm.setDouble(count++, t.getPrice());
+            stm.setString(count++, t.getName());
+            stm.setString(count++, t.getDescription());
+            stm.setInt(count++, t.getQuanity());
+            stm.setBoolean(count++, t.isStatus());
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
             LocalDateTime now = LocalDateTime.now();
-            stm.setString(8, dtf.format(now));
-//            stm.setString(9, dtf.format(now));
+            stm.setString(count++, dtf.format(now));
+//            stm.setString(10, dtf.format(now));
             stm.executeUpdate();
         } catch (Exception e) {
             System.err.println("LOI NAY O SAVE:" + e);
