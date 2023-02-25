@@ -275,6 +275,7 @@
 
                                       <div class="dropdown-action">
                                           <a href="<c:url value="/MainController?btnAction=user&userAction=profile" />">Thông tin của tôi</a>
+                                        <a href="<c:url value="/MainController?btnAction=user&userAction=transaction"></c:url>">Lịch sử giao dịch</a>
                                           <a href="<c:url value="/MainController?btnAction=user&userAction=logout"></c:url>">Đăng xuất</a>
 
                                           </div>
@@ -284,13 +285,14 @@
                                                         document.querySelector('#my-avatar-header').style.backgroundImage = "url('" + resUrl + "')";
                                                         if (res.roleID == 4) {
                                                             console.log("4")
-                                                            document.querySelector(".header-bottom-shop").innerHTML = `  <a href="" class="cart-button"><i class="fa-solid fa-user-shield"></i></a>`
+                                                            
+                                                            document.querySelector(".header-bottom-shop").innerHTML = `  <a href="<c:url value="MainController?btnAction=admin&adminAction=show"/> class="cart-button"><i class="fa-solid fa-user-shield"></i></a>`
 
                                                         } else if (res.roleID == 3) {
                                                             console.log(3)
-                                                            document.querySelector(".header-bottom-admin").innerHTML = `<a href="" class="cart-button"><i class="fa-solid fa-shop"></i></a>`
+                                                            document.querySelector(".header-bottom-admin").innerHTML = `<a href="MainController?btnAction=manageProduct" class="cart-button"><i class="fa-solid fa-shop"></i></a>`
                                                         }
-                                                        location.reload()
+                                                        user = 2;
                                                     }
                                                     )
                                                 }

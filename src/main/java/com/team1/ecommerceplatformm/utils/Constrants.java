@@ -35,6 +35,6 @@ public class Constrants {
     public final static String UPLOAD_IMAGE = "WEB-INF/views/iploadimage.jsp";
     public final static String DASHBOARD = "WEB-INF/views/DashBoard.jsp";
 
-    public final static String URLFIREBASE = "D:\\SWP391\\thucaixemsao.json";
+    public final static String URLFIREBASE = "D:\\FPT SPRING 2023\\SWP391\\EcommercePlatformm\\src\\main\\webapp\\assets\\thucaixemsao.json";
     public final static String URLFIREBASE_URL = "https://tesst-8ebfb-default-rtdb.firebaseio.com/";
 }

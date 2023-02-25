@@ -22,7 +22,7 @@ public class Dashboard extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String url = "";
-        url =  Constrants.Dashboard;
+        url =  Constrants.DASHBOARD;
         ArrayList<ProductDTO> list = null;
         try {
             list = new ProductDAO().getAll();

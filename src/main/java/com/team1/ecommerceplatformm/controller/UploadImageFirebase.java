@@ -2,10 +2,8 @@ package com.team1.ecommerceplatformm.controller;
 
 
 import com.google.auth.oauth2.GoogleCredentials;
-import com.google.cloud.storage.*;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
-import com.google.firebase.cloud.StorageClient;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,18 +24,11 @@ import org.apache.commons.io.IOUtils;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Base64;
-import java.util.List;
-import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024 * 1, // 1 MB
@@ -136,7 +127,7 @@ public class UploadImageFirebase extends HttpServlet {
             return;
         }
         String url = "";
-        url = Constrants.Upload_Image;
+        url = Constrants.UPLOAD_IMAGE;
         try {
             request.setAttribute("listimage", new ImageProductDAO().getAll());
 //            new ImageProductDAO().getAll().get(0).getUrl()

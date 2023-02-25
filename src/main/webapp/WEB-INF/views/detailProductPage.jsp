@@ -127,7 +127,7 @@
                                 });
                             </script>
                         </div>
-                                                 
+
                         <!-- right: right-detail-block.details -->
                         <div class="product-view-details">
                             <div class="product-view-details-container">
@@ -135,7 +135,7 @@
                                 <!-- company -->
                                 <p class="product-view-company"></p>
                                 <!-- name product -->
-                                <!--<h1 class="product-view-title"></h1>-->
+                                <h1 class="product-view-title">${productDetail.name}</h1>
                                 <!-- rating + review form -->
                                 <div class="product-view-ratings">
                                     <span class="icon fa-solid fa-star rating-star-full"></span>
@@ -168,11 +168,11 @@
                                         <dd class="product-view-value">
                                             <a href="<c:url value="MainController?btnAction=shop&shopAction=show&shopID=${productDetail.shopID}" />"><span>${productDetail.shopName}</span></a>
                                         </dd>
-                                        <!-- 
-                                        <dt class="product-view-name">Condition</dt>
+
+                                        <dt class="product-view-name"></dt>
                                         <dd class="product-view-value">
                                             New
-                                        </dd> -->
+                                        </dd> 
                                     </dl>
                                 </div>
 
@@ -360,6 +360,7 @@
     <script src="<c:url value="/assets/Javascript/handleDetailProductPage.js" />"></script>
 
     <script>
+            var user = ${empty sessionScope.user ? 1 : 2};
             function  stopAddCart(e) {
                 if (${sessionScope.user.roleID ==3} || ${sessionScope.user.roleID ==4}) {
                     swal("", "Hãy chuyển sang tài khoản người mua", "warning");
@@ -385,7 +386,8 @@
 //                let productName = document.querySelector()
                 console.log(shopID)
 //                console.log("log" isLogined)
-                if (${empty sessionScope.user}) {
+
+                if (user == 1) {
                     swal("", "Vui lòng đăng nhập để có thể thêm vào giỏ hàng", "warning");
                     return
 
@@ -434,7 +436,7 @@
                                     <div class="slide-product-content">
                                         <div class="top-block">
                                             <a href="<c:url value="MainController?btnAction=product&productAction=showDetail&productID=\${product.productID}"></c:url>" class="slide-product-content-image">
-                                                <img src="\${product.mainImg}" alt="">
+                                                <img src="\${product.mainImg.url}" alt="">
                                             </a>
 
                                         </div>
