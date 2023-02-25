@@ -30,7 +30,11 @@ public class ShopDAO extends AbstractDAO<ShopDTO> {
             dto.setCreateAt(rs.getDate(3));
             dto.setShopName(rs.getString(4));
             list.add(dto);
+<<<<<<< Updated upstream
              System.err.println(dto.toString());
+=======
+//            System.err.println(dto.toString());
+>>>>>>> Stashed changes
         }
         return list;
     }
@@ -59,7 +63,8 @@ public class ShopDAO extends AbstractDAO<ShopDTO> {
                 + "      ,[user_id]\n"
                 + "      ,[created_at]\n"
                 + "      ,[shop_name]\n"
-                + "  FROM [EcommmercePlatform].[dbo].[Shop] where [user_id] = ?");
+                + "  FROM [EcommmercePlatform].[dbo].[Shop]"
+                + " where [user_id] = ?");
         stm.setInt(1, id);
         ResultSet rs = stm.executeQuery();
         ShopDTO dto = new ShopDTO();

@@ -68,8 +68,13 @@
                             <form id="imgupload"  action="./UpdateImage?idProduct=${product.getProductID()}" method="post" enctype="multipart/form-data"  ></form>
                             <div class="form-group">
                                 <label>MainImg:</label><br/>
+<<<<<<< Updated upstream
                                 
                                 <input hidden="true" form="imgupload" type="text" value="${product.getMainImg().getImageID()}" name="imageid">
+=======
+
+                                <input hidden="true" form="imgupload" type="text" value="${product.getMainImg()}" name="imageid">
+>>>>>>> Stashed changes
                                 <img   src="${product.getMainImg().getUrl()}" alt="alt" style="max-height: 240px;max-width: 240px;"> 
                                 <label><br/>
                                     <input class="" form="imgupload"  type="file" value="Update Image"

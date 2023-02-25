@@ -80,7 +80,7 @@
                             <div class="product-view-image">
                                 <div class="product-view-image-main">
                                     <a href="#">
-                                        <img id="image" src="${productDetail.mainImg}" alt="">
+                                        <img id="image" src="${productDetail.getMainImg().getUrl()}" alt="">
                                     </a>
                                 </div>
                             </div>
@@ -89,14 +89,14 @@
                                 <ul class="swiper-wrapper product-view-thumbnails">
                                     <li class="swiper-slide product-view-thumbnail">
                                         <a href="#" class="product-view-thumnail-link active">
-                                            <img class="img-thumbnail" src="${productDetail.mainImg}" alt=""
+                                            <img class="img-thumbnail" src="${productDetail.getMainImg().getUrl()}" alt=""
                                                  onmouseover="hoverToShowImage(this)">
                                         </a>
                                     </li>
                                     <c:forEach items="${listNotMainImg}" var="img">
                                         <li class="swiper-slide product-view-thumbnail">
                                             <a href="#" class="product-view-thumnail-link">
-                                                <img class="img-thumbnail" src="${img.url}" alt=""
+                                                <img class="img-thumbnail" src="${img.getUrl()}" alt=""
                                                      onmouseover="hoverToShowImage(this)">
                                             </a>
                                         </li>

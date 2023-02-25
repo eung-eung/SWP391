@@ -39,8 +39,14 @@ public class ProductDTO {
     private float discount;
     private int soldCount;
     private boolean authen;
+<<<<<<< Updated upstream
     
     private ImageProductDTO mainImg; 
+=======
+    private ImageProductDTO mainImg;
+
+//    private ImageProductDTO mainImg;
+>>>>>>> Stashed changes
     private String shopName;
     private String categoryName;
     private List<ImageProductDTO> Imgs;

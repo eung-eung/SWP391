@@ -18,6 +18,12 @@ public class Constrants {
     public final static String SEARCH_AJAX_CONTROLLER = "SearchAjaxController";
     public final static String CART_CONTROLLER = "CartController";
     public final static String ADDRESS_CONTROLLER = "AddressController";
+<<<<<<< Updated upstream
+=======
+    public final static String ADMIN_CONTROLLER = "AdminController";
+    public final static String PRODUCT_MANAGER_CONTROLLER = "ProductManagerController";
+    public final static String SHOW_TRANSACTION_HISTORY_PAGE = "WEB-INF/views/showTransactionHistory.jsp";
+>>>>>>> Stashed changes
     public final static String SHOW_PRODUCT_PAGE = "WEB-INF/views/showProductsResult.jsp";
     public final static String SHOW_USER_PROFILE_PAGE = "WEB-INF/views/userDetailPage.jsp";
     public final static String SHOW_CART_PAGE = "WEB-INF/views/cartPage.jsp";
@@ -26,9 +32,16 @@ public class Constrants {
     public final static String SHOW_PRODUCT_DETAIL_PAGE = "WEB-INF/views/detailProductPage.jsp";
     public final static String MANAGE_PRODUCT = "WEB-INF/views/ManagerProduct.jsp";
     public final static String UPDATE_PRODUCT = "WEB-INF/views/UpdateProduct.jsp";
+<<<<<<< Updated upstream
     public final static String Upload_Image = "WEB-INF/views/iploadimage.jsp";
     public final static String Dashboard = "WEB-INF/views/DashBoard.jsp";
     
     public final static String URLFIREBASE = "D:\\Git\\SWP391-master\\thucaixemsao.json";
+=======
+    public final static String UPLOAD_IMAGE = "WEB-INF/views/iploadimage.jsp";
+    public final static String DASHBOARD = "WEB-INF/views/DashBoard.jsp";
+
+    public final static String URLFIREBASE = "D:\\SWP391\\thucaixemsao.json";
+>>>>>>> Stashed changes
     public final static String URLFIREBASE_URL = "https://tesst-8ebfb-default-rtdb.firebaseio.com/";
 }

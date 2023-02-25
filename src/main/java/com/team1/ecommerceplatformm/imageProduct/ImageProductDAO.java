@@ -86,7 +86,11 @@ public class ImageProductDAO extends AbstractDAO<ImageProductDTO> {
     }
 
     @Override
+<<<<<<< Updated upstream
     public void save(ImageProductDTO t) {
+=======
+    public void save(ImageProductDTO t)  {
+>>>>>>> Stashed changes
         try {
             PreparedStatement stm = conn.prepareStatement("insert into image_product(product_id,url,is_main_img) values(?,?,?)");
             stm.setInt(1, t.getProductID());
@@ -96,7 +100,10 @@ public class ImageProductDAO extends AbstractDAO<ImageProductDTO> {
         } catch (Exception e) {
             System.err.println("Loi ben save image product" + e);
         }
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
     }
 
     @Override

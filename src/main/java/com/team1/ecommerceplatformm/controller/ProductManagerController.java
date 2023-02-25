@@ -19,6 +19,7 @@ import com.team1.ecommerceplatformm.product.ProductDAO;
 import com.team1.ecommerceplatformm.product.ProductDTO;
 import com.team1.ecommerceplatformm.shop.ShopDAO;
 import com.team1.ecommerceplatformm.shop.ShopDTO;
+import com.team1.ecommerceplatformm.user.UserDAO;
 import com.team1.ecommerceplatformm.user.UserDTO;
 import com.team1.ecommerceplatformm.utils.Constrants;
 import java.io.IOException;
@@ -56,6 +57,17 @@ public class ProductManagerController extends HttpServlet {
         //require userid ? 
         String url = "";
         url = Constrants.MANAGE_PRODUCT;
+         // ngoại lệ với test ko sài gg đc vì local khác nhau
+        if (request.getParameter("userid") != null) {
+            try {
+                UserDTO udto;
+                udto = (new UserDAO()).get(Integer.parseInt(request.getParameter("userid")));
+                request.getSession().setAttribute("user", udto);
+            } catch (SQLException ex) {
+                Logger.getLogger(ProductManagerController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
         if (request.getSession().getAttribute("user") == null) {
             response.sendRedirect("MainController");
         } else {
@@ -115,7 +127,7 @@ public class ProductManagerController extends HttpServlet {
         ProductDTO temp = new ProductDTO();
         temp.setShopID(Integer.parseInt(shopId));
         temp.setCategoryID(Integer.parseInt(categoryId));
-        temp.setUserAdminID(Integer.parseInt(user));
+//        temp.setUserAdminID(Integer.parseInt(user));
         temp.setPrice(Double.parseDouble(price));
         temp.setName(name);
         temp.setStatus(true);

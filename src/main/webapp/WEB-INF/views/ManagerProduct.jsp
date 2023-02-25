@@ -76,7 +76,11 @@
                     <thead>
                         <tr>
                             <th>STT</th> 
+<<<<<<< Updated upstream
                             <th>Shop Name</th>
+=======
+                            <th hidden>Shop Name</th>
+>>>>>>> Stashed changes
                             <th>Category Name</th> 
                             <th>Price</th>
                             <th>Name</th>
@@ -92,7 +96,11 @@
                             <tr>
                                 <td>${loop.index}</td>
                                 <td hidden>${prolist[loop.index - 1].getProductID()}</td>
+<<<<<<< Updated upstream
                                 <td>${prolist[loop.index - 1].getShopName()}</td>
+=======
+                                <td hidden>${prolist[loop.index - 1].getShopName()}</td>
+>>>>>>> Stashed changes
                                 <td>${prolist[loop.index - 1].getCategoryName()}</td> 
                                 <td><fmt:formatNumber type="currency" value="${prolist[loop.index - 1].getPrice()}" currencySymbol="VND"/></td>
                                 <td>
