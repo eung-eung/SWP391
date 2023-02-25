@@ -127,14 +127,15 @@
                                 });
                             </script>
                         </div>
+                                                 
                         <!-- right: right-detail-block.details -->
                         <div class="product-view-details">
                             <div class="product-view-details-container">
 
                                 <!-- company -->
-                                <p class="product-view-company">Adidas</p>
+                                <p class="product-view-company"></p>
                                 <!-- name product -->
-                                <h1 class="product-view-title">${productDetail.name}</h1>
+                                <!--<h1 class="product-view-title"></h1>-->
                                 <!-- rating + review form -->
                                 <div class="product-view-ratings">
                                     <span class="icon fa-solid fa-star rating-star-full"></span>
@@ -165,7 +166,7 @@
                                     <dl class="product-view-description-list">
                                         <dt class="product-view-name">Người bán</dt>
                                         <dd class="product-view-value">
-                                            <a href="#"><span>Adidas</span></a>
+                                            <a href="<c:url value="MainController?btnAction=shop&shopAction=show&shopID=${productDetail.shopID}" />"><span>${productDetail.shopName}</span></a>
                                         </dd>
                                         <!-- 
                                         <dt class="product-view-name">Condition</dt>

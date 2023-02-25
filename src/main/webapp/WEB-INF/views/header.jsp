@@ -191,7 +191,7 @@
                                     </div>
                                     <div class="header-bottom-admin">
                                         <c:if test="${sessionScope.user.roleID == 4}">
-                                            <a "#" class="cart-button"><i class="fa-solid fa-user-shield"></i></a>
+                                            <a href="<c:url value="MainController?btnAction=admin&adminAction=show" />" class="cart-button"><i class="fa-solid fa-user-shield"></i></a>
                                             </c:if>
                                     </div>
                                     <div class="header-bottom-shop">

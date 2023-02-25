@@ -22,9 +22,9 @@ public class ShopDAO extends AbstractDAO<ShopDTO> {
         ArrayList<ShopDTO> list = new ArrayList<>();
         PreparedStatement stm = conn.prepareStatement("select * from Shop");
         ResultSet rs = stm.executeQuery();
-        ShopDTO dto = new ShopDTO();
-        if (rs.next()) {
 
+        while (rs.next()) {
+            ShopDTO dto = new ShopDTO();
             dto.setShopID(rs.getInt(1));
             dto.setUserID(rs.getInt(2));
             dto.setCreateAt(rs.getDate(3));
@@ -68,6 +68,33 @@ public class ShopDAO extends AbstractDAO<ShopDTO> {
             dto.setUserID(rs.getInt(2));
             dto.setCreateAt(rs.getDate(3));
             dto.setShopName(rs.getString(4));
+        }
+        return dto;
+    }
+
+    public ShopDTO GetShopQuantities(int shopId) throws SQLException {
+        PreparedStatement stm = conn.prepareStatement("  select s.shop_name,count(p.product_id) from Shop s \n"
+                + "								inner join Product p on p.shop_id = s.shop_id\n"
+                + "								where s.shop_id = ? group by s.shop_name");
+        stm.setInt(1, shopId);
+        ResultSet rs = stm.executeQuery();
+        ShopDTO dto = new ShopDTO();
+        if (rs.next()) {
+            dto.setShopName(rs.getString(1));
+            dto.setTotal(rs.getInt(2));
+        }
+        return dto;
+    }
+
+    public ShopDTO getAvatar(int shopId) throws SQLException {
+        PreparedStatement stm = conn.prepareStatement("   select u.avatar from Shop s inner join [User] u on s.user_id =  u.user_id \n"
+                + "						\n"
+                + "								where s.shop_id = ?");
+        stm.setInt(1, shopId);
+        ResultSet rs = stm.executeQuery();
+        ShopDTO dto = new ShopDTO();
+        if (rs.next()) {
+            dto.setAvatar(rs.getString(1));
         }
         return dto;
     }

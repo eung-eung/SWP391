@@ -46,11 +46,12 @@ public class SearchAjaxController extends HttpServlet {
             System.out.println("vào ajax controller");
             ProductDAO dao = new ProductDAO();
             ArrayList<ProductDTO> list = dao.getTOP10ProductByName(searchValue);
-            PrintWriter out = response.getWriter();
+
 //            for (ProductDTO productDTO : list) {
 //                System.out.println(gson.toJson(productDTO));
 //                out.println(gson.toJson(productDTO));
 //            }
+            PrintWriter out = response.getWriter();
             out.println(gson.toJson(list));
         } catch (SQLException ex) {
             Logger.getLogger(SearchAjaxController.class.getName()).log(Level.SEVERE, null, ex);

@@ -4,6 +4,10 @@
  */
 package com.team1.ecommerceplatformm.controller;
 
+import com.team1.ecommerceplatformm.product.ProductDAO;
+import com.team1.ecommerceplatformm.product.ProductDTO;
+import com.team1.ecommerceplatformm.shop.ShopDAO;
+import com.team1.ecommerceplatformm.shop.ShopDTO;
 import com.team1.ecommerceplatformm.utils.Constrants;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,6 +16,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -35,12 +43,35 @@ public class ShopController extends HttpServlet {
         String shopAction = request.getParameter("shopAction");
         System.out.println("vào shop controller");
         switch (shopAction) {
-            case "register":
-                 System.out.println("vào shop controller case register  " );
+            case "register": {
+                System.out.println("vào shop controller case register  ");
                 request.getRequestDispatcher(Constrants.SHOW_REGISTER_SHOP_PAGE).forward(request, response);
                 break;
-            default:
-                throw new AssertionError();
+            }
+            case "show":{
+                try {
+                    System.out.println("show");
+                    int shopId = Integer.parseInt(request.getParameter("shopID"));
+                    ProductDAO pDao = new ProductDAO();
+                    ShopDAO sDao = new ShopDAO();
+                    ShopDTO sDTO = sDao.get(shopId);
+                    ArrayList<ProductDTO> list = pDao.getAllProductByShopId(shopId);
+                    ShopDTO s2 = sDao.GetShopQuantities(shopId);
+                    ShopDTO s3 = sDao.getAvatar(shopId);
+                    for (ProductDTO productDTO : list) {
+                        System.out.println("dasd" + productDTO);
+                    }
+                    request.setAttribute("listProductsShop", list);
+                     request.setAttribute("shop", sDTO);
+                     request.setAttribute("total", s2.getTotal());
+                     request.setAttribute("avatar", s3.getAvatar());
+                    request.getRequestDispatcher(Constrants.SHOW_STORE_PAGE).forward(request, response);
+                    break;
+                } catch (SQLException ex) {
+                    Logger.getLogger(ShopController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
         }
     }
 

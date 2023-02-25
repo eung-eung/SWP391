@@ -98,14 +98,23 @@ public class MainController extends HttpServlet {
                         url = Constrants.PRODUCT_MANAGER_CONTROLLER;
                         break;
                     }
+                    case "admin": {
+                        System.out.println("vào showtable");
+                        url = Constrants.ADMIN_CONTROLLER;
+                        break;
+                    }
+//                    case "renderTable": {
+//                        url = Constrants.ADMIN_CONTROLLER;
+//                        break;
+//                    }
                 }
             }
         } catch (Exception ex) {
             ex.printStackTrace();
-        } finally {
+        } 
             System.out.println(url);
             request.getRequestDispatcher(url).forward(request, response);
-        }
+        
 
     }
 

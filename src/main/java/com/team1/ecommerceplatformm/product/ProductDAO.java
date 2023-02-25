@@ -313,6 +313,7 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
         stm.setInt(1, shopId);
         ResultSet rs = stm.executeQuery();
         ArrayList<ProductDTO> list = new ArrayList<>();
+        ImageProductDAO imageProductDAO = new ImageProductDAO();
         while (rs.next()) {
             ProductDTO dto = new ProductDTO();
             dto.setProductID(rs.getInt("product_id"));
@@ -329,6 +330,7 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
             dto.setDiscount(rs.getFloat("discount"));
             dto.setSoldCount(rs.getInt("sold_count"));
             dto.setAuthen(rs.getBoolean("authen"));
+            dto.setMainImg(imageProductDAO.getMainImageByProductID(rs.getInt("product_id")).getUrl());
             list.add(dto);
         }
         return list;
@@ -444,7 +446,6 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
 //        }
 //        return dto;
 //    }
-
     public int getProductIdNew(ProductDTO productDTO) throws SQLException {
         PreparedStatement stm = conn.prepareStatement(""
                 + "SELECT TOP 1  p.[product_id] \n"
@@ -529,7 +530,7 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
 //            ProductDTO dtoa = dao.get(449);
 //            System.out.println(dtoa);
 
-            dao.getTOP20BestSellingProductsByCategoryID(2).forEach(System.out::println);
+            dao.getAllProductByShopId(2).forEach(System.out::println);
             ArrayList<ArrayList<ProductDTO>> lsit = dao.getAllTOP20BestSellingProductsByCategoryIDs(lt);
 
             for (ArrayList<ProductDTO> productDTO : lsit) {

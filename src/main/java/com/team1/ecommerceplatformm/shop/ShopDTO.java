@@ -4,7 +4,9 @@
  */
 package com.team1.ecommerceplatformm.shop;
 
+import com.team1.ecommerceplatformm.product.ProductDTO;
 import java.sql.Date;
+import java.util.ArrayList;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,4 +29,7 @@ public class ShopDTO {
     private Date createAt;
     private String shopName;
     private boolean status;
+    private int total;
+    private String avatar;
+    private ArrayList<ProductDTO> listProducts;
 }

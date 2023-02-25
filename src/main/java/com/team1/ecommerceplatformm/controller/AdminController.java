@@ -4,17 +4,28 @@
  */
 package com.team1.ecommerceplatformm.controller;
 
+import com.google.gson.Gson;
+import com.team1.ecommerceplatformm.product.ProductDAO;
+import com.team1.ecommerceplatformm.product.ProductDTO;
+import com.team1.ecommerceplatformm.shop.ShopDAO;
+import com.team1.ecommerceplatformm.shop.ShopDTO;
+import com.team1.ecommerceplatformm.utils.Constrants;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
- * @author omach
+ * @author boyvi
  */
 @WebServlet(name = "AdminController", urlPatterns = {"/AdminController"})
 public class AdminController extends HttpServlet {
@@ -31,13 +42,35 @@ public class AdminController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = "WEB-INF/views/adminPage.jsp";
-        boolean isForward = true;
-        
-        if (isForward) {
-            request.getRequestDispatcher(url).forward(request, response);
+        String adminAction = request.getParameter("adminAction");
+        switch (adminAction) {
+            case "show": {
+                request.getRequestDispatcher(Constrants.ADMIN_PAGE).forward(request, response);
+                break;
+            }
+            case "render": {
+                try {
+                    ShopDAO shopDao = new ShopDAO();
+                    ProductDAO proDao = new ProductDAO();
+
+                    List<ShopDTO> listShop = new ArrayList<>();
+//                    ArrayList<ProductDTO> listProduct = new ArrayList<>();
+
+                    listShop = shopDao.getAll();
+
+
+                    Gson gson = new Gson();
+
+                    response.getWriter().println(gson.toJson(listShop));
+                    break;
+                } catch (SQLException ex) {
+                    Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            default:
+                throw new AssertionError();
         }
-        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
