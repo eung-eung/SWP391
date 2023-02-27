@@ -503,15 +503,15 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
                     + " name, description, "
                     + "quantity, status, "
                     + "create_at, approve_at, "
-                    + "discount, sold_count, "
-                    + "authen) \n"
+                    + "discount, sold_count) "
+//                    + "authen) \n"
                     + "VALUES (?, ?, "
                     + "  ?, "
                     + "?, ?, "
                     + "?, ?, "
                     + "?, null, "
-                    + "null, 0, "
-                    + "1);");
+                    + "null, 0) ");
+//                    + "1);");
             int count = 1;
             stm.setInt(count++, t.getShopID());
             stm.setInt(count++, t.getCategoryID());
