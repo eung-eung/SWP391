@@ -56,7 +56,7 @@ public class ShopController extends HttpServlet {
                     ShopDAO sDao = new ShopDAO();
                     ShopDTO sDTO = sDao.get(shopId);
                     ArrayList<ProductDTO> list = pDao.getAllProductByShopId(shopId);
-                    ShopDTO s2 = sDao.GetShopQuantities(shopId);
+                    ShopDTO s2 = sDao.getShopQuantities(shopId);
                     ShopDTO s3 = sDao.getAvatar(shopId);
                     for (ProductDTO productDTO : list) {
                         System.out.println("dasd" + productDTO);

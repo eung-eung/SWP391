@@ -39,9 +39,6 @@
                         </div>
                         <div class="block-sidebar-content">
                             <ul class="nav-list">
-
-
-
                                 <li class="nav-list-item active">
                                     <a href="#profile" class="nav-list-action"  class="menu-categories-item-action">
                                         Hồ sơ

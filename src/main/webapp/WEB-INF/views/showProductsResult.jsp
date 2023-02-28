@@ -29,6 +29,7 @@
 
     <body>
         <jsp:include page="header.jsp"/>
+        ${sessionScope.user}
         <c:if test="${empty sessionScope.listCategory}">
             <script>
                 window.location.href = "<c:url value="/" />"
@@ -124,7 +125,7 @@
 
                                 </div>
                                 <div class="products-list">
-
+                      
                                 <c:forEach items="${productListByCateID}" varStatus="loop"  var="productByCateID">
 
                                     <div class="product">

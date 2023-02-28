@@ -20,6 +20,7 @@ public class Constrants {
     public final static String SHOP_CONTROLLER = "ShopController";
     public final static String ADDRESS_CONTROLLER = "AddressController";
     public final static String ADMIN_CONTROLLER = "AdminController";
+    public final static String DASHBOARD_CONTROLLER = "Dashboard";
     public final static String PRODUCT_MANAGER_CONTROLLER = "ProductManagerController";
     public final static String SHOW_TRANSACTION_HISTORY_PAGE = "WEB-INF/views/showTransactionHistory.jsp";
     public final static String SHOW_PRODUCT_PAGE = "WEB-INF/views/showProductsResult.jsp";

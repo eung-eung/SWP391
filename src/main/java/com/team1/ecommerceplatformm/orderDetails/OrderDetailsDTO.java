@@ -20,18 +20,20 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class OrderDetailsDTO {
+
     private int orderId;
     private int productId;
     private int quantity;
-
-
     private float discount;
     private double price;
+    private int shopId;
+    private String shopName;
+    private String productName;
+    private String mainImageUrl;
 
     public OrderDetailsDTO(int productId, int quantity) {
         this.productId = productId;
         this.quantity = quantity;
     }
-    
-    
+
 }

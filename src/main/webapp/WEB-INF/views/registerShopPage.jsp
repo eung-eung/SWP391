@@ -35,12 +35,32 @@
                     <div class="register-items">
 
                         <div class="register-item">
-                            <label for="paypalAccount">Tài khoản PayPal <i class="fa-brands fa-paypal"></i></label>
+                            <label for="paypalAccount">Email <i class="fa-regular fa-envelope"></i></label>
                         </div>
                         <div class="register-item">
-                            <input id="paypalAccount" type="text"/>
+                            <input id="email" type="email"/>
                         </div>
-                    </div><div class="register-items">
+                    </div>
+                     <div class="register-items">
+
+                        <div class="register-item">
+                            <label for="paypalAccount">Số điện thoại <i class="fa-solid fa-phone"></i></label>
+                        </div>
+                        <div class="register-item">
+                            <input id="phoneNumber" type="number"/>
+                        </div>
+                    </div>
+                     <div class="register-items">
+
+                        <div class="register-item">
+                            <label for="paypalAccount">Mã Xác thực <i class="fa-solid fa-barcode"></i></label>
+                        </div>
+                        <div class="register-item">
+                            <input id="otp" type="number"/>
+                        </div>
+                    </div>
+                     
+                    <div class="register-items">
 
                         <button type="button" id="submit">Lưu</button>
                     </div>

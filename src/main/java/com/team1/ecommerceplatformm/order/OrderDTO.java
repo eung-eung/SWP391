@@ -25,7 +25,7 @@ import lombok.ToString;
 public class OrderDTO {
 
     private String orderId;
-    private String deliveryId;
+    private int deliveryId;
     private int userId;
     private String wardId;
     private Date orderDate;
@@ -35,5 +35,7 @@ public class OrderDTO {
     private int status;
     private Date shippedDate;
     private int paymentId;
+    private double total;
+    private String mainImgUrl;
     private List<OrderDetailsDTO> orderDetails;
 }

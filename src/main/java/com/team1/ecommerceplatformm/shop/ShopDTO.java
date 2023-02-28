@@ -32,4 +32,5 @@ public class ShopDTO {
     private int total;
     private String avatar;
     private ArrayList<ProductDTO> listProducts;
+    private String paypalAccount;
 }

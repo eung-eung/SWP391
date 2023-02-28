@@ -5,11 +5,15 @@
 package com.team1.ecommerceplatformm.shop;
 
 import com.team1.ecommerceplatformm.common.AbstractDAO;
+import com.team1.ecommerceplatformm.product.ProductDAO;
+import com.team1.ecommerceplatformm.product.ProductDTO;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -73,7 +77,7 @@ public class ShopDAO extends AbstractDAO<ShopDTO> {
         return dto;
     }
 
-    public ShopDTO GetShopQuantities(int shopId) throws SQLException {
+    public ShopDTO getShopQuantities(int shopId) throws SQLException {
         PreparedStatement stm = conn.prepareStatement("  select s.shop_name,count(p.product_id) from Shop s \n"
                 + "								inner join Product p on p.shop_id = s.shop_id\n"
                 + "								where s.shop_id = ? group by s.shop_name");
@@ -100,6 +104,40 @@ public class ShopDAO extends AbstractDAO<ShopDTO> {
         return dto;
     }
 
+    public ShopDTO getShopByShopId(int shopId) throws SQLException {
+        PreparedStatement stm = conn.prepareStatement("SELECT [shop_id]\n"
+                + "      ,[user_id]\n"
+                + "      ,[created_at]\n"
+                + "      ,[shop_name]\n"
+                + "      ,[status]\n"
+                + "      ,[paypal_account]\n"
+                + "  FROM [EcommmercePlatform].[dbo].[Shop] WHERE [shop_id] = ?");
+        stm.setInt(1, shopId);
+        ShopDTO dto = new ShopDTO();
+        ResultSet rs = stm.executeQuery();
+        if (rs.next()) {
+            dto.setShopID(rs.getInt("shop_id"));
+            dto.setUserID(rs.getInt("user_id"));
+            dto.setCreateAt(rs.getDate("created_at"));
+            dto.setShopName(rs.getString("shop_name"));
+            dto.setStatus(rs.getBoolean("status"));
+            dto.setPaypalAccount(rs.getString("paypal_account"));
+        }
+        stm.close();
+        conn.close();
+        return dto;
+
+    }
+    public static void main(String[] args) {
+        try {
+            ShopDAO dao = new ShopDAO();
+            ShopDTO dto = dao.getShopByShopId(1);
+            System.out.println(dto);
+                System.out.println(dto.getShopName());
+        } catch (SQLException ex) {
+            Logger.getLogger(ShopDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     @Override
     public void save(ShopDTO t) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody

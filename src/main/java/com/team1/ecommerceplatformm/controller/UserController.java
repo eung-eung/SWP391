@@ -5,6 +5,8 @@
 package com.team1.ecommerceplatformm.controller;
 
 import com.google.gson.Gson;
+import com.team1.ecommerceplatformm.order.OrderDAO;
+import com.team1.ecommerceplatformm.order.OrderDTO;
 import com.team1.ecommerceplatformm.user.UserDAO;
 import com.team1.ecommerceplatformm.user.UserDTO;
 import jakarta.servlet.http.HttpSession;
@@ -19,6 +21,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import com.team1.ecommerceplatformm.utils.Constrants;
+import java.util.ArrayList;
 
 /**
  *
@@ -103,6 +106,11 @@ public class UserController extends HttpServlet {
                 }
                 case "transaction": {
                     System.out.println("vào trans");
+                    UserDTO u = (UserDTO) session.getAttribute("user");
+                    OrderDAO dao = new OrderDAO();
+                    ArrayList<OrderDTO> list = dao.getAllOrdersByUserId(u.getUserID());
+                    request.setAttribute("histories", list);
+                    
                     request.getRequestDispatcher(Constrants.SHOW_TRANSACTION_HISTORY_PAGE).forward(request, response);
                     break;
                 }

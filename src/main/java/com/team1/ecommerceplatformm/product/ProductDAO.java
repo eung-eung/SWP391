@@ -336,6 +336,47 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
         return list;
     }
 
+    public ArrayList<ProductDTO> getTop10ProductByShopId(int shopId) throws SQLException {
+        PreparedStatement stm = conn.prepareStatement("SELECT TOP(10) [product_id]\n"
+                + "      ,[shop_id]\n"
+                + "      ,[category_id]\n"
+                + "      ,[user_admin_id]\n"
+                + "      ,[price]\n"
+                + "      ,[name]\n"
+                + "      ,[description]\n"
+                + "      ,[quantity]\n"
+                + "      ,[status]\n"
+                + "      ,[create_at]\n"
+                + "      ,[approve_at]\n"
+                + "      ,[discount]\n"
+                + "      ,[sold_count]\n"
+                + "      ,[authen]   FROM [EcommmercePlatform].[dbo].[Product] where [shop_id] = ? order by sold_count desc");
+        stm.setInt(1, shopId);
+        ResultSet rs = stm.executeQuery();
+        ArrayList<ProductDTO> list = new ArrayList<>();
+        ImageProductDAO imageProductDAO = new ImageProductDAO();
+        while (rs.next()) {
+            ProductDTO dto = new ProductDTO();
+            dto.setProductID(rs.getInt("product_id"));
+            dto.setShopID(rs.getInt("shop_id"));
+            dto.setCategoryID(rs.getInt("category_id"));
+            dto.setUserAdminID(rs.getInt("user_admin_id"));
+            dto.setPrice(rs.getDouble("price"));
+            dto.setName(rs.getString("name"));
+            dto.setDescription(rs.getString("description"));
+            dto.setQuanity(rs.getInt("quantity"));
+            dto.setStatus(rs.getBoolean("status"));
+            dto.setCreateAt(rs.getDate("create_at"));
+            dto.setApproveAt(rs.getDate("approve_at"));
+            dto.setDiscount(rs.getFloat("discount"));
+            dto.setSoldCount(rs.getInt("sold_count"));
+            dto.setAuthen(rs.getBoolean("authen"));
+            dto.setMainImg(imageProductDAO.getMainImageByProductID(rs.getInt("product_id")));
+            list.add(dto);
+        }
+        return list;
+    }
+
     @Override
     public ProductDTO get(int id) throws SQLException {
         PreparedStatement stm = conn.prepareStatement(""
@@ -504,7 +545,7 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
                     + "quantity, status, "
                     + "create_at, approve_at, "
                     + "discount, sold_count) "
-//                    + "authen) \n"
+                    //                    + "authen) \n"
                     + "VALUES (?, ?, "
                     + "  ?, "
                     + "?, ?, "

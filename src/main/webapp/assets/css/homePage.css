@@ -773,7 +773,7 @@ display: inline-block;
 
 /* width */
 ::-webkit-scrollbar {
-    width: 1px;
+    width: 5px;
 
 }
 
@@ -884,6 +884,15 @@ a.slide-product-content-image {
 }
 
 .register-shop{
-    color: #fff;
     text-decoration: none;
+    color: white;
+    font-size: 12px;
+    margin-bottom: 12px;
+    height: 22px;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.25);
+    padding: 0px 8px;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
 }
