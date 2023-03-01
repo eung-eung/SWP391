@@ -3,7 +3,7 @@ package com.team1.ecommerceplatformm.controller;
 
 import com.team1.ecommerceplatformm.product.ProductDAO;
 import com.team1.ecommerceplatformm.product.ProductDTO;
-import com.team1.ecommerceplatformm.utils.Constrants;
+import com.team1.ecommerceplatformm.utils.Constants;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -46,7 +46,7 @@ public class UpdateProduct extends HttpServlet {
             Logger.getLogger(DeleteProduct.class.getName()).log(Level.SEVERE, null, ex);
         }
         System.err.println(req.getParameter("productid"));
-        req.getRequestDispatcher(Constrants.UPDATE_PRODUCT).forward(req, resp);
+        req.getRequestDispatcher(Constants.UPDATE_PRODUCT).forward(req, resp);
     }
 
 }

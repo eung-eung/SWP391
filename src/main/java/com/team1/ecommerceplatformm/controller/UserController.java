@@ -20,7 +20,7 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import com.team1.ecommerceplatformm.utils.Constrants;
+import com.team1.ecommerceplatformm.utils.Constants;
 import java.util.ArrayList;
 
 /**
@@ -79,11 +79,11 @@ public class UserController extends HttpServlet {
                 case "logout": {
                     System.out.println("đã xóa session");
                     session.removeAttribute("user");
-                    response.sendRedirect(Constrants.MAIN_CONTROLLER);
+                    response.sendRedirect(Constants.MAIN_CONTROLLER);
                     break;
                 }
                 case "profile": {
-                    request.getRequestDispatcher(Constrants.SHOW_USER_PROFILE_PAGE).forward(request, response);
+                    request.getRequestDispatcher(Constants.SHOW_USER_PROFILE_PAGE).forward(request, response);
                     break;
                 }
                 case "updateProfile": {
@@ -110,10 +110,11 @@ public class UserController extends HttpServlet {
                     OrderDAO dao = new OrderDAO();
                     ArrayList<OrderDTO> list = dao.getAllOrdersByUserId(u.getUserID());
                     request.setAttribute("histories", list);
-                    
-                    request.getRequestDispatcher(Constrants.SHOW_TRANSACTION_HISTORY_PAGE).forward(request, response);
+
+                    request.getRequestDispatcher(Constants.SHOW_TRANSACTION_HISTORY_PAGE).forward(request, response);
                     break;
                 }
+                
             }
 
         } catch (IllegalArgumentException ex) {

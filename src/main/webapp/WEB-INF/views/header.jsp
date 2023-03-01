@@ -199,13 +199,13 @@
                                             <a href="MainController?btnAction=manageProduct" class="cart-button"><i class="fa-solid fa-shop"></i></a>
                                             </c:if>
                                     </div>
-                                    <c:if test="${sessionScope.user.roleID == 2}">
 
-                                        <a href="<c:url value="MainController?btnAction=shop&shopAction=register" />" class="register-shop"><i class="fa-solid fa-store"></i>Đăng ký cửa hàng</a>
-                                    </c:if>
 
-                                    <div class="header-bottom-admin">
+                                    <div class="header-bottom-register">
+                                        <c:if test="${sessionScope.user.roleID == 2}">
 
+                                            <a href="<c:url value="MainController?btnAction=shop&shopAction=register" />" class="register-shop"><i class="fa-solid fa-store"></i>Đăng ký cửa hàng</a>
+                                        </c:if>
                                     </div>
                                 </div>
                             </div>
@@ -286,11 +286,13 @@
                                                         if (res.roleID == 4) {
                                                             console.log("4")
 
-                                                            document.querySelector(".header-bottom-shop").innerHTML = `  <a href="<c:url value="MainController?btnAction=admin&adminAction=show"/> class="cart-button"><i class="fa-solid fa-user-shield"></i></a>`
+                                                            document.querySelector(".header-bottom-admin").innerHTML = ` <a href="<c:url value="MainController?btnAction=admin&adminAction=show" />" class="cart-button"><i class="fa-solid fa-user-shield"></i></a>`
 
                                                         } else if (res.roleID == 3) {
                                                             console.log(3)
-                                                            document.querySelector(".header-bottom-admin").innerHTML = `<a href="MainController?btnAction=manageProduct" class="cart-button"><i class="fa-solid fa-shop"></i></a>`
+                                                            document.querySelector(".header-bottom-shop").innerHTML = `<a href="MainController?btnAction=manageProduct" class="cart-button"><i class="fa-solid fa-shop"></i></a>`
+                                                        } else if (res.roleID == 2) {
+                                                            document.querySelector(".header-bottom-register").innerHTML = `<a href="<c:url value="MainController?btnAction=shop&shopAction=register" />" class="register-shop"><i class="fa-solid fa-store"></i>Đăng ký cửa hàng</a>`
                                                         }
                                                         user = 2;
                                                     }

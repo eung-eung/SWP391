@@ -9,7 +9,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.team1.ecommerceplatformm.imageProduct.ImageProductDAO;
 import com.team1.ecommerceplatformm.imageProduct.ImageProductDTO;
-import com.team1.ecommerceplatformm.utils.Constrants;
+import com.team1.ecommerceplatformm.utils.Constants;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -46,10 +46,10 @@ public class UpdateImage  extends HttpServlet{
         FirebaseOptions options;
         FirebaseApp firebaseApp = null;
         try {
-            serviceAccount = new FileInputStream(Constrants.URLFIREBASE);
+            serviceAccount = new FileInputStream(Constants.URLFIREBASE);
             options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                    .setDatabaseUrl(Constrants.URLFIREBASE_URL)
+                    .setDatabaseUrl(Constants.URLFIREBASE_URL)
                     .setStorageBucket("demo1")
                     .build();
             firebaseApp = FirebaseApp.initializeApp(options);
@@ -63,7 +63,7 @@ public class UpdateImage  extends HttpServlet{
         System.err.println("Pre data:"+child__image_ID+","+url);
        
         
-        FirebaseDatabase database = FirebaseDatabase.getInstance(Constrants.URLFIREBASE_URL);
+        FirebaseDatabase database = FirebaseDatabase.getInstance(Constants.URLFIREBASE_URL);
         DatabaseReference rootRef = database.getReference("mynode");
         DatabaseReference studentsRef = rootRef.child(child__image_ID);
         studentsRef.setValue(url, new DatabaseReference.CompletionListener() {

@@ -21,7 +21,7 @@ import com.team1.ecommerceplatformm.shop.ShopDAO;
 import com.team1.ecommerceplatformm.shop.ShopDTO;
 import com.team1.ecommerceplatformm.user.UserDAO;
 import com.team1.ecommerceplatformm.user.UserDTO;
-import com.team1.ecommerceplatformm.utils.Constrants;
+import com.team1.ecommerceplatformm.utils.Constants;
 import java.io.IOException;
 import java.util.ArrayList;
 import jakarta.servlet.ServletException;
@@ -56,7 +56,7 @@ public class ProductManagerController extends HttpServlet {
             throws ServletException, IOException {
         //require userid ? 
         String url = "";
-        url = Constrants.MANAGE_PRODUCT;
+        url = Constants.MANAGE_PRODUCT;
          // ngoại lệ với test ko sài gg đc vì local khác nhau
         if (request.getParameter("userid") != null) {
             try {
@@ -163,10 +163,10 @@ public class ProductManagerController extends HttpServlet {
                     img = IOUtils.readFully(fileContent, fileContent.available());
 
                     try {
-                        serviceAccount = new FileInputStream(Constrants.URLFIREBASE);
+                        serviceAccount = new FileInputStream(Constants.URLFIREBASE);
                         options = new FirebaseOptions.Builder()
                                 .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                                .setDatabaseUrl(Constrants.URLFIREBASE_URL)
+                                .setDatabaseUrl(Constants.URLFIREBASE_URL)
                                 .setStorageBucket("demo1")
                                 .build();
                         firebaseApp = FirebaseApp.initializeApp(options);
@@ -176,7 +176,7 @@ public class ProductManagerController extends HttpServlet {
                     String encodedString = Base64.getEncoder().encodeToString(img);
                     String url = "data:image/png;base64," + encodedString;
 
-                    database = FirebaseDatabase.getInstance(Constrants.URLFIREBASE_URL);
+                    database = FirebaseDatabase.getInstance(Constants.URLFIREBASE_URL);
                     rootRef = database.getReference("mynode");
                     studentsRef = rootRef.child(pId + "");
                     ImageProductDTO imgtemp = new ImageProductDTO();

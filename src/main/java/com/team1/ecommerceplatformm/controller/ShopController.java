@@ -8,7 +8,7 @@ import com.team1.ecommerceplatformm.product.ProductDAO;
 import com.team1.ecommerceplatformm.product.ProductDTO;
 import com.team1.ecommerceplatformm.shop.ShopDAO;
 import com.team1.ecommerceplatformm.shop.ShopDTO;
-import com.team1.ecommerceplatformm.utils.Constrants;
+import com.team1.ecommerceplatformm.utils.Constants;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -45,7 +45,7 @@ public class ShopController extends HttpServlet {
         switch (shopAction) {
             case "register": {
                 System.out.println("vào shop controller case register  ");
-                request.getRequestDispatcher(Constrants.SHOW_REGISTER_SHOP_PAGE).forward(request, response);
+                request.getRequestDispatcher(Constants.SHOW_REGISTER_SHOP_PAGE).forward(request, response);
                 break;
             }
             case "show":{
@@ -65,7 +65,7 @@ public class ShopController extends HttpServlet {
                      request.setAttribute("shop", sDTO);
                      request.setAttribute("total", s2.getTotal());
                      request.setAttribute("avatar", s3.getAvatar());
-                    request.getRequestDispatcher(Constrants.SHOW_STORE_PAGE).forward(request, response);
+                    request.getRequestDispatcher(Constants.SHOW_STORE_PAGE).forward(request, response);
                     break;
                 } catch (SQLException ex) {
                     Logger.getLogger(ShopController.class.getName()).log(Level.SEVERE, null, ex);

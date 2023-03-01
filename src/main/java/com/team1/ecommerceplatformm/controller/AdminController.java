@@ -9,7 +9,7 @@ import com.team1.ecommerceplatformm.product.ProductDAO;
 import com.team1.ecommerceplatformm.product.ProductDTO;
 import com.team1.ecommerceplatformm.shop.ShopDAO;
 import com.team1.ecommerceplatformm.shop.ShopDTO;
-import com.team1.ecommerceplatformm.utils.Constrants;
+import com.team1.ecommerceplatformm.utils.Constants;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -45,7 +45,7 @@ public class AdminController extends HttpServlet {
         String adminAction = request.getParameter("adminAction");
         switch (adminAction) {
             case "show": {
-                request.getRequestDispatcher(Constrants.ADMIN_PAGE).forward(request, response);
+                request.getRequestDispatcher(Constants.ADMIN_PAGE).forward(request, response);
                 break;
             }
             case "render": {

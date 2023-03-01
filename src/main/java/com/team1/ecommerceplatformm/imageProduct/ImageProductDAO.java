@@ -84,7 +84,7 @@ public class ImageProductDAO extends AbstractDAO<ImageProductDTO> {
     }
 
     @Override
-    public void save(ImageProductDTO t)  {
+    public void save(ImageProductDTO t) {
         try {
             PreparedStatement stm = conn.prepareStatement("insert into image_product(product_id,url,is_main_img) values(?,?,?)");
             stm.setInt(1, t.getProductID());
@@ -98,7 +98,14 @@ public class ImageProductDAO extends AbstractDAO<ImageProductDTO> {
 
     @Override
     public void update(ImageProductDTO t) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            PreparedStatement stm = conn.prepareStatement("update image_product set url=? where image_id =?");
+            stm.setString(1, t.getUrl());
+            stm.setInt(2, t.getImageID());
+            stm.executeUpdate();
+        } catch (Exception e) {
+            System.err.println("Loi ben update image product" + e);
+        }
     }
 
     @Override

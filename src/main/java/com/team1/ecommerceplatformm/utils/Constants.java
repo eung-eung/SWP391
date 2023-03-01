@@ -8,7 +8,7 @@ package com.team1.ecommerceplatformm.utils;
  *
  * @author boyvi
  */
-public class Constrants {
+public class Constants {
 
     public final static String USER_CONTROLLER = "UserController";
     public final static String MAIN_CONTROLLER = "MainController";
@@ -23,6 +23,7 @@ public class Constrants {
     public final static String DASHBOARD_CONTROLLER = "Dashboard";
     public final static String PRODUCT_MANAGER_CONTROLLER = "ProductManagerController";
     public final static String SHOW_TRANSACTION_HISTORY_PAGE = "WEB-INF/views/showTransactionHistory.jsp";
+     public final static String SHOW_DETAIL_TRANSACTION_HISTORY_PAGE = "WEB-INF/views/showDetailTransactionHistory.jsp";
     public final static String SHOW_PRODUCT_PAGE = "WEB-INF/views/showProductsResult.jsp";
     public final static String SHOW_REGISTER_SHOP_PAGE = "WEB-INF/views/registerShopPage.jsp";
     public final static String SHOW_USER_PROFILE_PAGE = "WEB-INF/views/userDetailPage.jsp";

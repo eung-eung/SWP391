@@ -3,6 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<fmt:setLocale value="vi-VN"/>
 <!DOCTYPE html>
 
 <html lang="en">
@@ -17,7 +18,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <link type="text/css" rel="stylesheet" href="<c:url value="/assets/css/ManagerProduct.css" />" />
 
         <style>
@@ -38,19 +39,7 @@
                 object-fit: cover;
             }
         </style>
-        <script>
-            function back() {
-                window.location.href = "home";
-            }
-            function doDelete(id)
-            {
-                var c = confirm("Are you sure?");
-                if (c)
-                {
-                    window.location.href = "delete?pid=" + id;
-                }
-            }
-        </script>
+
         <style>
             .limited-textarea {
                 width: 100%
@@ -61,11 +50,11 @@
         <div class="container1">
             <div class="nav-bar">
                 <div class="nav-content">
-                     <div class="home">
-                       <i class="fa-solid fa-house"></i>
-                            <a href="<c:url value="MainController"/>">Home</a>
+                    <div class="home">
+                        <i class="fa-solid fa-house"></i>
+                        <a href="<c:url value="MainController"/>">Trang chủ</a>
                     </div>
-                
+
                     <div class="nav-button active" id="manageProduct">
                         <i class="fa-solid fa-shop"></i>
                         <span>Quản lý cửa hàng</span>
@@ -80,30 +69,30 @@
                 </div>
             </div>
             <div id="render">
-          
-                <div class="table-wrapper">
-<!--                    <div class="table-title">-->
-                        <div class="row">
-                           
-                            <div class="col-sm-6">
-                                <a href="#addEmployeeModal"  class="btn btn-success" data-toggle="modal"><i class="fa-solid fa-plus"></i><span>Thêm vào sản phẩm</span></a>
 
-                            </div>
+                <div class="table-wrapper">
+                    <!--                    <div class="table-title">-->
+                    <div class="row">
+
+                        <div class="col-sm-6">
+                            <a href="#addEmployeeModal"  class="btn btn-success" data-toggle="modal"><i class="fa-solid fa-plus"></i><span>Thêm sản phẩm</span></a>
+
                         </div>
+                    </div>
                     <!--</div>-->
                     <table class="table table-striped table-hover">
                         <thead>
                             <tr>
                                 <th>STT</th> 
                                 <th hidden>Shop Name</th>
-                                <th>Category Name</th> 
-                                <th>Price</th>
-                                <th>Name</th>
-                                <th>Description</th>
-                                <th>Quantity</th>
-                                <th>Created At</th> 
-                                <th>Update</th>
-                                <th>Delete</th>
+                                <th>Loại sản phẩm</th> 
+                                <th>Giá</th>
+                                <th>Tên sản phẩm</th>
+                                <th>Mô tả</th>
+                                <th>Số lượng</th>
+                                <th>Ngày tạo</th> 
+                                <th>Cập nhật</th>
+                                <th>Xóa</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -112,8 +101,8 @@
                                     <td>${loop.index}</td>
                                     <td hidden>${prolist[loop.index - 1].getProductID()}</td>
                                     <td hidden>${prolist[loop.index - 1].getShopName()}</td>
-                                    <td>${prolist[loop.index - 1].getCategoryName()}</td> 
-                                    <td><fmt:formatNumber type="currency" value="${prolist[loop.index - 1].getPrice()}" currencySymbol="VND"/></td>
+                                    <td>${prolist[loop.index - 1].getCategoryName()}</td>
+                                    <td> <fmt:formatNumber value="${prolist[loop.index - 1].getPrice()}" type="currency" /></td>
                                     <td>
                                         ${prolist[loop.index - 1].getName()}
                                     </td>
@@ -124,11 +113,11 @@
                                     <td>${prolist[loop.index - 1].getCreateAt()}</td> 
                                     <td>
                                         <a style="padding: 14px;background-color: greenyellow; text-decoration: none;color: white;border-radius: 4px" 
-                                           href="./UpdateProduct?productid=${prolist[loop.index - 1].getProductID()}">Update</a>
+                                           href="./UpdateProduct?productid=${prolist[loop.index - 1].getProductID()}">Cập nhật</a>
                                     </td>
                                     <td>
-                                        <a style="padding: 14px;background-color: red; text-decoration: none;color: white;border-radius: 4px" 
-                                           href="./DeleteProduct?productid=${prolist[loop.index - 1].getProductID()}">Delete</a>
+                                        <a class="delete" style="padding: 14px;background-color: red; text-decoration: none;color: white;border-radius: 4px" 
+                                           href="./DeleteProduct?productid=${prolist[loop.index - 1].getProductID()}">Xóa</a>
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -204,6 +193,7 @@
             </div>
         </div> 
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
         <script>
                                     const content = document.querySelector(".nav-content")
                                     const buttons = document.querySelectorAll(".nav-button")
@@ -223,7 +213,7 @@
 
                                             button.classList.toggle("active")
                                             if (chartProduct.classList.contains('active')) {
-                                                document.querySelector("#render").innerHTML = `<div class="lds-ring"><div></div><div></div><div></div><div></div></div>`                    
+                                                document.querySelector("#render").innerHTML = `<div class="lds-ring"><div></div><div></div><div></div><div></div></div>`
                                                 fetch('MainController?btnAction=dashboard')
                                                         .then(res => res.json())
                                                         .then(data => {
@@ -294,14 +284,14 @@
                         <tr>
                             <th>STT</th> 
                             <th hidden>Shop Name</th>
-                            <th>Category Name</th> 
-                            <th>Price</th>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th>Quantity</th>
-                            <th>Created At</th> 
-                            <th>Update</th>
-                            <th>Delete</th>
+                            <th>Loại sản phẩm</th> 
+                            <th>Giá</th>
+                            <th>Tên sản phẩm</th>
+                            <th>Mô tả</th>
+                            <th>Số lượng</th>
+                            <th>Ngày tạo</th> 
+                            <th>Cập nhật</th>
+                            <th>Xóa</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -311,7 +301,7 @@
                                 <td hidden>${prolist[loop.index - 1].getProductID()}</td>
                                 <td hidden>${prolist[loop.index - 1].getShopName()}</td>
                                 <td>${prolist[loop.index - 1].getCategoryName()}</td> 
-                                <td><fmt:formatNumber type="currency" value="${prolist[loop.index - 1].getPrice()}" currencySymbol="VND"/></td>
+                                <td><fmt:formatNumber value="${prolist[loop.index - 1].getPrice()}" type="currency" /></td>
                                 <td>
                 ${prolist[loop.index - 1].getName()}
                                 </td>
@@ -322,11 +312,11 @@
                                 <td>${prolist[loop.index - 1].getCreateAt()}</td> 
                                 <td>
                                     <a style="padding: 14px;background-color: greenyellow; text-decoration: none;color: white;border-radius: 4px" 
-                                       href="./UpdateProduct?productid=${prolist[loop.index - 1].getProductID()}">Update</a>
+                                       href="./UpdateProduct?productid=${prolist[loop.index - 1].getProductID()}">Cập nhật</a>
                                 </td>
                                 <td>
-                                    <a style="padding: 14px;background-color: red; text-decoration: none;color: white;border-radius: 4px" 
-                                       href="./DeleteProduct?productid=${prolist[loop.index - 1].getProductID()}">Delete</a>
+                                    <a class='delete' style="padding: 14px;background-color: red; text-decoration: none;color: white;border-radius: 4px" 
+                                       href="./DeleteProduct?productid=${prolist[loop.index - 1].getProductID()}">Xóa</a>
                                 </td>
                             </tr>
             </c:forEach>
@@ -381,7 +371,31 @@
 
         </script>
 
+        <script>
 
+            $('.delete').click(function (event) {
+                event.preventDefault();
+                swal({
+                    title: "Bạn có muốn xóa?",
+                    //                    text: "Once deleted, you will not be able to recover this imaginary file!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                        .then((willDelete) => {
+                            if (willDelete) {
+                                swal("Đã xóa thành công", {
+                                    icon: "success",
+
+                                });
+                                window.location = $(this).attr('href');
+                            } else {
+                                swal("Xóa không thành công");
+                            }
+                        });
+
+            });
+        </script>
 
     </body>
 </html>

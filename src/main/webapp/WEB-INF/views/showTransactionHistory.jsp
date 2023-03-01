@@ -47,7 +47,12 @@
                                                     <div class="store">
                                                         <a href="<c:url value="MainController?btnAction=shop&shopAction=show&shopID=${item.shopId}" />"><i class="fa-solid fa-shop"></i>${item.shopName}</a>
                                                     </div>
+                                                    <div class="product-review">
+                                                        <span>Chat với cửa hàng</span>
+                                                        <span>Đánh giá sản phẩm</span>
+                                                    </div>
                                                 </div>
+                                                    
                                             </div>
                                             <div class="price">
                                                 <span><fmt:formatNumber value="${item.price}" type="currency" /></span>
@@ -64,6 +69,9 @@
                                 <div class="total-title">Tổng tiền</div>
                                 <div class="total-price"><fmt:formatNumber value="${history.total}" type="currency" /></div>
                             </div>
+<!--                            <div class="button-detail">
+                                <div>Xem chi tiết</div>
+                            </div>-->
                         </div>
                         <!--end order-->
                     </c:forEach>
@@ -73,7 +81,52 @@
         </div>
     </body>
     <script>
-      
+        let moreBtns = document.querySelectorAll(".btn-more")
+        document.querySelectorAll(".order-item").forEach((o, index) => {
+            let arrayProducts = o.children[1].children[0].children
+            if (arrayProducts.length - 1 <= 2) {
+                moreBtns[index].innerHTML = ""
+            }
+            console.log(arrayProducts)
+            for (let i = 0; i < arrayProducts.length; i++) {
+//                console.log(arrayProducts.length)
+
+                if (i >= 2 && i !== arrayProducts.length - 1) {
+                    arrayProducts[i].style.display = "none"
+
+                }
+            }
+
+
+        })
+
+
+        moreBtns.forEach(btn => btn.addEventListener("click", function (e) {
+                this.classList.toggle("open");
+                let listProductOfAOrder = e.target.parentNode.parentNode.children;
+
+                if (this.classList.contains("open")) {
+                    this.innerHTML = `<p>Ẩn bớt</p>`
+                    for (let i = 0; i < listProductOfAOrder.length; i++) {
+                        if (i >= 2 && i !== listProductOfAOrder.length - 1) {
+                            listProductOfAOrder[i].style.display = "flex"
+                        }
+                    }
+                } else {
+                    document.querySelectorAll(".order-item").forEach((o, index) => {
+                        let arrayProducts = o.children[1].children[0].children
+                        this.innerHTML = `<p>Xem thêm</p>`
+                        for (let i = 0; i < arrayProducts.length; i++) {
+                            if (i >= 2 && i !== arrayProducts.length - 1) {
+                                arrayProducts[i].style.display = "none"
+                            }
+                        }
+
+                    })
+                }
+
+
+            }))
     </script>
 
 </html>

@@ -9,7 +9,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.team1.ecommerceplatformm.imageProduct.ImageProductDAO;
 import com.team1.ecommerceplatformm.imageProduct.ImageProductDTO;
-import com.team1.ecommerceplatformm.utils.Constrants;
+import com.team1.ecommerceplatformm.utils.Constants;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -36,17 +36,17 @@ public class DeleteImage extends HttpServlet {
         FirebaseOptions options;
         FirebaseApp firebaseApp = null;
         try {
-            serviceAccount = new FileInputStream(Constrants.URLFIREBASE);
+            serviceAccount = new FileInputStream(Constants.URLFIREBASE);
             options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                    .setDatabaseUrl(Constrants.URLFIREBASE_URL)
+                    .setDatabaseUrl(Constants.URLFIREBASE_URL)
                     .setStorageBucket("demo1")
                     .build();
             firebaseApp = FirebaseApp.initializeApp(options);
         } catch (Exception e) {
             System.out.println(e);
         }
-        FirebaseDatabase database = FirebaseDatabase.getInstance(Constrants.URLFIREBASE_URL);
+        FirebaseDatabase database = FirebaseDatabase.getInstance(Constants.URLFIREBASE_URL);
         DatabaseReference rootRef = database.getReference("mynode");
         DatabaseReference dataRef = rootRef.child(req.getParameter("ImageID"));
         // Call the removeValue() method to remove the child.

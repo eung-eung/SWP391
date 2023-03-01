@@ -3,7 +3,7 @@ package com.team1.ecommerceplatformm.controller;
 import com.google.gson.Gson;
 import com.team1.ecommerceplatformm.product.ProductDAO;
 import com.team1.ecommerceplatformm.product.ProductDTO;
-import com.team1.ecommerceplatformm.utils.Constrants;
+import com.team1.ecommerceplatformm.utils.Constants;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -21,7 +21,7 @@ public class Dashboard extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String url = "";
-        url = Constrants.DASHBOARD;
+        url = Constants.DASHBOARD;
         ArrayList<ProductDTO> list = null;
         try {
             list = new ProductDAO().getTop10ProductByShopId(1);

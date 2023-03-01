@@ -8,7 +8,7 @@ import com.team1.ecommerceplatformm.imageProduct.ImageProductDAO;
 import com.team1.ecommerceplatformm.imageProduct.ImageProductDTO;
 import com.team1.ecommerceplatformm.product.ProductDAO;
 import com.team1.ecommerceplatformm.product.ProductDTO;
-import com.team1.ecommerceplatformm.utils.Constrants;
+import com.team1.ecommerceplatformm.utils.Constants;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -71,7 +71,7 @@ public class SearchController extends HttpServlet {
             Logger.getLogger(SearchController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        request.getRequestDispatcher(Constrants.SHOW_PRODUCT_PAGE).forward(request, response);
+        request.getRequestDispatcher(Constants.SHOW_PRODUCT_PAGE).forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

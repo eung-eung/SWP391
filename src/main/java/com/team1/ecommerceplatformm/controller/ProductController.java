@@ -9,7 +9,7 @@ import com.team1.ecommerceplatformm.imageProduct.ImageProductDAO;
 import com.team1.ecommerceplatformm.imageProduct.ImageProductDTO;
 import com.team1.ecommerceplatformm.product.ProductDAO;
 import com.team1.ecommerceplatformm.product.ProductDTO;
-import com.team1.ecommerceplatformm.utils.Constrants;
+import com.team1.ecommerceplatformm.utils.Constants;
 import java.io.IOException;
 import java.util.ArrayList;
 import jakarta.servlet.ServletException;
@@ -59,7 +59,7 @@ public class ProductController extends HttpServlet {
                     request.setAttribute("imageList", imageList);
                     request.setAttribute("productListByCateID", productListByCateID);
                     isForward = true;
-                    url = Constrants.SHOW_PRODUCT_PAGE;
+                    url = Constants.SHOW_PRODUCT_PAGE;
                     
                     switch(sort){
                         case "asc" :
@@ -81,7 +81,7 @@ public class ProductController extends HttpServlet {
                     request.setAttribute("listImgs", listImgs);
                     request.setAttribute("productDetail", pro);
                     isForward = true;
-                    url = Constrants.SHOW_PRODUCT_DETAIL_PAGE;
+                    url = Constants.SHOW_PRODUCT_DETAIL_PAGE;
                     break;
                 }
 //                case "showName": {
