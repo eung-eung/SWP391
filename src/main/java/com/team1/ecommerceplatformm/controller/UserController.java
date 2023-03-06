@@ -3,8 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 package com.team1.ecommerceplatformm.controller;
- 
+
 import com.google.gson.Gson;
+import com.team1.ecommerceplatformm.order.OrderDAO;
+import com.team1.ecommerceplatformm.order.OrderDTO;
 import com.team1.ecommerceplatformm.user.UserDAO;
 import com.team1.ecommerceplatformm.user.UserDTO;
 import jakarta.servlet.http.HttpSession;
@@ -19,6 +21,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import com.team1.ecommerceplatformm.utils.Constrants;
+import java.util.ArrayList;
 
 /**
  *
@@ -62,7 +65,7 @@ public class UserController extends HttpServlet {
                             //
                             String avatarURL = request.getParameter("picture");
                             String username = request.getParameter("username");
-                            user = uDAO.insertNewUser(email, avatarURL,username);
+                            user = uDAO.insertNewUser(email, avatarURL, username);
 
                         }
                         System.out.println("luu session");
@@ -88,17 +91,27 @@ public class UserController extends HttpServlet {
                     String phone = request.getParameter("phone");
                     String email = request.getParameter("email");
                     String urlAvatar = request.getParameter("urlAvatar").replace("/avatar/", "%2Favatar%2F");
-                    System.out.println("username"+ username);
-                    System.out.println("phone"+ phone);
-                    System.out.println("email"+ email);
-                    System.out.println("urlAvatar"+ urlAvatar);
+                    System.out.println("username" + username);
+                    System.out.println("phone" + phone);
+                    System.out.println("email" + email);
+                    System.out.println("urlAvatar" + urlAvatar);
                     uDAO.updateProfile(email, username, phone, urlAvatar);
                     UserDTO u = (UserDTO) session.getAttribute("user");
                     u.setPhone(phone);
                     u.setUsername(username);
                     u.setAvatarUrl(urlAvatar);
-                    
+
                     session.setAttribute("user", u);
+                    break;
+                }
+                case "transaction": {
+                    System.out.println("vào trans");
+                    UserDTO u = (UserDTO) session.getAttribute("user");
+                    OrderDAO dao = new OrderDAO();
+                    ArrayList<OrderDTO> list = dao.getAllOrdersByUserId(u.getUserID());
+                    request.setAttribute("histories", list);
+                    
+                    request.getRequestDispatcher(Constrants.SHOW_TRANSACTION_HISTORY_PAGE).forward(request, response);
                     break;
                 }
             }

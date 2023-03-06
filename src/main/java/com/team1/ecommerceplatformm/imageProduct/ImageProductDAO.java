@@ -77,8 +77,6 @@ public class ImageProductDAO extends AbstractDAO<ImageProductDTO> {
                 .findFirst().orElse(null);
     }
 
-   
-
     public ArrayList<ImageProductDTO> getAllMainImages() throws SQLException {
         return (ArrayList<ImageProductDTO>) getAll().stream()
                 .filter(i -> i.isMainImage() == true)
@@ -86,11 +84,7 @@ public class ImageProductDAO extends AbstractDAO<ImageProductDTO> {
     }
 
     @Override
-<<<<<<< Updated upstream
     public void save(ImageProductDTO t) {
-=======
-    public void save(ImageProductDTO t)  {
->>>>>>> Stashed changes
         try {
             PreparedStatement stm = conn.prepareStatement("insert into image_product(product_id,url,is_main_img) values(?,?,?)");
             stm.setInt(1, t.getProductID());
@@ -100,21 +94,20 @@ public class ImageProductDAO extends AbstractDAO<ImageProductDTO> {
         } catch (Exception e) {
             System.err.println("Loi ben save image product" + e);
         }
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
     }
 
     @Override
-    public void update(ImageProductDTO t) throws SQLException {
+    public void update(ImageProductDTO t) {
         try {
-            PreparedStatement stm = conn.prepareStatement("update image_product set url=? where image_id =?");
-            stm.setString(1, t.getUrl());
+            PreparedStatement stm = conn.prepareStatement(""
+                    + "UPDATE [image_product]\n"
+                    + "   SET [url] = ?\n"
+                    + " WHERE [image_id] = ?");
             stm.setInt(2, t.getImageID());
+            stm.setString(1, t.getUrl()); 
             stm.executeUpdate();
         } catch (Exception e) {
-            System.err.println("Loi ben update image product" + e);
+            System.err.println("Loi ben save image product" + e);
         }
     }
 

@@ -16,8 +16,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
-
-/**
+//import com.twilio.Twilio;
+//import com.twilio.rest.api.v2010.
+//import com.twilio.type.p
+        /**
  *
  * @author boyvi
  */
@@ -89,14 +91,36 @@ public class MainController extends HttpServlet {
                         url = Constrants.ADDRESS_CONTROLLER;
                         break;
                     }
+                    case "shop": {
+                        System.out.println("vào shop controlller main");
+                        url = Constrants.SHOP_CONTROLLER;
+                        break;
+                    }
+                    case "manageProduct": {
+                        url = Constrants.PRODUCT_MANAGER_CONTROLLER;
+                        break;
+                    }
+                    case "admin": {
+                        System.out.println("vào showtable");
+                        url = Constrants.ADMIN_CONTROLLER;
+                        break;
+                    }
+                    case "dashboard": {
+//                        System.out.println("vào showtable");
+                        url = Constrants.DASHBOARD_CONTROLLER;
+                        break;
+                    }
+//                    case "renderTable": {
+//                        url = Constrants.ADMIN_CONTROLLER;
+//                        break;
+//                    }
                 }
             }
         } catch (Exception ex) {
             ex.printStackTrace();
-        } finally {
-            System.out.println(url);
-            request.getRequestDispatcher(url).forward(request, response);
         }
+        System.out.println(url);
+        request.getRequestDispatcher(url).forward(request, response);
 
     }
 

@@ -2,11 +2,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.team1.ecommerceplatformm.shop;
+package com.team1.ecommerceplatformm.orderDetails;
 
-import com.team1.ecommerceplatformm.product.ProductDTO;
-import java.sql.Date;
-import java.util.ArrayList;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,15 +19,21 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class ShopDTO {
+public class OrderDetailsDTO {
 
-    private int shopID;
-    private int userID;
-    private Date createAt;
+    private int orderId;
+    private int productId;
+    private int quantity;
+    private float discount;
+    private double price;
+    private int shopId;
     private String shopName;
-    private boolean status;
-    private int total;
-    private String avatar;
-    private ArrayList<ProductDTO> listProducts;
-    private String paypalAccount;
+    private String productName;
+    private String mainImageUrl;
+
+    public OrderDetailsDTO(int productId, int quantity) {
+        this.productId = productId;
+        this.quantity = quantity;
+    }
+
 }

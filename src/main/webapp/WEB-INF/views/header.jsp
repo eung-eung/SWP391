@@ -58,6 +58,7 @@
 
                                                     <div class="dropdown-action">
                                                         <a href="<c:url value="/MainController?btnAction=user&userAction=profile#profile" />">Thông tin của tôi</a>
+                                                        <a href="<c:url value="/MainController?btnAction=user&userAction=transaction"></c:url>">Lịch sử giao dịch</a>
                                                         <a href="<c:url value="/MainController?btnAction=user&userAction=logout"></c:url>">Đăng xuất</a>
 
                                                         </div>
@@ -147,7 +148,7 @@
 
                                         <c:forEach items="${sessionScope.listCategory}" var="categoryItem">
                                             <li class="menu-categories-item">
-                                                <a href="<c:url value="/MainController?btnAction=product&productAction=showByCateID&categoryID=${categoryItem.categoryID}"></c:url>" class="menu-categories-item-action">
+                                                <a href="<c:url value="/MainController?btnAction=product&productAction=showByCateID&categoryID=${categoryItem.categoryID}&orderBy=popular"></c:url>" class="menu-categories-item-action">
                                                     ${categoryItem.icon}${categoryItem.name}
                                                 </a>
                                             </li>
@@ -174,30 +175,35 @@
                                             <div id="searchAjaxResult"></div>
                                             <div class="search-icon">
                                                 <button type="submit" class="search-button" name="btnAction" value="search"><i
-                                                        class="fa-solid fa-magnifying-glass"></i></button>
+                                                        class="fa-solid fa-magnifying-glass"></i><input type="text" name="orderBy" value="popular" hidden></button>
                                             </div>
 
                                         </div>
                                     </form>
                                 </div>
                                 <div style="    grid-column: 3/4;
-                                     justify-self: center;">
+                                     justify-self: center;
+                                     display: flex;
+                                     align-items: center;">
+                                    ${sessionScope.user.roleID}
                                     <div class="header-bottom-cart">
-                                        <a href="<c:url value="MainController?btnAction=cart&cartAction=view" />" class="cart-button"><i class="fa-solid fa-cart-shopping cart-icon"></i></a>
-
-
-
+                                        <a href="#" class="cart-button"><i class="fa-solid fa-cart-shopping cart-icon"></i></a>
                                     </div>
                                     <div class="header-bottom-admin">
                                         <c:if test="${sessionScope.user.roleID == 4}">
-                                            <a href="" class="cart-button"><i class="fa-solid fa-user-shield"></i></a>
+                                            <a href="<c:url value="MainController?btnAction=admin&adminAction=show" />" class="cart-button"><i class="fa-solid fa-user-shield"></i></a>
                                             </c:if>
                                     </div>
                                     <div class="header-bottom-shop">
                                         <c:if test="${sessionScope.user.roleID == 3}">
-                                            <a href="" class="cart-button"><i class="fa-solid fa-shop"></i></a>
+                                            <a href="MainController?btnAction=manageProduct" class="cart-button"><i class="fa-solid fa-shop"></i></a>
                                             </c:if>
                                     </div>
+                                    <c:if test="${sessionScope.user.roleID == 2}">
+
+                                        <a href="<c:url value="MainController?btnAction=shop&shopAction=register" />" class="register-shop"><i class="fa-solid fa-store"></i>Đăng ký cửa hàng</a>
+                                    </c:if>
+
                                     <div class="header-bottom-admin">
 
                                     </div>
@@ -209,13 +215,31 @@
             </div>
         </header>
     </body>
-
+    <script src="<c:url value="/assets/Javascript/handleMenuCategories.js" />"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script>
 
+                                                function  stopGoToCart(e) {
+
+                                                    if (${empty sessionScope.user}) {
+                                                        swal("", "Vui lòng đăng nhập", "warning");
+                                                        e.preventDefault();
+                                                    } else if (${sessionScope.user.roleID ==3} || ${sessionScope.user.roleID ==4}) {
+                                                        swal("", "Hãy chuyển sang tài khoản người mua", "warning");
+                                                        e.preventDefault();
+                                                    }
+
+
+
+                                                }
+                                                document.querySelector(".header-bottom-cart").addEventListener("click", stopGoToCart)
+                                                if (${not empty sessionScope.user}) {
+                                                    document.querySelector(".cart-button").href = "<c:url value="MainController?btnAction=cart&cartAction=view" />"
+                                                }
                                                 // function to get response
                                                 function loginByGoogle(response) {
+
                                                     console.log(response)
                                                     const responsePayload = decodeJwtResponse(response.credential);
                                                     console.log(responsePayload)
@@ -230,7 +254,11 @@
 
                                                     ).then(res => {
                                                         console.log(res)
+//                                                        let isLogined = true
+//                                                        window.localStorage.setItem("isLogin", true)
                                                         const  resUrl = res.avatarUrl;
+                                                        document.querySelector(".header-bottom-cart").removeEventListener("click", stopGoToCart)
+                                                        document.querySelector(".cart-button").href = "<c:url value="MainController?btnAction=cart&cartAction=view" />"
                                                         document.querySelector('.navigation-user-selection').innerHTML =
                                                                 `<li class="navigation-user-item">
                  <span class="email-need-split" data-email="${res.email}"></span>
@@ -247,6 +275,7 @@
 
                                       <div class="dropdown-action">
                                           <a href="<c:url value="/MainController?btnAction=user&userAction=profile" />">Thông tin của tôi</a>
+                                        <a href="<c:url value="/MainController?btnAction=user&userAction=transaction"></c:url>">Lịch sử giao dịch</a>
                                           <a href="<c:url value="/MainController?btnAction=user&userAction=logout"></c:url>">Đăng xuất</a>
 
                                           </div>
@@ -256,12 +285,14 @@
                                                         document.querySelector('#my-avatar-header').style.backgroundImage = "url('" + resUrl + "')";
                                                         if (res.roleID == 4) {
                                                             console.log("4")
-                                                            document.querySelector(".header-bottom-shop").innerHTML = `<a href="" class="cart-button"><i class="fa-solid fa-shop"></i></a>`
+
+                                                            document.querySelector(".header-bottom-shop").innerHTML = `  <a href="<c:url value="MainController?btnAction=admin&adminAction=show"/> class="cart-button"><i class="fa-solid fa-user-shield"></i></a>`
 
                                                         } else if (res.roleID == 3) {
                                                             console.log(3)
-                                                            document.querySelector(".header-bottom-admin").innerHTML = `  <a href="" class="cart-button"><i class="fa-solid fa-user-shield"></i></a>`
+                                                            document.querySelector(".header-bottom-admin").innerHTML = `<a href="MainController?btnAction=manageProduct" class="cart-button"><i class="fa-solid fa-shop"></i></a>`
                                                         }
+                                                        user = 2;
                                                     }
                                                     )
                                                 }
@@ -332,5 +363,5 @@
                                                 }
 
     </script>
-    <script src="<c:url value="/assets/Javascript/handleMenuCategories.js" />"></script>
+
 </html>

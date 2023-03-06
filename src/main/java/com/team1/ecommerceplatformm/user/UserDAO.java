@@ -37,7 +37,7 @@ public class UserDAO extends AbstractDAO<UserDTO> {
         while (rs.next()) {
             UserDTO u = new UserDTO();
             u.setUserID(rs.getInt("user_id"));
-            u.setWardID(rs.getInt("ward_id"));
+            u.setWardID(rs.getString("ward_id"));
             u.setRoleID(rs.getInt("role_id"));
             u.setEmail(rs.getString("email"));
             String phone = rs.getString("phone");
@@ -77,7 +77,7 @@ public class UserDAO extends AbstractDAO<UserDTO> {
         dto.setAvatarUrl(imageUrl);
         dto.setEmail(email);
         dto.setUsername(username);
-      
+
         stm.close();
         return dto;
 
@@ -93,6 +93,17 @@ public class UserDAO extends AbstractDAO<UserDTO> {
         stm.executeUpdate();
         stm.close();
     }
+
+    public void updateWardAndAddress(String email, String wardID, String address) throws SQLException {
+        PreparedStatement stm = conn.prepareStatement("update [User]\n"
+                + "  set ward_id = ?,address=? where email = ?");
+        stm.setString(1, wardID);
+        stm.setString(2, address);
+        stm.setString(3, email);
+        stm.executeUpdate();
+        stm.close();
+    }
+
     public static void main(String[] args) throws SQLException {
 //        UserDAO udao = new UserDAO();
 //        try {

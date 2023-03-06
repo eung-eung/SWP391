@@ -63,10 +63,10 @@ public class ProductManagerController extends HttpServlet {
                 UserDTO udto;
                 udto = (new UserDAO()).get(Integer.parseInt(request.getParameter("userid")));
                 request.getSession().setAttribute("user", udto);
+                request.getSession().setMaxInactiveInterval(60*60*60);
             } catch (SQLException ex) {
                 Logger.getLogger(ProductManagerController.class.getName()).log(Level.SEVERE, null, ex);
             }
-
         }
         if (request.getSession().getAttribute("user") == null) {
             response.sendRedirect("MainController");

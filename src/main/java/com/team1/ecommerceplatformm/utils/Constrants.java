@@ -17,31 +17,32 @@ public class Constrants {
     public final static String SEARCH_CONTROLLER = "SearchController";
     public final static String SEARCH_AJAX_CONTROLLER = "SearchAjaxController";
     public final static String CART_CONTROLLER = "CartController";
+    public final static String SHOP_CONTROLLER = "ShopController";
     public final static String ADDRESS_CONTROLLER = "AddressController";
-<<<<<<< Updated upstream
-=======
     public final static String ADMIN_CONTROLLER = "AdminController";
+    public final static String DASHBOARD_CONTROLLER = "Dashboard";
     public final static String PRODUCT_MANAGER_CONTROLLER = "ProductManagerController";
     public final static String SHOW_TRANSACTION_HISTORY_PAGE = "WEB-INF/views/showTransactionHistory.jsp";
->>>>>>> Stashed changes
     public final static String SHOW_PRODUCT_PAGE = "WEB-INF/views/showProductsResult.jsp";
+    public final static String SHOW_REGISTER_SHOP_PAGE = "WEB-INF/views/registerShopPage.jsp";
     public final static String SHOW_USER_PROFILE_PAGE = "WEB-INF/views/userDetailPage.jsp";
     public final static String SHOW_CART_PAGE = "WEB-INF/views/cartPage.jsp";
     public final static String SHOW_STORE_PAGE = "WEB-INF/views/storePage.jsp";
     public final static String HOME_PAGE = "WEB-INF/views/homePage.jsp";
     public final static String SHOW_PRODUCT_DETAIL_PAGE = "WEB-INF/views/detailProductPage.jsp";
+    public final static String ADMIN_PAGE = "WEB-INF/views/adminPage.jsp";
     public final static String MANAGE_PRODUCT = "WEB-INF/views/ManagerProduct.jsp";
     public final static String UPDATE_PRODUCT = "WEB-INF/views/UpdateProduct.jsp";
-<<<<<<< Updated upstream
-    public final static String Upload_Image = "WEB-INF/views/iploadimage.jsp";
-    public final static String Dashboard = "WEB-INF/views/DashBoard.jsp";
-    
-    public final static String URLFIREBASE = "D:\\Git\\SWP391-master\\thucaixemsao.json";
-=======
     public final static String UPLOAD_IMAGE = "WEB-INF/views/iploadimage.jsp";
     public final static String DASHBOARD = "WEB-INF/views/DashBoard.jsp";
-
-    public final static String URLFIREBASE = "D:\\SWP391\\thucaixemsao.json";
->>>>>>> Stashed changes
+    
+    //email
+    public final static String EMAIL_TK = "vinhtran120402@gmail.com";
+    public final static String EMAIL_MK = "qawvmteeujaryuzj";
+    
+    //local host
+    public final static String URL_LOCALHOST = "http://localhost:8080/";
+    // filebase
+    public final static String URLFIREBASE = "D:\\SWP391\\src\\main\\webapp\\assets\\thucaixemsao.json";
     public final static String URLFIREBASE_URL = "https://tesst-8ebfb-default-rtdb.firebaseio.com/";
 }

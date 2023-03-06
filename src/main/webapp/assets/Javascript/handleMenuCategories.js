@@ -37,7 +37,7 @@ function isOpenMenuCategoriesItems() {
         loadmoreButton.innerHTML = `
         <div class="menu-categories-item-action">
          <i class="fa-solid fa-circle-minus"></i>
-                                            <span class="more-view">Close Categories</span>
+                                            <span class="more-view">Đóng</span>
                                         </div>
         `;
         return true;
@@ -45,7 +45,7 @@ function isOpenMenuCategoriesItems() {
         loadmoreButton.innerHTML = `
         <div class="menu-categories-item-action">
          <i class="fa-solid fa-circle-plus"></i>
-                                            <span class="more-view">More Categories</span>
+                                            <span class="more-view">Xem thêm</span>
                                         </div>
         `;
     }

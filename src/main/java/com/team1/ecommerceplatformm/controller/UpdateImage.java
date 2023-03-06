@@ -58,6 +58,7 @@ public class UpdateImage  extends HttpServlet{
         }
         //
         String child__image_ID = request.getParameter("imageid");
+        System.out.println(child__image_ID);
         String encodedString = Base64.getEncoder().encodeToString(img);
         String url = "data:image/png;base64," + encodedString;
         System.err.println("Pre data:"+child__image_ID+","+url);
@@ -77,11 +78,7 @@ public class UpdateImage  extends HttpServlet{
                     imgtemp.setImageID(Integer.parseInt(child__image_ID) );
                     imgtemp.setUrl(url);
                     System.err.println("Data update ql:"+imgtemp.toString());
-                    try {
-                        new ImageProductDAO().update(imgtemp);
-                    } catch (SQLException ex) {
-                        Logger.getLogger(UpdateImage.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    new ImageProductDAO().update(imgtemp);
                 }
             }
         });

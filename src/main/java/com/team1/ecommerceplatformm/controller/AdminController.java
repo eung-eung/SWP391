@@ -4,31 +4,31 @@
  */
 package com.team1.ecommerceplatformm.controller;
 
-import com.team1.ecommerceplatformm.imageProduct.ImageProductDAO;
-import com.team1.ecommerceplatformm.imageProduct.ImageProductDTO;
+import com.google.gson.Gson;
 import com.team1.ecommerceplatformm.product.ProductDAO;
 import com.team1.ecommerceplatformm.product.ProductDTO;
+import com.team1.ecommerceplatformm.shop.ShopDAO;
+import com.team1.ecommerceplatformm.shop.ShopDTO;
 import com.team1.ecommerceplatformm.utils.Constrants;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.Collections;
-import java.util.Comparator;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author boyvi
  */
-@WebServlet(name = "SearchController", urlPatterns = {"/SearchController"})
-public class SearchController extends HttpServlet {
+@WebServlet(name = "AdminController", urlPatterns = {"/AdminController"})
+public class AdminController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,36 +42,35 @@ public class SearchController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        ImageProductDAO imageDao = new ImageProductDAO();
-        ProductDAO dao = new ProductDAO();
-        ArrayList<ProductDTO> list = new ArrayList<>();
+        String adminAction = request.getParameter("adminAction");
+        switch (adminAction) {
+            case "show": {
+                request.getRequestDispatcher(Constrants.ADMIN_PAGE).forward(request, response);
+                break;
+            }
+            case "render": {
+                try {
+                    ShopDAO shopDao = new ShopDAO();
+                    ProductDAO proDao = new ProductDAO();
 
-        String searchValue = request.getParameter("searchValue").trim();
-        String sort = request.getParameter("orderBy");
-        System.out.println("aaa" + searchValue);
-        try {
-            list = dao.getAllProductByName(searchValue);
-            ArrayList<ImageProductDTO> listMainImg = imageDao.getAllMainImages();
-//            set list anh main + list san pham duoc search
-            request.setAttribute("listMainImg", listMainImg);
-            request.setAttribute("listSearched", list);
-            request.setAttribute("searchValue", searchValue);
-            
+                    List<ShopDTO> listShop = new ArrayList<>();
+//                    ArrayList<ProductDTO> listProduct = new ArrayList<>();
 
-            switch (sort) {
-                case "asc":
-                    Collections.sort(list, Comparator.comparing(ProductDTO::getPrice));
+                    listShop = shopDao.getAll();
+
+
+                    Gson gson = new Gson();
+
+                    response.getWriter().println(gson.toJson(listShop));
                     break;
-                case "desc":
-                    Collections.sort(list, Comparator.comparing(ProductDTO::getPrice).reversed());
-                    break;
+                } catch (SQLException ex) {
+                    Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
 
-        } catch (SQLException ex) {
-            Logger.getLogger(SearchController.class.getName()).log(Level.SEVERE, null, ex);
+            default:
+                throw new AssertionError();
         }
-
-        request.getRequestDispatcher(Constrants.SHOW_PRODUCT_PAGE).forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

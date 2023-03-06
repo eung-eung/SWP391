@@ -9,12 +9,13 @@ import com.team1.ecommerceplatformm.city.CityDAO;
 import com.team1.ecommerceplatformm.city.CityDTO;
 import com.team1.ecommerceplatformm.district.DistrictDAO;
 import com.team1.ecommerceplatformm.district.DistrictDTO;
+import com.team1.ecommerceplatformm.user.UserDAO;
+import com.team1.ecommerceplatformm.user.UserDTO;
 import com.team1.ecommerceplatformm.ward.WardDAO;
 import com.team1.ecommerceplatformm.ward.WardDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,6 +24,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
@@ -119,8 +121,29 @@ public class AddressController extends HttpServlet {
                     Logger.getLogger(AddressController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            default:
-                throw new AssertionError();
+            case "update": {
+                try {
+                    String wardID = request.getParameter("wardID");
+                    System.out.println("wardID"+ wardID);
+           
+                    String address = request.getParameter("address");
+                             System.out.println("add"+ address);
+                    HttpSession session = request.getSession();
+                    UserDTO dto = (UserDTO) session.getAttribute("user");
+                    System.out.println("ss addressL " + dto);
+                    UserDAO dao = new UserDAO();
+                    dao.updateWardAndAddress(dto.getEmail(), wardID, address);
+                    dto.setWardID(wardID);
+                    dto.setAddress(address);
+                    session.setAttribute("user", dto);
+                    break;
+                } catch (SQLException ex) {
+                    Logger.getLogger(AddressController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+
+   
         }
         System.out.println("vào addresscontroller");
     }

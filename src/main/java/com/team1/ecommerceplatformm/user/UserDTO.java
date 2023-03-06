@@ -20,7 +20,7 @@ import lombok.ToString;
 @ToString
 public class UserDTO {
     private int userID;
-    private int wardID;
+    private String wardID;
     private int roleID;
     private String email;
     private String phone;

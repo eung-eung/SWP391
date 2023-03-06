@@ -17,16 +17,19 @@
         <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;1,100;1,300&display=swap"
               rel="stylesheet">
         <script src="https://kit.fontawesome.com/330a21053c.js" crossorigin="anonymous"></script>
+        <script src="https://www.paypal.com/sdk/js?client-id=AVPNRTv0apljAkWHaqZyMDTbKipmIQ_HpbKISKwAdC4_IJtCIVck8tSG8M7k6DgiCZEvrctor-faOGWT&currency=USD"></script>
         <link type="text/css" rel="stylesheet" href="<c:url value="/assets/css/homePage.css" />" />
-        <link type="text/css" rel="stylesheet" href="<c:url value="/assets/css/cartPage.css" />" />
         <link type="text/css" rel="stylesheet" href="<c:url value="/assets/css/detailProduct.css" />" />
+        <link type="text/css" rel="stylesheet" href="<c:url value="/assets/css/cartPage.css" />" />
+
         <title>Document</title>
     </head>
 
     <body>
         <jsp:include page="header.jsp" />
 
-        <div class="container">
+        <div class="container cart-container">
+
             <h1 class="cart-title">Giỏ hàng của bạn</h1>
             <div class="cart-content">
                 <table class="cart">
@@ -57,8 +60,8 @@
                         <div class="cart-total-label">
                             <strong>Địa chỉ giao hàng:</strong>
                         </div>
-                        <div class="cart-total-value">
-                            <a href="#">Thêm địa chỉ:</a>
+                        <div class="cart-total-value cart-address">
+                            <a href="<c:url value="/MainController?btnAction=user&userAction=profile#profile" />">Thêm địa chỉ:</a>
                         </div>
                     </li>
                     <li class="cart-total">
@@ -70,21 +73,88 @@
                 </ul>
             </div>
             <div class="cart-action">
-                <a href="#" class="checkout-button">Thanh Toán</a>
+                <div class="checkout-button">Thanh Toán</div>
+
             </div>
+            <div class="overlay"></div>
+            <div class="cart-action cart-paypal">
+                <a href="#" class="modal-close-button fa-solid fa-x">
+                </a>
+                <div id="paypal-button-container"></div>
+
+            </div>
+
         </div>
     </body>
 
-    <script src="<c:url value="/assets/Javascript/handleMenuCategories.js" />"></script>
-    <script src="<c:url value="/assets/Javascript/handleDetailProductPage.js" />"></script>
+
+
+
+    <script>
+        let background = document.querySelector(".overlay");
+        let checkoutBtn = document.querySelector(".checkout-button");
+        let modalPayPal = document.querySelector(".cart-paypal");
+        let closeModalButton = document.querySelector(".modal-close-button");
+
+        (function handleFormBackground() {
+
+
+
+            checkoutBtn.addEventListener("click", () => {
+                background.style.display = "block";
+                modalPayPal.classList.add("open");
+                if (modalPayPal.classList.contains("open")) {
+                    modalPayPal.style.cssText = `
+    display: block;
+    opacicty: 1;
+    visibility: visible;
+    top: 150px;                                          
+    left: 50%;
+    margin: 0 auto;
+    max-height: 90%;
+    max-width: 95%;
+    outline: 0;
+    overflow: hidden;
+    padding: 0;
+    right: 0;
+    top: 50% !important;
+    transform: translate(-50%, -50%);
+    position: fixed;
+    overflow-y:scroll`
+                }
+            })
+
+            closeModalButton.addEventListener("click", () => {
+                modalPayPal.classList.remove("open");
+                background.style.display = "none";
+                if (!modalPayPal.classList.contains("open")) {
+                    modalPayPal.style.cssText = ``;
+
+                }
+            });
+        })();
+
+
+    </script>
+
     <script>
         let cart = JSON.parse(window.localStorage.getItem('cart'));
         let fieldShopID = document.querySelector(".shopID")
-        const unique = [...new Set(cart.map(item => item.shopID))];
+
         let cartList = document.querySelector('.cart')
+        let total = 0;
 //        let cart = JSON.parse(window.localStorage.getItem('cart'));
 
+        if ( cart == null) {
+            document.querySelector(".cart-container").innerHTML = `<div class='empty-cart-img'>
+            <img class='empty-img' src="assets/images/emptyCart.png" alt="alt"/>
+<a href='<c:url value="MainController" />' class='href-homePage'>Đi mua sắm</a>
+ </div>
+        
+`
+        }
 
+        const unique = [...new Set(cart.map(item => item.shopID))];
         unique.forEach(u => {
 
             fetch("MainController?btnAction=cart&cartAction=render&shopID=" + u, {
@@ -115,7 +185,7 @@
                             </h4>
                         </td>
                         <td class="cart-item cart-item-price">
-                            <span class="cart-item-price-value">\${formatter.format(parseInt(item.price.trim().replace(".0","")))}</span>
+                            <span class="cart-item-price-value">\${item.price}</span>
                         </td>
                        <input type="hidden" class="productID" value="\${item.productID}"/>
                         <td class="cart-item cart-item-quantity">
@@ -132,7 +202,7 @@
                             </div>
                         </td>
                         <td class="cart-item cart-item-total">
-                            <span class="cart-item-total">\${formatter.format(item.price * item.quantity)}</span>
+                            <span class="cart-item-total">\${formatter.format(parseInt(item.price.replaceAll(".","")) * item.quantity)}</span>
                             <div class="close" onclick="deleteAnItem(this,\${item.productID},\${data.shopID})">
                                 <span class="modal-close-button fa-solid fa-x">
                                 </span>
@@ -168,7 +238,8 @@
                         }
                         handleTotalItem(btn, btn.value)
                         setQuantityWithDeIncrease(btn.value, productID)
-                        calculateTotal()
+                        total = calculateTotal()
+                        document.querySelector(".total").innerHTML = `<span>` + formatter.format(total) + `</span>`
                     })
 
 //                    calculateTotal()
@@ -178,24 +249,6 @@
         }
 
 
-
-
-
-//        function handleOnInputQuantity(productID) {
-//            let inputQuantity = document.querySelectorAll(".quantity-input")
-//            inputQuantity.forEach(input => {
-//                input.addEventListener("input", function () {
-//                    if (this.value < 0) {
-//                        this.value = Math.abs(this.value)
-//                    } else if (this.value == 0) {
-//                        this.value = 1
-//                    }
-////                    handleTotalItem(this, this.value)
-//                    setQuantityWithDeIncrease(this.value, productID)
-//                })
-//            })
-////            calculateTotal()
-//        }
         function increaseValue(btn, productID) {
             let value = btn.nextElementSibling.value
             value++
@@ -249,7 +302,8 @@
 
             })
             window.localStorage.setItem('cart', JSON.stringify(cart))
-            calculateTotal()
+            total = calculateTotal()
+            document.querySelector(".total").innerHTML = `<span>` + formatter.format(total) + `</span>`
         }
 //delete a item from cart
         function deleteAnItem(deleleButton, productID, shopID) {
@@ -258,8 +312,23 @@
                 title: "Xóa sản phẩm",
                 text: "Bạn có muốn xóa?",
                 icon: "warning",
-                buttons: true,
                 dangerMode: true,
+                buttons: {
+                    cancel: {
+                        text: "Hủy",
+                        value: null,
+                        visible: true,
+                        className: "",
+                        closeModal: true,
+                    },
+                    confirm: {
+                        text: "Xác nhận",
+                        value: true,
+                        visible: true,
+                        className: "",
+                        closeModal: true
+                    }
+                }
             })
                     .then((willDelete) => {
 
@@ -272,12 +341,22 @@
                                 deleleButton.parentNode.parentNode.parentNode.previousElementSibling.remove()
 
                             }
+
                             deleleButton.parentNode.parentNode.remove()
                             window.localStorage.setItem('cart', JSON.stringify(cart))
+                            let total = calculateTotal()
+                            document.querySelector(".total").innerHTML = `<span>` + formatter.format(total) + `</span>`
                             swal("Đã xóa", {
                                 icon: "success",
                             });
-
+                            if (cart.length == null) {
+                                document.querySelector(".cart-container").innerHTML = `<div class='empty-cart-img'>
+            <img class='empty-img' src="assets/images/emptyCart.png" alt="alt"/>
+<a href='<c:url value="MainController" />' class='href-homePage'>Đi mua sắm</a>
+ </div>
+        
+`
+                            }
 
                         } else {
                             swal("Bạn đã hủy xóa sản phẩm");
@@ -289,9 +368,10 @@
         }
         function handleTotalItem(btn, quantity) {
 //            const f = Intl.
-            let currentPrice = btn.parentNode.parentNode.parentNode.parentNode.childNodes[5].innerText
+            let currentPrice = btn.parentNode.parentNode.parentNode.parentNode.childNodes[5].childNodes[1].innerHTML
+
             let totalPriceEachItemByQuantity = btn.parentNode.parentNode.parentNode.nextElementSibling.childNodes[1]
-            totalPriceEachItemByQuantity.innerText = formatter.format(parseInt(currentPrice.trim().replace(".", "")) * quantity)
+            totalPriceEachItemByQuantity.innerHTML = formatter.format(parseInt(currentPrice.trim().replaceAll(".", "")) * quantity)
 
         }
 //        document.querySelector('.checkout-button').addEventListener('click', function (e) {
@@ -301,17 +381,149 @@
         function calculateTotal() {
 
             let total = cart.reduce(function (total, currentItem) {
-                console.log("item " + currentItem)
+                console.log("item " + formatter.format(1000 + parseInt(currentItem.price.replaceAll(".", "")) * currentItem.quantity))
+
                 console.log("quantity " + currentItem.quantity)
-                return total + (currentItem.price * currentItem.quantity)
+                return total + parseInt(currentItem.price.replaceAll(".", "")) * currentItem.quantity
             }, 0)
 //            console.log(formatter.format(total))
-            document.querySelector(".total").innerHTML = `<span>` + formatter.format(total) + `</span>`
+            return total
+//            console.log("length: " + cart.length)
 
 
         }
-        window.onload = calculateTotal()
-//        })
+
+        var myHeaders = new Headers();
+        myHeaders.append("apikey", "0glu83Z8MQm554mvJYUFnrcIo8Ih2SBP");
+
+        var requestOptions = {
+            method: 'GET',
+            redirect: 'follow',
+            headers: myHeaders
+        };
+
+        const getTotal = () => {
+
+            return  new Promise(function (res) {
+                return res(calculateTotal())
+            })
+        }
+        window.onload = function () {
+            total = calculateTotal()
+            console.log(total)
+            document.querySelector(".total").innerHTML = `<span>` + formatter.format(total) + `</span>`
+            if (${sessionScope.user.wardID} !== 0) {
+                fetch("MainController?btnAction=address&addressAction=getWard&wardID=" + `${sessionScope.user.wardID}`, {
+                    method: 'GET'
+                })
+                        .then(res => res.json())
+                        .then(ward => {
+                            document.querySelector(".cart-address").innerHTML = "Phường/Xã: " + ward.name + " - "
+                            return new Promise(function (res) {
+                                return res(fetch("MainController?btnAction=address&addressAction=getDistrict&districtID=" + `\${ward.districtID}`, {
+                                    method: 'GET'
+                                }))
+                            })
+                                    .then(res => res.json())
+                                    .then(district => {
+                                        document.querySelector(".cart-address").innerHTML += "Quận/Huyện: " + district.name + " - "
+                                        return new Promise(function (res) {
+                                            return res(fetch("MainController?btnAction=address&addressAction=getCity&cityID=" + `\${district.cityID}`, {
+                                                method: 'GET'
+                                            }))
+                                        })
+                                    })
+                                    .then(res => res.json())
+                                    .then(city => {
+                                        document.querySelector(".cart-address").innerHTML += "Tỉnh/Thành Phố: " + city.name
+                                        document.querySelector(".cart-address").innerHTML += `<a href="<c:url value="/MainController?btnAction=user&userAction=profile#profile" />">Sửa địa chỉ</a>`
+                                    })
+                        }
+
+
+                        )
+            }
+        }
+
+        document.querySelector(".checkout-button").addEventListener('click', function () {
+            console.log("click")
+            getTotal()
+                    .then(total => {
+
+                        document.querySelector("#paypal-button-container").innerHTML = `<div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>`
+                        return new Promise(function (res) {
+                            return res(fetch("https://api.apilayer.com/exchangerates_data/convert?to=USD&from=VND&amount=" + total, requestOptions))
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data.result)
+                        return new Promise(function (res) {
+                            return res(data)
+                        })
+
+                    })
+                    .then(rs => {
+                        document.querySelector("#paypal-button-container").innerHTML = ""
+                        console.log(rs.result)
+                        paypal.Buttons({
+                            // Order is created on the server and the order id is returned
+                            createOrder: function (data, actions) {
+                                return actions.order.create(
+                                        {
+                                            purchase_units: [{
+                                                    amount: {
+                                                        value: Math.ceil(rs.result),
+                                                    }
+                                                }]
+                                        })
+                            },
+                            // Finalize the transaction on the server after payer approval
+                            onApprove: function (data, actions) {
+                                return actions.order.capture().then(function (details) {
+
+                                    swal("Thanh toán thành công", "Cảm ơn bạn!", "success");
+                                    modalPayPal.classList.remove("open");
+                                    background.style.display = "none";
+                                    if (!modalPayPal.classList.contains("open")) {
+                                        modalPayPal.style.cssText = ``;
+                                    }
+
+                                })
+                                        .then(() => {
+//                                            console.log("aaaa")
+//                                            let total = calculateTotal();
+                                            const map = new Map();
+                                            cart.forEach(item => {
+                                                map.set(item.productID, item.quantity)
+                                            })
+                                            const obj = Object.fromEntries(map)
+                                            console.log(map)
+                                            console.log(JSON.stringify(obj))
+                                            fetch("MainController?btnAction=cart&cartAction=orderPaypal&cart=" + encodeURIComponent(JSON.stringify(obj)), {
+                                                method: 'POST'
+                                            })
+                                        })
+                                        .then(() => {
+                                            localStorage.removeItem("cart")
+                                            cartList.innerHTML = ""
+                                            document.querySelector(".checkout-button").style.display = "none"
+                                            document.querySelector(".total").innerHTML = ""
+                                        })
+                            }
+                        }).render('#paypal-button-container');
+
+                    })
+
+
+
+                    .catch(error => console.log('error', error));
+            document.querySelector(".total").innerHTML = `<span>` + formatter.format(total) + `</span>`
+        })
+
+
+
+
     </script>
 
 </html>
