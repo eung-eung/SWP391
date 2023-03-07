@@ -41,7 +41,19 @@ public class CategoryDAO extends AbstractDAO<CategoryDTO> {
         stm.close();
         return list;
     }
-
+    public ArrayList<String> getNameOfCategory() throws SQLException{
+        PreparedStatement stm = conn.prepareStatement("SELECT name FROM category");
+        ResultSet rs = stm.executeQuery();
+        String name;
+        ArrayList<String> list = new ArrayList<>();
+        while(rs.next()){
+            name = rs.getString("name");
+            list.add(name);
+        }
+        rs.close();
+        stm.close();
+        return list;
+    }
     public ArrayList<CategoryDTO> getTop5CategoriesByTotalSoldCount() throws SQLException {
         PreparedStatement stm = conn.prepareStatement("  select top(5) sum(sold_count), \n"
                 + "                 c.name, p.category_id, c.banner\n"

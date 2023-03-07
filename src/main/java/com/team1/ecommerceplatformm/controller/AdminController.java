@@ -5,6 +5,7 @@
 package com.team1.ecommerceplatformm.controller;
 
 import com.google.gson.Gson;
+import com.team1.ecommerceplatformm.category.CategoryDAO;
 import com.team1.ecommerceplatformm.product.ProductDAO;
 import com.team1.ecommerceplatformm.product.ProductDTO;
 import com.team1.ecommerceplatformm.shop.ShopDAO;
@@ -66,6 +67,29 @@ public class AdminController extends HttpServlet {
                 } catch (SQLException ex) {
                     Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                
+            }
+            case "dashboard": {
+                try {
+                    CategoryDAO cateDao = new CategoryDAO();
+                    ProductDAO proDao = new ProductDAO();
+
+                    ArrayList<String> listName = new ArrayList<>();
+                    ArrayList<Integer> listCount = new ArrayList<>();
+//                    ArrayList<ProductDTO> listProduct = new ArrayList<>();
+
+                    listName = cateDao.getNameOfCategory();
+                    listCount = proDao.getCountByCategory();
+
+
+                    Gson gson = new Gson();
+
+                    response.getWriter().println(gson);
+                    break;
+                } catch (SQLException ex) {
+                    Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
             }
 
             default:

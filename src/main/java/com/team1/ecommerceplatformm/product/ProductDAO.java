@@ -376,6 +376,19 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
         }
         return list;
     }
+    public ArrayList<Integer> getCountByCategory() throws SQLException{
+        PreparedStatement stm = conn.prepareStatement("SELECT COUNT(category_id) as count FROM Product GROUP BY category_id");
+        ResultSet rs = stm.executeQuery();
+        int count;
+        ArrayList<Integer> list = new ArrayList<>();
+        while(rs.next()){
+            count = rs.getInt("count");
+            list.add(count);
+        }
+        rs.close();
+        stm.close();
+        return list;
+    }
 
     @Override
     public ProductDTO get(int id) throws SQLException {
