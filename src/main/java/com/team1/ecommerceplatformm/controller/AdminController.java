@@ -5,6 +5,9 @@
 package com.team1.ecommerceplatformm.controller;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.team1.ecommerceplatformm.category.CategoryDAO;
 import com.team1.ecommerceplatformm.product.ProductDAO;
 import com.team1.ecommerceplatformm.product.ProductDTO;
@@ -59,7 +62,6 @@ public class AdminController extends HttpServlet {
 
                     listShop = shopDao.getAll();
 
-
                     Gson gson = new Gson();
 
                     response.getWriter().println(gson.toJson(listShop));
@@ -67,7 +69,7 @@ public class AdminController extends HttpServlet {
                 } catch (SQLException ex) {
                     Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
+
             }
             case "dashboard": {
                 try {
@@ -81,15 +83,32 @@ public class AdminController extends HttpServlet {
                     listName = cateDao.getNameOfCategory();
                     listCount = proDao.getCountByCategory();
 
-
                     Gson gson = new Gson();
 
-                    response.getWriter().println(gson);
+//                  chatGPT
+                    JsonObject jsonObject = new JsonObject();
+                    jsonObject.add("listName", gson.toJsonTree(listName));
+                    // Create a new JsonArray for the second list
+                    JsonArray jsonArray = new JsonArray();
+                    for (int i = 0; i < listCount.size(); i++) {
+                        jsonArray.add(new JsonPrimitive(listCount.get(i)));
+                    }
+
+// Add the second list to the JsonObject
+                    jsonObject.add("listCount", jsonArray);
+
+// Set the response content type
+                    response.setContentType("application/json");
+
+// Write the JSON response to the response writer
+                    response.getWriter().println(jsonObject.toString());
+
+//                    response.getWriter().println(gson.toJson(listName));
                     break;
                 } catch (SQLException ex) {
                     Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
+
             }
 
             default:

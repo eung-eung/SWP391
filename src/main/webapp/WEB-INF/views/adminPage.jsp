@@ -1,71 +1,28 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
-<%@ page import="java.util.*" %>
-<%@ page import="com.google.gson.Gson"%>
-<%@ page import="com.google.gson.JsonObject"%>
-
-<%
-    Gson gsonObj = new Gson();
-    Map<Object, Object> map = null;
-    List<Map<Object, Object>> list = new ArrayList<Map<Object, Object>>();
-
-    map = new HashMap<Object, Object>();
-    map.put("label", "Work");
-    map.put("y", 44);
-    list.add(map);
-    map = new HashMap<Object, Object>();
-    map.put("label", "Gym");
-    map.put("y", 9);
-    list.add(map);
-    map = new HashMap<Object, Object>();
-    map.put("label", "Leisure");
-    map.put("y", 8);
-    list.add(map);
-    map = new HashMap<Object, Object>();
-    map.put("label", "Routines");
-    map.put("y", 8);
-    list.add(map);
-    map = new HashMap<Object, Object>();
-    map.put("label", "Nap");
-    map.put("y", 2);
-    list.add(map);
-    map = new HashMap<Object, Object>();
-    map.put("label", "Sleep");
-    map.put("y", 29);
-    list.add(map);
-
-    String dataPoints = gsonObj.toJson(list);
-%>
-
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<!DOCTYPE html>
 <html>
 
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-        <!DOCTYPE html>
-    <html lang="en">
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;1,100;1,300&display=swap"
+              rel="stylesheet">
+        <link type="text/css" rel="stylesheet" href="<c:url value='/assets/css/adminPage.css' />" />
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.css">
 
-        <head>
-            <meta charset="UTF-8">
-            <meta http-equiv="X-UA-Compatible" content="IE=edge">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <link rel="preconnect" href="https://fonts.googleapis.com">
-            <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;1,100;1,300&display=swap"
-                  rel="stylesheet">
-            <link type="text/css" rel="stylesheet" href="../assets/css/adminPage.css" />
-            <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.css">
-            
-            <script src="https://kit.fontawesome.com/330a21053c.js" crossorigin="anonymous"></script>
-            <script
-            src="https://www.paypal.com/sdk/js?client-id=AVPNRTv0apljAkWHaqZyMDTbKipmIQ_HpbKISKwAdC4_IJtCIVck8tSG8M7k6DgiCZEvrctor-faOGWT&currency=USD"></script>
+        <script src="https://kit.fontawesome.com/330a21053c.js" crossorigin="anonymous"></script>
+        <script
+        src="https://www.paypal.com/sdk/js?client-id=AVPNRTv0apljAkWHaqZyMDTbKipmIQ_HpbKISKwAdC4_IJtCIVck8tSG8M7k6DgiCZEvrctor-faOGWT&currency=USD"></script>
 
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-            <script type="text/javascript" charset="utf8"
-            src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.js"></script>
-            <title>Admin Page</title>
-        </head>
-
-
-        <title>Document</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+        <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.js"></script>
+        <title>Admin Page</title>
     </head>
 
 
@@ -83,8 +40,8 @@
         </div>
 
         <div class="adminDashboard" style="display: none" >
-            <div id="chartContainer" style="height: 370px; width: 100%"></div>
-            <div id="chartContainer1" style="height: 370px; width: 100%"></div>
+            <div id="chartContainer" class="piechart" style="height: 370px; width: 100%"></div>
+            <div id="chartContainer1" class="piechart" style="height: 300px; width: 100%"></div>
         </div>
 
         <div class = "adminTable">
@@ -128,11 +85,12 @@
                     table.style.display = "none";
                     dashboard.style.display = "flex";
                 }
-            })
+            });
         });
 
         document.querySelector(".header-bottom").hidden = true;
         $(document).ready(function () {
+
             fetch("MainController?btnAction=admin&adminAction=render", {
                 method: 'GET'
             })
@@ -172,7 +130,63 @@
                             }
                         });
                     });
+//          chart data
+            const userPieChart = fetch("MainController?btnAction=admin&adminAction=dashboard", {
+                method: 'GET'
+            })
+                    .then(rs => rs.json())
+                    .then(data => {
+                        const listCount = data.listCount;
+                        const listName = data.listName;
+                        let dataPoints = [];
+
+                        for (let i = 0; i < listCount.length; i++) {
+                            let obj = {
+                                y: getPercent(listCount, listCount[i]),
+                                label: listName[i]
+                            };
+                            dataPoints[i] = obj;
+                        }
+
+//                      add data to chart   
+
+                        var chart = new CanvasJS.Chart("chartContainer", {
+                            theme: "light2", // "light1", "dark1", "dark2"
+                            animationEnabled: true,
+                            title: {
+                                text: "user"
+                            },
+                            data: [{
+                                    type: "pie",
+                                    toolTipContent: "<b>{label}</b>: {y}%",
+                                    indexLabelFontSize: 16,
+                                    indexLabel: "{label} - {y}%",
+                                    dataPoints: dataPoints
+                                }]
+                        });
+
+                        var chart1 = new CanvasJS.Chart("chartContainer1", {
+                            theme: "light2", // "light1", "dark1", "dark2"
+                            animationEnabled: true,
+                            title: {
+                                text: "user"
+                            },
+                            data: [{
+                                    type: "pie",
+                                    toolTipContent: "<b>{label}</b>: {y}%",
+                                    indexLabelFontSize: 16,
+                                    indexLabel: "{label} - {y}%",
+                                    dataPoints: dataPoints
+                                }]
+                        });
+
+                        chart.render();
+                        chart1.render();
+                    });
+
+
         });
+
 
         function format(d) {
             // `d` is the original data object for the row
@@ -193,6 +207,7 @@
                     '</table>'
                     );
         }
+
         function getProduct(element) {
             return (
                     '</tr>' +
@@ -212,45 +227,17 @@
                     );
 
         }
-        
-        console.log(<%out.print(dataPoints);%>);
 
-        window.onload = function () {
 
-            var chart = new CanvasJS.Chart("chartContainer", {
-                theme: "light2", // "light1", "dark1", "dark2"
-                animationEnabled: true,
-                title: {
-                    text: "user"
-                },
-                data: [{
-                        type: "pie",
-                        toolTipContent: "<b>{label}</b>: {y}%",
-                        indexLabelFontSize: 16,
-                        indexLabel: "{label} - {y}%",
-                        dataPoints: <%out.print(dataPoints);%>
-                    }]
-            });
-            
-            var chart1 = new CanvasJS.Chart("chartContainer1", {
-                theme: "light2", // "light1", "dark1", "dark2"
-                animationEnabled: true,
-                title: {
-                    text: "user"
-                },
-                data: [{
-                        type: "pie",
-                        toolTipContent: "<b>{label}</b>: {y}%",
-                        indexLabelFontSize: 16,
-                        indexLabel: "{label} - {y}%",
-                        dataPoints: <%out.print(dataPoints);%>
-                    }]
-            });
-            
-            chart.render();
-            chart1.render();
+        function getPercent(list, number) {
+            let total = 0;
+            for (let i = 0; i < list.length; i++) {
+                total += list[i];
+            }
+            let percent = number / total * 100;
+            return percent.toFixed();
+        }
 
-        };
     </script>
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 
