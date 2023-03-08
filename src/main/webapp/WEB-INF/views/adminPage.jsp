@@ -1,3 +1,42 @@
+<%--<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>--%>
+<%@ page import="java.util.*" %>
+<%@ page import="com.google.gson.Gson"%>
+<%@ page import="com.google.gson.JsonObject"%>
+
+<%
+    Gson gsonObj = new Gson();
+    Map<Object, Object> map = null;
+    List<Map<Object, Object>> list = new ArrayList<Map<Object, Object>>();
+
+    map = new HashMap<Object, Object>();
+    map.put("label", "FY11");
+    map.put("y", 146.65);
+    list.add(map);
+    map = new HashMap<Object, Object>();
+    map.put("label", "FY12");
+    map.put("y", 201.46);
+    list.add(map);
+    map = new HashMap<Object, Object>();
+    map.put("label", "FY13");
+    map.put("y", 202.69);
+    list.add(map);
+    map = new HashMap<Object, Object>();
+    map.put("label", "FY14");
+    map.put("y", 201.7);
+    list.add(map);
+    map = new HashMap<Object, Object>();
+    map.put("label", "FY15");
+    map.put("y", 175.51);
+    list.add(map);
+    map = new HashMap<Object, Object>();
+    map.put("label", "FY16");
+    map.put("y", 132.03);
+    list.add(map);
+
+    String dataPoints = gsonObj.toJson(list);
+%>
+
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
@@ -34,6 +73,18 @@
 
             .adminDashboard{
                 display: none;
+            }
+
+            .pieChart{
+                width: 100%;
+                height: 100%;
+                display: flex;
+            }
+
+            .columnChart{
+                margin-top: 50px;
+                display: flex;
+                justify-content: center;
             }
 
             .adminAcception{
@@ -87,8 +138,13 @@
                 </div>
 
                 <div class="adminDashboard">
-                    <div id="productChart" class="piechart" style="height: 370px; width: 100%"></div>
-                    <div id="userChart" class="piechart" style="height: 300px; width: 100%"></div>
+                    <div class="pieChart">
+                        <div id="productChart" class="piechart" style="height: 370px; width: 100%"></div>
+                        <div id="userChart" class="piechart" style="height: 370px; width: 100%"></div>
+                    </div>
+                    <div class="columnChart">
+                        <div id="productPerMonthChart" style="height: 370px; width: 100%;"></div>
+                    </div>
                 </div>
 
                 <div class="adminTable">
@@ -137,7 +193,7 @@
                     removeActive(btnGroup)
                     event.target.classList.add("btn_active")
                     table.style.display = "none";
-                    dashboard.style.display = "flex";
+                    dashboard.style.display = "block";
                     shopRegis.style.display = "none";
                 } else {
                     removeActive(btnGroup)
@@ -153,6 +209,7 @@
 
         $(document).ready(function () {
 
+//          get shop and product data
             fetch("MainController?btnAction=admin&adminAction=render", {
                 method: 'GET'
             })
@@ -205,6 +262,8 @@
                             }
                         });
                     });
+
+
 //          chart data
             fetch("MainController?btnAction=admin&adminAction=dashboard", {
                 method: 'GET'
@@ -212,7 +271,7 @@
                     .then(rs => rs.json())
                     .then(data => {
                         console.log(data);
-                
+
 //                      set produt data
 
                         const listCount = data.listCount;
@@ -225,7 +284,7 @@
                             };
                             productData[i] = obj;
                         }
-                        
+
 //                      set user data
 
                         const listUser = data.listUser;
@@ -238,10 +297,10 @@
                             };
                             userData[i] = obj;
                         }
-                        
-//                      add data to chart   
 
-                        var chart = new CanvasJS.Chart("productChart", {
+//                      add data to chart   
+//                      product piechart
+                        var productChart = new CanvasJS.Chart("productChart", {
                             theme: "light2", // "light1", "dark1", "dark2"
                             animationEnabled: true,
                             title: {
@@ -255,7 +314,8 @@
                                     dataPoints: productData
                                 }]
                         });
-                        var chart1 = new CanvasJS.Chart("userChart", {
+//                      user piechart
+                        var userChart = new CanvasJS.Chart("userChart", {
                             theme: "light2", // "light1", "dark1", "dark2"
                             animationEnabled: true,
                             title: {
@@ -269,8 +329,27 @@
                                     dataPoints: userData
                                 }]
                         });
-                        chart.render();
-                        chart1.render();
+//                      column chart
+                        var productPerMonthChart = new CanvasJS.Chart("productPerMonthChart", {
+                            title: {
+                                text: "Imports of Ore and Minerals in India"
+                            },
+                            axisX: {
+                                title: "Fiscal Year"
+                            },
+                            axisY: {
+                                title: "Imports (in billion USD)",
+                                includeZero: true
+                            },
+                            data: [{
+                                    type: "column",
+                                    yValueFormatString: "$#,##0.0# billion",
+                                    dataPoints: <%out.print(dataPoints);%>
+                                }]
+                        });
+                        productChart.render();
+                        userChart.render();
+                        productPerMonthChart.render();
                     });
         });
 
