@@ -77,45 +77,75 @@ public class AdminController extends HttpServlet {
                     CategoryDAO cateDao = new CategoryDAO();
                     ProductDAO proDao = new ProductDAO();
                     UserDAO userDao = new UserDAO();
-                    
 
+//                    ArrayList<String> listName = new ArrayList<>();
+//                    ArrayList<Integer> listCount = new ArrayList<>();
+//                    ArrayList<Integer> listUser = new ArrayList<>();
+//                    ArrayList<String> listNameOfUser = new ArrayList<>();
+//                    listNameOfUser.add("Buyer");
+//                    listNameOfUser.add("Seler");
+//                    listNameOfUser.add("Admin");
+//                    
+//
+//                    listName = cateDao.getNameOfCategory();
+//                    listCount = proDao.getCountByCategory();
+//                    listUser = userDao.getCountOfUser();
+//                    
+//                    
+//                    Gson gson = new Gson();
+//
+//
+//                    JsonObject jsonObject = new JsonObject();
+//                    jsonObject.add("listName", gson.toJsonTree(listName));
+//                    // Create a new JsonArray for the second list
+//                    JsonArray jsonArray = new JsonArray();
+//                    for (int i = 0; i < listCount.size(); i++) {
+//                        jsonArray.add(new JsonPrimitive(listCount.get(i)));
+//                    }
+//
+//                    jsonObject.add("listCount", jsonArray);
+//
+//                    response.setContentType("application/json");
+//
+//                    response.getWriter().println(jsonObject.toString());
                     ArrayList<String> listName = new ArrayList<>();
                     ArrayList<Integer> listCount = new ArrayList<>();
-//                    ArrayList<ProductDTO> listProduct = new ArrayList<>();
                     ArrayList<Integer> listUser = new ArrayList<>();
                     ArrayList<String> listNameOfUser = new ArrayList<>();
                     listNameOfUser.add("Buyer");
-                    listNameOfUser.add("Seler");
+                    listNameOfUser.add("Seller");
                     listNameOfUser.add("Admin");
-                    
 
                     listName = cateDao.getNameOfCategory();
                     listCount = proDao.getCountByCategory();
                     listUser = userDao.getCountOfUser();
-                    
-                    
-                    Gson gson = new Gson();
 
-//                  chatGPT
+                    Gson gson = new Gson();
 
                     JsonObject jsonObject = new JsonObject();
                     jsonObject.add("listName", gson.toJsonTree(listName));
-                    // Create a new JsonArray for the second list
-                    JsonArray jsonArray = new JsonArray();
+
+                    JsonArray jsonArrayCount = new JsonArray();
                     for (int i = 0; i < listCount.size(); i++) {
-                        jsonArray.add(new JsonPrimitive(listCount.get(i)));
+                        jsonArrayCount.add(new JsonPrimitive(listCount.get(i)));
                     }
+                    jsonObject.add("listCount", jsonArrayCount);
 
-// Add the second list to the JsonObject
-                    jsonObject.add("listCount", jsonArray);
+                    JsonArray jsonArrayUser = new JsonArray();
+                    for (int i = 0; i < listUser.size(); i++) {
+                        jsonArrayUser.add(new JsonPrimitive(listUser.get(i)));
+                    }
+                    jsonObject.add("listUser", jsonArrayUser);
 
-// Set the response content type
+                    JsonArray jsonArrayNameOfUser = new JsonArray();
+                    for (String name : listNameOfUser) {
+                        jsonArrayNameOfUser.add(new JsonPrimitive(name));
+                    }
+                    jsonObject.add("listNameOfUser", jsonArrayNameOfUser);
+
                     response.setContentType("application/json");
-
-// Write the JSON response to the response writer
                     response.getWriter().println(jsonObject.toString());
 
-//                    response.getWriter().println(gson.toJson(listName));
                     break;
                 } catch (SQLException ex) {
                     Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
