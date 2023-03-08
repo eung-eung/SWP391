@@ -13,6 +13,7 @@ import com.team1.ecommerceplatformm.product.ProductDAO;
 import com.team1.ecommerceplatformm.product.ProductDTO;
 import com.team1.ecommerceplatformm.shop.ShopDAO;
 import com.team1.ecommerceplatformm.shop.ShopDTO;
+import com.team1.ecommerceplatformm.user.UserDAO;
 import com.team1.ecommerceplatformm.utils.Constants;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -75,17 +76,28 @@ public class AdminController extends HttpServlet {
                 try {
                     CategoryDAO cateDao = new CategoryDAO();
                     ProductDAO proDao = new ProductDAO();
+                    UserDAO userDao = new UserDAO();
+                    
 
                     ArrayList<String> listName = new ArrayList<>();
                     ArrayList<Integer> listCount = new ArrayList<>();
 //                    ArrayList<ProductDTO> listProduct = new ArrayList<>();
+                    ArrayList<Integer> listUser = new ArrayList<>();
+                    ArrayList<String> listNameOfUser = new ArrayList<>();
+                    listNameOfUser.add("Buyer");
+                    listNameOfUser.add("Seler");
+                    listNameOfUser.add("Admin");
+                    
 
                     listName = cateDao.getNameOfCategory();
                     listCount = proDao.getCountByCategory();
-
+                    listUser = userDao.getCountOfUser();
+                    
+                    
                     Gson gson = new Gson();
 
 //                  chatGPT
+
                     JsonObject jsonObject = new JsonObject();
                     jsonObject.add("listName", gson.toJsonTree(listName));
                     // Create a new JsonArray for the second list

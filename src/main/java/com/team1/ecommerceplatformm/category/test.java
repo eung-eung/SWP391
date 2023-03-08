@@ -5,10 +5,9 @@
 package com.team1.ecommerceplatformm.category;
 
 import com.team1.ecommerceplatformm.product.ProductDAO;
+import com.team1.ecommerceplatformm.user.UserDAO;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
-
 /**
  *
  * @author omach
@@ -17,11 +16,15 @@ public class test {
     public static void main(String[] args) throws SQLException {
          CategoryDAO cateDAO = new CategoryDAO();
          ProductDAO proDAO = new ProductDAO();
+         UserDAO userDAO = new UserDAO();
+         ArrayList<Integer> userCount =  new ArrayList<>();
          ArrayList<Integer> listcount =  new ArrayList<>();
          ArrayList<String> listname = new ArrayList<>();
+         
          listname = cateDAO.getNameOfCategory();
          listcount = proDAO.getCountByCategory();
-         System.out.println(listcount);
+         userCount = userDAO.getCountOfUser();
+         System.out.println(userCount);
          
     }
    

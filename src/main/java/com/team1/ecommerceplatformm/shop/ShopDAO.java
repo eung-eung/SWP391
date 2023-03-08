@@ -33,6 +33,7 @@ public class ShopDAO extends AbstractDAO<ShopDTO> {
             dto.setUserID(rs.getInt(2));
             dto.setCreateAt(rs.getDate(3));
             dto.setShopName(rs.getString(4));
+            dto.setStatus(rs.getBoolean(5));
             list.add(dto);
 //            System.err.println(dto.toString());
         }
