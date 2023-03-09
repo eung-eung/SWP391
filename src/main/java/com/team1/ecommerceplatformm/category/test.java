@@ -22,9 +22,9 @@ public class test {
          ArrayList<String> listname = new ArrayList<>();
          
          listname = cateDAO.getNameOfCategory();
-         listcount = proDAO.getCountByCategory();
+         listcount = proDAO.getCountByCreateDay();
          userCount = userDAO.getCountOfUser();
-         System.out.println(userCount);
+         System.out.println(listcount);
          
     }
    

@@ -115,11 +115,25 @@ public class AdminController extends HttpServlet {
                     listNameOfUser.add("Buyer");
                     listNameOfUser.add("Seller");
                     listNameOfUser.add("Admin");
+                    ArrayList<String> listMonth = new ArrayList<>();
+                    listMonth.add("January");
+                    listMonth.add("February");
+                    listMonth.add("March");
+                    listMonth.add("April");
+                    listMonth.add("May");
+                    listMonth.add("June");
+                    listMonth.add("July");
+                    listMonth.add("August");
+                    listMonth.add("September");
+                    listMonth.add("October");
+                    listMonth.add("November");
+                    listMonth.add("December");
+                    ArrayList<Integer> listCountByMonth = new ArrayList<>();
 
                     listName = cateDao.getNameOfCategory();
                     listCount = proDao.getCountByCategory();
                     listUser = userDao.getCountOfUser();
-
+                    listCountByMonth = proDao.getCountByCreateDay();
                     Gson gson = new Gson();
 
                     JsonObject jsonObject = new JsonObject();

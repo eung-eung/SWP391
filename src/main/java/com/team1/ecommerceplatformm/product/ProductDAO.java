@@ -389,6 +389,21 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
         stm.close();
         return list;
     }
+    
+    public ArrayList<Integer> getCountByCreateDay() throws SQLException{
+        PreparedStatement stm = conn.prepareStatement("SELECT COUNT( MONTH(create_at)) as count FROM Product\n" +
+"GROUP BY MONTH(create_at)");
+        ResultSet rs = stm.executeQuery();
+        int count;
+        ArrayList<Integer> list = new ArrayList<>();
+        while(rs.next()){
+            count = rs.getInt("count");
+            list.add(count);
+        }
+        rs.close();
+        stm.close();
+        return list;
+    }
 
     @Override
     public ProductDTO get(int id) throws SQLException {
