@@ -78,36 +78,6 @@ public class AdminController extends HttpServlet {
                     ProductDAO proDao = new ProductDAO();
                     UserDAO userDao = new UserDAO();
 
-//                    ArrayList<String> listName = new ArrayList<>();
-//                    ArrayList<Integer> listCount = new ArrayList<>();
-//                    ArrayList<Integer> listUser = new ArrayList<>();
-//                    ArrayList<String> listNameOfUser = new ArrayList<>();
-//                    listNameOfUser.add("Buyer");
-//                    listNameOfUser.add("Seler");
-//                    listNameOfUser.add("Admin");
-//                    
-//
-//                    listName = cateDao.getNameOfCategory();
-//                    listCount = proDao.getCountByCategory();
-//                    listUser = userDao.getCountOfUser();
-//                    
-//                    
-//                    Gson gson = new Gson();
-//
-//
-//                    JsonObject jsonObject = new JsonObject();
-//                    jsonObject.add("listName", gson.toJsonTree(listName));
-//                    // Create a new JsonArray for the second list
-//                    JsonArray jsonArray = new JsonArray();
-//                    for (int i = 0; i < listCount.size(); i++) {
-//                        jsonArray.add(new JsonPrimitive(listCount.get(i)));
-//                    }
-//
-//                    jsonObject.add("listCount", jsonArray);
-//
-//                    response.setContentType("application/json");
-//
-//                    response.getWriter().println(jsonObject.toString());
                     ArrayList<String> listName = new ArrayList<>();
                     ArrayList<Integer> listCount = new ArrayList<>();
                     ArrayList<Integer> listUser = new ArrayList<>();
@@ -156,6 +126,20 @@ public class AdminController extends HttpServlet {
                         jsonArrayNameOfUser.add(new JsonPrimitive(name));
                     }
                     jsonObject.add("listNameOfUser", jsonArrayNameOfUser);
+
+                    // Add listMonth to jsonObject
+                    JsonArray jsonArrayMonth = new JsonArray();
+                    for (String month : listMonth) {
+                        jsonArrayMonth.add(new JsonPrimitive(month));
+                    }
+                    jsonObject.add("listMonth", jsonArrayMonth);
+
+//                  Add listCountByMonth to jsonObject
+                    JsonArray jsonArrayCountByMonth = new JsonArray();
+                    for (int count : listCountByMonth) {
+                        jsonArrayCountByMonth.add(new JsonPrimitive(count));
+                    }
+                    jsonObject.add("listCountByMonth", jsonArrayCountByMonth);
 
                     response.setContentType("application/json");
                     response.getWriter().println(jsonObject.toString());

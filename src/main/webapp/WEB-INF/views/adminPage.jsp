@@ -40,10 +40,9 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -55,23 +54,73 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
         <style>
+            body{
+                position: relative;
+            }
+            
             .admin_page{
                 display: flex;
+                width: 100%;
+                height: 100%;
                 border-top: 1px solid black;
                 padding: 10px 0;
             }
 
             .admin_page_navbar{
-                width: 13%;
+                position: sticky;
+                top: 0;
+                width: 14%;
                 height: 100vh;
-                margin: 0 10px;
+                margin-right:10px;
+                background: #58ccfb;
+            }
+
+            .admin_page_navbar div{
+                width: 80%;
+                margin: 20px 0 0 15px;
+                color: black;
+            }
+
+            .admin_page_navbar_header{
+                position: relative;
+                padding: 7px 15px;
+                background-color: #58ccfb;
+                border-top-left-radius: 5px;
+                border-top-right-radius: 5px;
+                font-weight: 700;
+                letter-spacing: 1.5px;
+                text-align: center;
+                color: white;
+            }
+
+            .admin_page_navbar_header::before{
+                content: '';
+                position: absolute;
+                width: 110%;
+                border: 1px solid #3c3d45;
+                bottom: -30%;
+                left: -5%;
+                -ms-transform: rotate(90deg);
+            }
+
+            .admin_page_text{
+                background: white;
+            }
+
+            .admin_page_text:hover{
+                transition: 0.25s;
+                width: 82%;
+                margin: 20px 0 0 13px;
+                gap: 1px;
             }
 
             .admin_page_content{
-                width: 90%;
+                width: 85.5%;
+                position: absolute;
+                right: 0;
             }
 
-            .adminDashboard{
+            .admin_dashboard{
                 display: none;
             }
 
@@ -81,26 +130,25 @@
                 display: flex;
             }
 
-            .columnChart{
+            .column_chart{
                 margin-top: 50px;
                 display: flex;
                 justify-content: center;
             }
 
-            .adminAcception{
+            .shop_request{
                 display: none
             }
 
-            .admin_page_navbar div{
-                width: 80%;
-                margin: 20px 0 0 15px;
-                color: white;
+            .product_request{
+
             }
 
             .btn_active{
-                background-color: #00b4d8;
+                background-color: #f1f1f1;
                 color: black;
             }
+
         </style>
 
         <script src="https://kit.fontawesome.com/330a21053c.js" crossorigin="anonymous"></script>
@@ -120,34 +168,45 @@
 
         <div class="admin_page">
             <div class="admin_page_navbar rounded shadow">
-                <div class="admin_page_text shop_list btn btn-info btn_active">
+                <div class="admin_page_navbar_header" >
+                    Admin Option
+                </div>
+
+                <div class="admin_page_text shop_list btn btn_active">
                     Shop list
                 </div>
-                <div class="admin_page_text dashboard btn btn-info">
+                <div class="admin_page_text dashboard btn">
                     Dashboard
                 </div>
-                <div class="admin_page_text shopRegis btn btn-info">
+                <div class="admin_page_text shopRegis btn">
                     Shop register
+                </div>
+                <div class="admin_page_text productRegis btn">
+                    Product register
                 </div>
             </div>
 
             <div class="admin_page_content">
 
-                <div class="adminAcception">
+                <div class="shop_request">
                     shop register accept
                 </div>
 
-                <div class="adminDashboard">
+                <div class="product_request">
+                    product register accept
+                </div>
+
+                <div class="admin_dashboard">
                     <div class="pieChart">
                         <div id="productChart" class="piechart" style="height: 370px; width: 100%"></div>
                         <div id="userChart" class="piechart" style="height: 370px; width: 100%"></div>
                     </div>
-                    <div class="columnChart">
+                    <div class="column_chart">
                         <div id="productPerMonthChart" style="height: 370px; width: 100%;"></div>
                     </div>
                 </div>
 
-                <div class="adminTable">
+                <div class="admin_table">
                     <table id="example" class="display" style="width:100%">
                         <thead>
                             <tr>
@@ -179,30 +238,41 @@
 
         const btnGroup = document.querySelectorAll(".admin_page_text");
         btnGroup.forEach((item) => {
-            const table = document.querySelector(".adminTable");
-            const dashboard = document.querySelector(".adminDashboard");
-            const shopRegis = document.querySelector(".adminAcception");
+            const table = document.querySelector(".admin_table");
+            const dashboard = document.querySelector(".admin_dashboard");
+            const shopRegis = document.querySelector(".shop_request");
+            const productRegis = document.querySelector(".product_request");
             item.addEventListener("click", (event) => {
                 if (event.target.classList.contains("shop_list")) {
-                    removeActive(btnGroup)
-                    event.target.classList.add("btn_active")
+                    removeActive(btnGroup);
+                    event.target.classList.add("btn_active");
                     table.style.display = "block";
                     dashboard.style.display = "none";
                     shopRegis.style.display = "none";
+                    productRegis.style.display = "none";
                 } else if (event.target.classList.contains("dashboard")) {
-                    removeActive(btnGroup)
-                    event.target.classList.add("btn_active")
+                    removeActive(btnGroup);
+                    event.target.classList.add("btn_active");
                     table.style.display = "none";
                     dashboard.style.display = "block";
                     shopRegis.style.display = "none";
-                } else {
-                    removeActive(btnGroup)
-                    event.target.classList.add("btn_active")
+                    productRegis.style.display = "none";
+                } else if (event.target.classList.contains("shopRegis")) {
+                    removeActive(btnGroup);
+                    event.target.classList.add("btn_active");
                     table.style.display = "none";
                     dashboard.style.display = "none";
                     shopRegis.style.display = "block";
+                    productRegis.style.display = "none";
+                } else {
+                    removeActive(btnGroup);
+                    event.target.classList.add("btn_active");
+                    table.style.display = "none";
+                    dashboard.style.display = "none";
+                    shopRegis.style.display = "none";
+                    productRegis.style.display = "block";
                 }
-            })
+            });
         });
 
         document.querySelector(".header-bottom").hidden = true;
@@ -271,6 +341,7 @@
                     .then(rs => rs.json())
                     .then(data => {
                         console.log(data);
+                        console.log(<%out.print(dataPoints);%>);
 
 //                      set produt data
 
@@ -297,7 +368,18 @@
                             };
                             userData[i] = obj;
                         }
-
+                        
+//                      set column data
+                        const listMonth = data.listMonth;
+                        const listCountByMonth = data.listCountByMonth;
+                        let columnData = [];
+                        for (let i = 0; i < listMonth.length; i++) {
+                            let obj = {
+                                y: listCountByMonth[i],
+                                label: listMonth[i]
+                            };
+                            columnData[i] = obj;
+                        }
 //                      add data to chart   
 //                      product piechart
                         var productChart = new CanvasJS.Chart("productChart", {
@@ -332,19 +414,19 @@
 //                      column chart
                         var productPerMonthChart = new CanvasJS.Chart("productPerMonthChart", {
                             title: {
-                                text: "Imports of Ore and Minerals in India"
+                                text: "Product post per month"
                             },
                             axisX: {
-                                title: "Fiscal Year"
+                                title: "Month"
                             },
                             axisY: {
-                                title: "Imports (in billion USD)",
+                                title: "Amount",
                                 includeZero: true
                             },
                             data: [{
                                     type: "column",
-                                    yValueFormatString: "$#,##0.0# billion",
-                                    dataPoints: <%out.print(dataPoints);%>
+                                    yValueFormatString: "",
+                                    dataPoints: columnData
                                 }]
                         });
                         productChart.render();
@@ -406,6 +488,18 @@
                 item.classList.remove("btn_active")
             })
         }
+
+//      css function 
+//        var header = document.querySelector(".admin_page_navbar");
+//        var sticky = header.offsetTop;
+//
+//        function myFunction() {
+//            if (window.pageYOffset > sticky) {
+//                header.classList.add("sticky");
+//            } else {
+//                header.classList.remove("sticky");
+//            }
+//        }
 
     </script>
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
