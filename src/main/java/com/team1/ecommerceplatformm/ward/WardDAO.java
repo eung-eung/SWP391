@@ -80,6 +80,27 @@ public class WardDAO extends AbstractDAO<WardDTO> {
         return dto;
     }
 
+    public ArrayList<WardDTO> getListWardByName(String wardName) throws SQLException {
+        PreparedStatement stm = conn.prepareStatement("SELECT [ward_id]\n"
+                + "      ,[district_id]\n"
+                + "      ,[name]\n"
+                + "  FROM [EcommmercePlatform].[dbo].[Ward] where name = ?");
+        stm.setString(1, wardName);
+        ResultSet rs = stm.executeQuery();
+        ArrayList<WardDTO> list = new ArrayList<>();
+
+        while (rs.next()) {
+            WardDTO dto = new WardDTO();
+            dto.setWardID(rs.getString(1));
+            dto.setDistrictID(rs.getString(2));
+            dto.setName(rs.getString(3));
+            list.add(dto);
+        }
+        stm.close();
+        rs.close();
+        return list;
+    }
+
     @Override
     public void save(WardDTO t) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody

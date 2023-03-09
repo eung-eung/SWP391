@@ -43,6 +43,7 @@ public class AdminController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String adminAction = request.getParameter("adminAction");
+        Gson gson = new Gson();
         switch (adminAction) {
             case "show": {
                 request.getRequestDispatcher(Constants.ADMIN_PAGE).forward(request, response);
@@ -51,17 +52,25 @@ public class AdminController extends HttpServlet {
             case "render": {
                 try {
                     ShopDAO shopDao = new ShopDAO();
-                    ProductDAO proDao = new ProductDAO();
 
                     List<ShopDTO> listShop = new ArrayList<>();
-//                    ArrayList<ProductDTO> listProduct = new ArrayList<>();
 
                     listShop = shopDao.getAll();
 
-
-                    Gson gson = new Gson();
-
                     response.getWriter().println(gson.toJson(listShop));
+                    break;
+                } catch (SQLException ex) {
+                    Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            case "showProducts": {
+                try {
+                    int shopId = Integer.parseInt(request.getParameter("shopId"));
+                    ProductDAO proDao = new ProductDAO();
+                    ArrayList<ProductDTO> listProduct = new ArrayList<>();
+
+                    listProduct = proDao.getAllProductByShopId(shopId);
+                    response.getWriter().println(gson.toJson(listProduct));
                     break;
                 } catch (SQLException ex) {
                     Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);

@@ -542,7 +542,7 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
                     + "shop_id, category_id, "
                     + "  price,"
                     + " name, description, "
-                    + "quantity, status, "
+                    + "quantity, "
                     + "create_at, approve_at, "
                     + "discount, sold_count) "
                     //                    + "authen) \n"
@@ -550,7 +550,7 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
                     + "  ?, "
                     + "?, ?, "
                     + "?, ?, "
-                    + "?, null, "
+                    + " null, "
                     + "null, 0) ");
 //                    + "1);");
             int count = 1;
@@ -561,7 +561,7 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
             stm.setString(count++, t.getName());
             stm.setString(count++, t.getDescription());
             stm.setInt(count++, t.getQuanity());
-            stm.setBoolean(count++, t.isStatus());
+//            stm.setBoolean(count++, t.isStatus());
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
             LocalDateTime now = LocalDateTime.now();
             stm.setString(count++, dtf.format(now));

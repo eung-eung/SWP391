@@ -185,7 +185,7 @@
                                      justify-self: center;
                                      display: flex;
                                      align-items: center;">
-                                    ${sessionScope.user.roleID}
+                      
                                     <div class="header-bottom-cart">
                                         <a href="#" class="cart-button"><i class="fa-solid fa-cart-shopping cart-icon"></i></a>
                                     </div>

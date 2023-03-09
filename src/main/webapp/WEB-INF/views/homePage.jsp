@@ -182,8 +182,8 @@
                                                                                     
                                                                                 </script>-->
                                     </div>
-                                    <div class="swiper-button-next" tabindex="0" role="button" aria-label="Next slide" aria-controls="swiper-wrapper-b9be9737473a2aeb" aria-disabled="false"></div>
-                                    <div class="swiper-button-prev swiper-button-disabled" tabindex="-1" role="button" aria-label="Previous slide" aria-controls="swiper-wrapper-b9be9737473a2aeb" aria-disabled="true"></div>
+<!--                                    <div class="swiper-button-next" tabindex="0" role="button" aria-label="Next slide" aria-controls="swiper-wrapper-b9be9737473a2aeb" aria-disabled="false"></div>
+                                    <div class="swiper-button-prev swiper-button-disabled" tabindex="-1" role="button" aria-label="Previous slide" aria-controls="swiper-wrapper-b9be9737473a2aeb" aria-disabled="true"></div>-->
                                     <!-- <div class="swiper-pagination"></div> -->
                                     <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>
                             </div>
@@ -228,10 +228,10 @@
                                                                             },
                                                                             spaceBetween: 0,
 
-                                                                            navigation: {
-                                                                                nextEl: ".swiper-button-next",
-                                                                                prevEl: ".swiper-button-prev",
-                                                                            },
+//                                                                            navigation: {
+//                                                                                nextEl: ".swiper-button-next",
+//                                                                                prevEl: ".swiper-button-prev",
+//                                                                            },
                                                                             autoplay: {
                                                                                 delay: 3500,
                                                                                 disableOnInteraction: false,
