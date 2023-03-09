@@ -53,25 +53,6 @@ public class CityDAO extends AbstractDAO<CityDTO> {
         return dto;
     }
 
-    public ArrayList<CityDTO> getListCityByID(String id) throws SQLException {
-        PreparedStatement stm = conn.prepareStatement("SELECT [city_id]\n"
-                + "      ,[name]\n"
-                + "  FROM [EcommmercePlatform].[dbo].[City] where [city_id] = ?");
-        stm.setString(1, id);
-
-        ArrayList<CityDTO> list = new ArrayList<>();
-        ResultSet rs = stm.executeQuery();
-        while (rs.next()) {
-            CityDTO dto = new CityDTO();
-            dto.setCityID(rs.getString(1));
-            dto.setName(rs.getString(2));
-            list.add(dto);
-        }
-        rs.close();
-        stm.close();
-        return list;
-    }
-
     @Override
     public void save(CityDTO t) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
@@ -91,7 +72,6 @@ public class CityDAO extends AbstractDAO<CityDTO> {
     public CityDTO get(int id) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
     public static void main(String[] args) {
         try {
             CityDAO dao = new CityDAO();
@@ -102,6 +82,6 @@ public class CityDAO extends AbstractDAO<CityDTO> {
         } catch (SQLException ex) {
             Logger.getLogger(CityDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
     }
 }

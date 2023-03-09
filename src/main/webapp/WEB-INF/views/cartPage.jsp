@@ -145,7 +145,7 @@
         let total = 0;
 //        let cart = JSON.parse(window.localStorage.getItem('cart'));
 
-        if (cart == null) {
+        if ( cart == null) {
             document.querySelector(".cart-container").innerHTML = `<div class='empty-cart-img'>
             <img class='empty-img' src="assets/images/emptyCart.png" alt="alt"/>
 <a href='<c:url value="MainController" />' class='href-homePage'>Đi mua sắm</a>
@@ -481,7 +481,7 @@
                             // Finalize the transaction on the server after payer approval
                             onApprove: function (data, actions) {
                                 return actions.order.capture().then(function (details) {
-                                    console.log("details: " + details)
+
                                     swal("Thanh toán thành công", "Cảm ơn bạn!", "success");
                                     modalPayPal.classList.remove("open");
                                     background.style.display = "none";

@@ -12,7 +12,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.team1.ecommerceplatformm.imageProduct.ImageProductDAO;
 import com.team1.ecommerceplatformm.imageProduct.ImageProductDTO;
 import com.team1.ecommerceplatformm.product.ProductDAO;
-import com.team1.ecommerceplatformm.utils.Constants;
+import com.team1.ecommerceplatformm.utils.Constrants;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -51,10 +51,10 @@ public class UploadImageFirebase extends HttpServlet {
         FirebaseOptions options;
         FirebaseApp firebaseApp = null;
         try {
-            serviceAccount = new FileInputStream(Constants.URLFIREBASE);
+            serviceAccount = new FileInputStream(Constrants.URLFIREBASE);
             options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                    .setDatabaseUrl(Constants.URLFIREBASE_URL)
+                    .setDatabaseUrl(Constrants.URLFIREBASE_URL)
                     .setStorageBucket("demo1")
                     .build();
             firebaseApp = FirebaseApp.initializeApp(options);
@@ -69,7 +69,7 @@ public class UploadImageFirebase extends HttpServlet {
         System.err.println("Pre data:" + child__Product_ID + "," + url);
         //
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance(Constants.URLFIREBASE_URL);
+        FirebaseDatabase database = FirebaseDatabase.getInstance(Constrants.URLFIREBASE_URL);
         DatabaseReference rootRef = database.getReference("mynode");
         DatabaseReference studentsRef = rootRef.child(child__Product_ID);
         studentsRef.setValue(url, new DatabaseReference.CompletionListener() {
@@ -99,17 +99,17 @@ public class UploadImageFirebase extends HttpServlet {
             FirebaseOptions options;
             FirebaseApp firebaseApp = null;
             try {
-                serviceAccount = new FileInputStream(Constants.URLFIREBASE);
+                serviceAccount = new FileInputStream(Constrants.URLFIREBASE);
                 options = new FirebaseOptions.Builder()
                         .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                        .setDatabaseUrl(Constants.URLFIREBASE_URL)
+                        .setDatabaseUrl(Constrants.URLFIREBASE_URL)
                         .setStorageBucket("demo1")
                         .build();
                 firebaseApp = FirebaseApp.initializeApp(options);
             } catch (Exception e) {
                 System.err.println(e.getMessage());
             }
-            FirebaseDatabase database = FirebaseDatabase.getInstance(Constants.URLFIREBASE_URL);
+            FirebaseDatabase database = FirebaseDatabase.getInstance(Constrants.URLFIREBASE_URL);
             DatabaseReference rootRef = database.getReference("mynode");
             DatabaseReference dataRef = rootRef.child("students 2");
             dataRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -127,7 +127,7 @@ public class UploadImageFirebase extends HttpServlet {
             return;
         }
         String url = "";
-        url = Constants.UPLOAD_IMAGE;
+        url = Constrants.UPLOAD_IMAGE;
         try {
             request.setAttribute("listimage", new ImageProductDAO().getAll());
 //            new ImageProductDAO().getAll().get(0).getUrl()

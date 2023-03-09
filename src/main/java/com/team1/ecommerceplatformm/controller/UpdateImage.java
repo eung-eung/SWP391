@@ -9,7 +9,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.team1.ecommerceplatformm.imageProduct.ImageProductDAO;
 import com.team1.ecommerceplatformm.imageProduct.ImageProductDTO;
-import com.team1.ecommerceplatformm.utils.Constants;
+import com.team1.ecommerceplatformm.utils.Constrants;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -46,10 +46,10 @@ public class UpdateImage  extends HttpServlet{
         FirebaseOptions options;
         FirebaseApp firebaseApp = null;
         try {
-            serviceAccount = new FileInputStream(Constants.URLFIREBASE);
+            serviceAccount = new FileInputStream(Constrants.URLFIREBASE);
             options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                    .setDatabaseUrl(Constants.URLFIREBASE_URL)
+                    .setDatabaseUrl(Constrants.URLFIREBASE_URL)
                     .setStorageBucket("demo1")
                     .build();
             firebaseApp = FirebaseApp.initializeApp(options);
@@ -58,12 +58,13 @@ public class UpdateImage  extends HttpServlet{
         }
         //
         String child__image_ID = request.getParameter("imageid");
+        System.out.println(child__image_ID);
         String encodedString = Base64.getEncoder().encodeToString(img);
         String url = "data:image/png;base64," + encodedString;
         System.err.println("Pre data:"+child__image_ID+","+url);
        
         
-        FirebaseDatabase database = FirebaseDatabase.getInstance(Constants.URLFIREBASE_URL);
+        FirebaseDatabase database = FirebaseDatabase.getInstance(Constrants.URLFIREBASE_URL);
         DatabaseReference rootRef = database.getReference("mynode");
         DatabaseReference studentsRef = rootRef.child(child__image_ID);
         studentsRef.setValue(url, new DatabaseReference.CompletionListener() {
@@ -77,11 +78,7 @@ public class UpdateImage  extends HttpServlet{
                     imgtemp.setImageID(Integer.parseInt(child__image_ID) );
                     imgtemp.setUrl(url);
                     System.err.println("Data update ql:"+imgtemp.toString());
-                    try {
-                        new ImageProductDAO().update(imgtemp);
-                    } catch (SQLException ex) {
-                        Logger.getLogger(UpdateImage.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    new ImageProductDAO().update(imgtemp);
                 }
             }
         });

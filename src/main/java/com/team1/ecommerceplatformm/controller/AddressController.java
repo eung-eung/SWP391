@@ -25,7 +25,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.util.ArrayList;
 
 /**
  *
@@ -92,14 +91,10 @@ public class AddressController extends HttpServlet {
                     String districtID = request.getParameter("districtID");
                     DistrictDAO dao = new DistrictDAO();
                     DistrictDTO dto = dao.getADistrictByDistrictID(districtID);
-                    System.out.println("dto: " + dto);
                     out.println(gson.toJson(dto));
-
                     break;
-                } catch (Exception ex) {
-//                    Logger.getLogger(AddressController.class.getName()).log(Level.SEVERE, null, ex);
-                    ex.printStackTrace();
-
+                } catch (SQLException ex) {
+                    Logger.getLogger(AddressController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             case "getWard": {
@@ -129,10 +124,10 @@ public class AddressController extends HttpServlet {
             case "update": {
                 try {
                     String wardID = request.getParameter("wardID");
-                    System.out.println("wardID" + wardID);
-
+                    System.out.println("wardID"+ wardID);
+           
                     String address = request.getParameter("address");
-                    System.out.println("add" + address);
+                             System.out.println("add"+ address);
                     HttpSession session = request.getSession();
                     UserDTO dto = (UserDTO) session.getAttribute("user");
                     System.out.println("ss addressL " + dto);
@@ -147,37 +142,8 @@ public class AddressController extends HttpServlet {
                 }
 
             }
-            case "getCityByWardName": {
-                try {
-                    WardDAO wDao = new WardDAO();
-                    DistrictDAO dDao = new DistrictDAO();
-                    CityDAO cDao = new CityDAO();
-                    String wardName = request.getParameter("wardName");
-                    ArrayList<WardDTO> wardList = wDao.getListWardByName(wardName);
-                    ArrayList<DistrictDTO> districtList = new ArrayList<>();
-                    
-                    System.out.println("wardList"+ wardList);
-                    ArrayList<CityDTO> cityList = new ArrayList<>();
-                    for (WardDTO wardDTO : wardList) {
-                        DistrictDTO districtDto = new DistrictDTO();
-                        districtDto = dDao.getADistrictByDistrictID(wardDTO.getDistrictID());
-                        districtList.add(districtDto);
-                    }
-                     System.out.println("districtList"+ districtList);
-                    for (DistrictDTO districtDto : districtList) {
-                        CityDTO cityDto = new CityDTO();
-                        cityDto = cDao.getCityByID(districtDto.getCityID());
-                        cityList.add(cityDto);
-                    }
-                      System.out.println("cityList"+ cityList);
-                    out.println(gson.toJson(cityList));
-                    break;
-                } catch (SQLException ex) {
-                    Logger.getLogger(AddressController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
 
-
+   
         }
         System.out.println("vào addresscontroller");
     }

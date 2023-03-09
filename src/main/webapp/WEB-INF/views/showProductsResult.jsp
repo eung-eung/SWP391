@@ -29,7 +29,7 @@
 
     <body>
         <jsp:include page="header.jsp"/>
-     
+        ${sessionScope.user}
         <c:if test="${empty sessionScope.listCategory}">
             <script>
                 window.location.href = "<c:url value="/" />"

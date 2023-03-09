@@ -82,7 +82,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     margin-bottom: 30px;
 }
 .total-price{
-    font-size: 17px;
+    font-size: 30px;
     font-weight: 700;
 }
 .order-item-header .status i{
@@ -124,7 +124,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     line-height: 16px;
 }
 .btn-more{
-    display: flex;
+        display: flex;
     -webkit-box-pack: start;
     justify-content: flex-start;
     -webkit-box-align: center;
@@ -132,38 +132,4 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     cursor: pointer;
     margin-top: 12px;
 
-}
-
-.button-detail div{
-    padding: 12px 8px;
-    height: 36px;
-    border-radius: 4px;
-    border: 1px solid rgb(11, 116, 229);
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 1.4;
-    color: rgb(11, 116, 229);
-    display: flex;
-    -webkit-box-pack: center;
-    justify-content: center;
-    -webkit-box-align: center;
-    align-items: center;
-    cursor: pointer;
-    margin-left: 8px;
-}
-.button-detail{
-    margin-top: 12px;
-    display: flex;
-    justify-content: flex-end;
-}
-.product-review span{
-    display: inline-block;
-    margin-right: 10px;
-    background: rgb(255, 255, 255);
-    border: 1px solid rgb(24, 158, 255);
-    font-size: 12px;
-    color: rgb(24, 158, 255);
-    padding: 5px 15px;
-    border-radius: 4px;
-    cursor: pointer;
 }

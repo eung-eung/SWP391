@@ -69,7 +69,7 @@
                             <div class="form-group">
                                 <label>MainImg:</label><br/>
 
-                                <input hidden="true" form="imgupload" type="text" value="${product.getMainImg()}" name="imageid">
+                                <input hidden form="imgupload" type="text" value="${product.getMainImg().imageID}" name="imageid">
                                 <img   src="${product.getMainImg().getUrl()}" alt="alt" style="max-height: 240px;max-width: 240px;"> 
                                 <label><br/>
                                     <input class="" form="imgupload"  type="file" value="Update Image"
@@ -88,7 +88,7 @@
                                     <c:forEach var="item" items="${product.getImgs()}">
                                         <br/>
                                         <form id="imgupload_${item.getImageID()}"  action="./UpdateImage?idProduct=${product.getProductID()}" method="post" enctype="multipart/form-data"  ></form>
-                                        <input hidden="true" form="imgupload_${item.getImageID()}" type="text" value="${item.getImageID()}" name="imageid"> 
+                                        <input hidden form="imgupload_${item.getImageID()}" type="text" value="${product.getProductID()} ${item.getImageID()}" name="imageid"> 
                                         <img src="${item.getUrl()}" alt="alt" style="max-height: 240px;max-width: 240px;">
                                         <label><br/>
                                             <input class="" form="imgupload_${item.getImageID()}"  type="file" value="Update Image"

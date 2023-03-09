@@ -21,7 +21,7 @@ import com.team1.ecommerceplatformm.shop.ShopDAO;
 import com.team1.ecommerceplatformm.shop.ShopDTO;
 import com.team1.ecommerceplatformm.user.UserDAO;
 import com.team1.ecommerceplatformm.user.UserDTO;
-import com.team1.ecommerceplatformm.utils.Constants;
+import com.team1.ecommerceplatformm.utils.Constrants;
 import java.io.IOException;
 import java.util.ArrayList;
 import jakarta.servlet.ServletException;
@@ -56,17 +56,17 @@ public class ProductManagerController extends HttpServlet {
             throws ServletException, IOException {
         //require userid ? 
         String url = "";
-        url = Constants.MANAGE_PRODUCT;
+        url = Constrants.MANAGE_PRODUCT;
          // ngoại lệ với test ko sài gg đc vì local khác nhau
         if (request.getParameter("userid") != null) {
             try {
                 UserDTO udto;
                 udto = (new UserDAO()).get(Integer.parseInt(request.getParameter("userid")));
                 request.getSession().setAttribute("user", udto);
+                request.getSession().setMaxInactiveInterval(60*60*60);
             } catch (SQLException ex) {
                 Logger.getLogger(ProductManagerController.class.getName()).log(Level.SEVERE, null, ex);
             }
-
         }
         if (request.getSession().getAttribute("user") == null) {
             response.sendRedirect("MainController");
@@ -163,10 +163,10 @@ public class ProductManagerController extends HttpServlet {
                     img = IOUtils.readFully(fileContent, fileContent.available());
 
                     try {
-                        serviceAccount = new FileInputStream(Constants.URLFIREBASE);
+                        serviceAccount = new FileInputStream(Constrants.URLFIREBASE);
                         options = new FirebaseOptions.Builder()
                                 .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                                .setDatabaseUrl(Constants.URLFIREBASE_URL)
+                                .setDatabaseUrl(Constrants.URLFIREBASE_URL)
                                 .setStorageBucket("demo1")
                                 .build();
                         firebaseApp = FirebaseApp.initializeApp(options);
@@ -176,7 +176,7 @@ public class ProductManagerController extends HttpServlet {
                     String encodedString = Base64.getEncoder().encodeToString(img);
                     String url = "data:image/png;base64," + encodedString;
 
-                    database = FirebaseDatabase.getInstance(Constants.URLFIREBASE_URL);
+                    database = FirebaseDatabase.getInstance(Constrants.URLFIREBASE_URL);
                     rootRef = database.getReference("mynode");
                     studentsRef = rootRef.child(pId + "");
                     ImageProductDTO imgtemp = new ImageProductDTO();

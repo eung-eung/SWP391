@@ -377,6 +377,107 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
         return list;
     }
 
+    public ArrayList<ProductByMonth> getProductbymonth(int shopId) throws SQLException {
+        PreparedStatement stm = conn.prepareStatement("SELECT \n"
+                + "    S.shop_id,\n"
+                + "    P.product_id,\n"
+                + "    YEAR(O.order_date) AS year,\n"
+                + "    MONTH(O.order_date) AS month, \n"
+                + "	SUM(OD.quantity) AS quatity,\n"
+                + "    SUM(OD.quantity * OD.price * (1 - OD.discount)) AS revenue\n"
+                + "FROM \n"
+                + "    [dbo].[Order] O\n"
+                + "    JOIN [dbo].[OrderDetails] OD ON O.order_id = OD.order_id\n"
+                + "    JOIN [dbo].[Product] P ON OD.product_id = P.product_id\n"
+                + "    JOIN [dbo].[Shop] S ON P.shop_id = S.shop_id\n"
+                + "	WHERE S.shop_id = ? \n"
+                + "GROUP BY \n"
+                + "    S.shop_id,\n"
+                + "    P.product_id,\n"
+                + "    YEAR(O.order_date),\n"
+                + "    MONTH(O.order_date)\n"
+                + "ORDER BY \n"
+                + "    S.shop_id,\n"
+                + "    P.product_id,\n"
+                + "    YEAR(O.order_date),\n"
+                + "    MONTH(O.order_date)");
+        stm.setInt(1, shopId);
+        ResultSet rs = stm.executeQuery();
+        ArrayList<ProductByMonth> list = new ArrayList<>();
+        ProductByMonth pd = new ProductByMonth();
+        while (rs.next()) {
+            list.add(new ProductByMonth(rs.getInt("shop_id"), rs.getInt("product_id"), rs.getInt("year"), rs.getInt("month"), rs.getInt("quatity"), new ProductDAO().GetNameProduct(rs.getInt("product_id"))));
+        }
+        return list;
+    }
+
+    public ArrayList<benefitbymonth> getBenefitbymonth(int shopId) throws SQLException {
+        PreparedStatement stm = conn.prepareStatement("SELECT \n"
+                + "    S.shop_id,\n"
+                + "    MONTH(O.order_date) AS month, \n"
+                + "	SUM(OD.quantity) AS quatity,\n"
+                + "    SUM(OD.quantity * OD.price ) AS revenue\n"
+                + "FROM \n"
+                + "    [dbo].[Order] O\n"
+                + "    JOIN [dbo].[OrderDetails] OD ON O.order_id = OD.order_id\n"
+                + "    JOIN [dbo].[Product] P ON OD.product_id = P.product_id\n"
+                + "    JOIN [dbo].[Shop] S ON P.shop_id = S.shop_id\n"
+                + "	WHERE S.shop_id = ? \n"
+                + "GROUP BY \n"
+                + "    S.shop_id,\n"
+                + "    MONTH(O.order_date)");
+        stm.setInt(1, shopId);
+        ResultSet rs = stm.executeQuery();
+        ArrayList<benefitbymonth> list = new ArrayList<>();
+        ProductByMonth pd = new ProductByMonth();
+        while (rs.next()) {
+            list.add(new benefitbymonth(rs.getInt("shop_id"), rs.getInt("month"), rs.getInt("quatity"), rs.getInt("revenue")));
+        }
+        return list;
+    }
+
+    public ArrayList<Top10bybenefit> Top10benefit(int shopId) throws SQLException {
+        PreparedStatement stm = conn.prepareStatement("SELECT \n" +
+"    S.shop_id,\n" +
+"    P.product_id,\n" +
+"	SUM(OD.quantity) AS quatity,\n" +
+"    SUM(OD.quantity * OD.price  ) AS revenue\n" +
+"FROM \n" +
+"    [dbo].[Order] O\n" +
+"    JOIN [dbo].[OrderDetails] OD ON O.order_id = OD.order_id\n" +
+"    JOIN [dbo].[Product] P ON OD.product_id = P.product_id\n" +
+"    JOIN [dbo].[Shop] S ON P.shop_id = S.shop_id\n" +
+"	where s.shop_id = ?\n" +
+"GROUP BY \n" +
+"    S.shop_id,\n" +
+"    P.product_id\n" +
+"Order by\n" +
+"revenue desc");
+        stm.setInt(1, shopId);
+        ResultSet rs = stm.executeQuery();
+        ArrayList<Top10bybenefit> list = new ArrayList<>();
+        ProductByMonth pd = new ProductByMonth();
+        int count = 1;
+        while (rs.next()) {
+            if (count == 10) {
+                list.add(new Top10bybenefit(rs.getInt("shop_id"), rs.getInt("product_id"), rs.getInt("quatity"), rs.getInt("revenue"),GetNameProduct(rs.getInt("product_id"))));
+                return list;
+            }
+            list.add(new Top10bybenefit(rs.getInt("shop_id"), rs.getInt("product_id"), rs.getInt("quatity"), rs.getInt("revenue"),GetNameProduct(rs.getInt("product_id"))));
+            count++;
+
+        }
+        return list;
+    }
+
+    public String GetNameProduct(int pdid) throws SQLException {
+        PreparedStatement stm = conn.prepareStatement("select name from Product where product_id = ? ");
+        stm.setInt(1, pdid);
+        ResultSet rs = stm.executeQuery();
+        rs.next();
+        return rs.getString("name");
+    }
+
     @Override
     public ProductDTO get(int id) throws SQLException {
         PreparedStatement stm = conn.prepareStatement(""
@@ -542,7 +643,7 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
                     + "shop_id, category_id, "
                     + "  price,"
                     + " name, description, "
-                    + "quantity, "
+                    + "quantity, status, "
                     + "create_at, approve_at, "
                     + "discount, sold_count) "
                     //                    + "authen) \n"
@@ -550,7 +651,7 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
                     + "  ?, "
                     + "?, ?, "
                     + "?, ?, "
-                    + " null, "
+                    + "?, null, "
                     + "null, 0) ");
 //                    + "1);");
             int count = 1;
@@ -561,7 +662,7 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
             stm.setString(count++, t.getName());
             stm.setString(count++, t.getDescription());
             stm.setInt(count++, t.getQuanity());
-//            stm.setBoolean(count++, t.isStatus());
+            stm.setBoolean(count++, t.isStatus());
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
             LocalDateTime now = LocalDateTime.now();
             stm.setString(count++, dtf.format(now));

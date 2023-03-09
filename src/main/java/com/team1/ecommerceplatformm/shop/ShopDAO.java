@@ -7,6 +7,7 @@ package com.team1.ecommerceplatformm.shop;
 import com.team1.ecommerceplatformm.common.AbstractDAO;
 import com.team1.ecommerceplatformm.product.ProductDAO;
 import com.team1.ecommerceplatformm.product.ProductDTO;
+import com.team1.ecommerceplatformm.user.UserDTO;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -128,24 +129,53 @@ public class ShopDAO extends AbstractDAO<ShopDTO> {
         return dto;
 
     }
+
     public static void main(String[] args) {
-        try {
-            ShopDAO dao = new ShopDAO();
-            ShopDTO dto = dao.getShopByShopId(1);
-            System.out.println(dto);
-                System.out.println(dto.getShopName());
-        } catch (SQLException ex) {
-            Logger.getLogger(ShopDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    @Override
-    public void save(ShopDTO t) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+
+        ShopDAO dao = new ShopDAO();
+        ShopDTO dto = new ShopDTO();
+        dto.setUserID(69);
+        dto.setShopName("ok");
+//            System.out.println(dto);
+//            System.out.println(dto.getShopName());
+        dao.save(dto);
+
     }
 
     @Override
-    public void update(ShopDTO t) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void save(ShopDTO shopDTO) {
+        try {
+            PreparedStatement stm = conn.prepareStatement(""
+                    + "  INSERT INTO [Shop] ([user_id],[created_at],[shop_name],[status],[approve])\n"
+                    + "VALUES (?,GETDATE(),?,0,0)");
+
+            stm.setInt(1, shopDTO.getUserID());
+            stm.setString(2, shopDTO.getShopName());
+            stm.executeUpdate();
+            stm.close();
+            System.out.println(shopDTO.getUserID());
+        } catch (Exception e) {
+            System.err.println("Loi save SHop" + e.getMessage());
+        }
+    }
+
+    @Override
+    public void update(ShopDTO shopDTO) {
+        try {
+            PreparedStatement stm = conn.prepareStatement(""
+                    + "UPDATE [Shop]\n"
+                    + "   SET \n"
+                    + "   [shop_name] = ?\n"
+                    + " WHERE shop_id = ?");
+            
+            stm.setString(1, shopDTO.getShopName());
+            stm.setInt(2, shopDTO.getShopID());
+            stm.executeUpdate();
+            stm.close();
+            System.out.println(shopDTO.getUserID());
+        } catch (Exception e) {
+            System.err.println("Loi update SHop" + e.getMessage());
+        }
     }
 
     @Override

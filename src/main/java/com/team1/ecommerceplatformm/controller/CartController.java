@@ -12,7 +12,7 @@ import com.team1.ecommerceplatformm.orderDetails.OrderDetailsDTO;
 import com.team1.ecommerceplatformm.shop.ShopDAO;
 import com.team1.ecommerceplatformm.shop.ShopDTO;
 import com.team1.ecommerceplatformm.user.UserDTO;
-import com.team1.ecommerceplatformm.utils.Constants;
+import com.team1.ecommerceplatformm.utils.Constrants;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -53,7 +53,7 @@ public class CartController extends HttpServlet {
         Gson gson = new Gson();
         switch (cartAction) {
             case "view": {
-                request.getRequestDispatcher(Constants.SHOW_CART_PAGE).forward(request, response);
+                request.getRequestDispatcher(Constrants.SHOW_CART_PAGE).forward(request, response);
                 break;
 
             }

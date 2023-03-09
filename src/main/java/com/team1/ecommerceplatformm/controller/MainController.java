@@ -7,7 +7,7 @@ package com.team1.ecommerceplatformm.controller;
 import com.team1.ecommerceplatformm.category.CategoryDAO;
 import com.team1.ecommerceplatformm.category.CategoryDTO;
 import com.team1.ecommerceplatformm.product.ProductDAO;
-import com.team1.ecommerceplatformm.utils.Constants;
+import com.team1.ecommerceplatformm.utils.Constrants;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -59,59 +59,59 @@ public class MainController extends HttpServlet {
                 request.setAttribute("listCategoryHaveNoVerticalBanner", listCategoryHaveNoVerticalBanner);
                 request.setAttribute("listTop20ProductsHaveBannerVertical",
                         proDAO.getAllTOP20BestSellingProductsByCategoryIDs(listCategoryHaveNoVerticalBanner));
-                url = Constants.HOME_PAGE;
+                url = Constrants.HOME_PAGE;
             } else {
                 switch (btnAction) {
                     case "user": {
-                        url = Constants.USER_CONTROLLER;
+                        url = Constrants.USER_CONTROLLER;
                         break;
                     }
                     case "product": {
                         System.out.println("vào case product main");
-                        url = Constants.PRODUCT_CONTROLLER;
+                        url = Constrants.PRODUCT_CONTROLLER;
                         break;
                     }
                     case "search": {
                         System.out.println("vao case search");
-                        url = Constants.SEARCH_CONTROLLER;
+                        url = Constrants.SEARCH_CONTROLLER;
                         break;
                     }
                     case "searchAjax": {
                         System.out.println("vào case searchAjax main");
-                        url = Constants.SEARCH_AJAX_CONTROLLER;
+                        url = Constrants.SEARCH_AJAX_CONTROLLER;
                         break;
                     }
                     case "cart": {
                         System.out.println("vào add cart main");
-                        url = Constants.CART_CONTROLLER;
+                        url = Constrants.CART_CONTROLLER;
                         break;
                     }
                     case "address": {
                         System.out.println("vào address main");
-                        url = Constants.ADDRESS_CONTROLLER;
+                        url = Constrants.ADDRESS_CONTROLLER;
                         break;
                     }
                     case "shop": {
                         System.out.println("vào shop controlller main");
-                        url = Constants.SHOP_CONTROLLER;
+                        url = Constrants.SHOP_CONTROLLER;
                         break;
                     }
                     case "manageProduct": {
-                        url = Constants.PRODUCT_MANAGER_CONTROLLER;
+                        url = Constrants.PRODUCT_MANAGER_CONTROLLER;
                         break;
                     }
                     case "admin": {
                         System.out.println("vào showtable");
-                        url = Constants.ADMIN_CONTROLLER;
+                        url = Constrants.ADMIN_CONTROLLER;
                         break;
                     }
                     case "dashboard": {
 //                        System.out.println("vào showtable");
-                        url = Constants.DASHBOARD_CONTROLLER;
+                        url = Constrants.DASHBOARD_CONTROLLER;
                         break;
                     }
 //                    case "renderTable": {
-//                        url = Constants.ADMIN_CONTROLLER;
+//                        url = Constrants.ADMIN_CONTROLLER;
 //                        break;
 //                    }
                 }

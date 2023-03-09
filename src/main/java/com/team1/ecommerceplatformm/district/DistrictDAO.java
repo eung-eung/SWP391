@@ -75,28 +75,10 @@ public class DistrictDAO extends AbstractDAO<DistrictDTO> {
         }
         return dto;
     }
-     public ArrayList<DistrictDTO> getListDistrictByDistrictID(String districtID) throws SQLException {
-        PreparedStatement stm = conn.prepareStatement("select district_id, city_id, [name] "
-                + "from District "
-                + "where district_id = ?");
-        stm.setString(1, districtID);
-        
-        ResultSet rs = stm.executeQuery();
-        ArrayList<DistrictDTO> list = new ArrayList<>();
-        while (rs.next()) {
-            DistrictDTO dto = new DistrictDTO();
-            dto.setDistrictID(rs.getString(1));
-            dto.setCityID(rs.getString(2));
-            dto.setName(rs.getString(3));
-            list.add(dto);
-        }
-        return list;
-    }
-    
     public static void main(String[] args) {
         try {
             DistrictDAO dao = new DistrictDAO();
-            DistrictDTO dto = dao.getADistrictByDistrictID("001");
+            DistrictDTO dto = dao.getADistrictByDistrictID("26767");
             System.out.println(dto);
         } catch (SQLException ex) {
             Logger.getLogger(DistrictDAO.class.getName()).log(Level.SEVERE, null, ex);
