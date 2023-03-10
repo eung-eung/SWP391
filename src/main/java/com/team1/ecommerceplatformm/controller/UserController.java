@@ -7,6 +7,7 @@ package com.team1.ecommerceplatformm.controller;
 import com.google.gson.Gson;
 import com.team1.ecommerceplatformm.order.OrderDAO;
 import com.team1.ecommerceplatformm.order.OrderDTO;
+import com.team1.ecommerceplatformm.shop.ShopDAO;
 import com.team1.ecommerceplatformm.user.UserDAO;
 import com.team1.ecommerceplatformm.user.UserDTO;
 import jakarta.servlet.http.HttpSession;
@@ -114,7 +115,8 @@ public class UserController extends HttpServlet {
                     request.getRequestDispatcher(Constants.SHOW_TRANSACTION_HISTORY_PAGE).forward(request, response);
                     break;
                 }
-                
+             
+
             }
 
         } catch (IllegalArgumentException ex) {

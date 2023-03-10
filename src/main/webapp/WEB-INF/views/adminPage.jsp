@@ -273,7 +273,7 @@
                                 {
                                     'data': 'status',
                                     render: function (data, type, row, meta) {
-                                        return data ? "Đang hoạt động" : "Ngưng hoạt động";
+                                        return data ? "Äang hoáº¡t Äá»ng" : "NgÆ°ng hoáº¡t Äá»ng";
                                     }
 
                                 },

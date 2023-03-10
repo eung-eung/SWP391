@@ -47,6 +47,7 @@ public class ShopController extends HttpServlet {
         String shopAction = request.getParameter("shopAction");
         System.out.println("vào shop controller");
         int a = 0;
+        Gson gson = new Gson();
         switch (shopAction) {
             case "register": {
                 System.out.println("vào shop controller case register  ");
@@ -76,9 +77,55 @@ public class ShopController extends HttpServlet {
                     Logger.getLogger(ShopController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
+            case "currentTotal": {
+                try {
+                    
+                    int userId = Integer.parseInt(request.getParameter("userId"));
+                    ShopDAO shopDao = new ShopDAO();
+                    ShopDTO shopDto = shopDao.getByUserID(userId);
+                    int shopId = shopDto.getShopID();
+                    shopDto = shopDao.getShopQuantities(shopId);
+                    System.out.println("aaaa");
+                    response.getWriter().println(gson.toJson(shopDto.getTotal()));
+                    
+                    break;
+                } catch (SQLException ex) {
+                    
+                    Logger.getLogger(ShopController.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            case "getTotalSoldCount": {
+                try {
+                    ProductDAO proDao = new ProductDAO();
+                    int userId = Integer.parseInt(request.getParameter("userId"));
+                    ShopDAO shopDao = new ShopDAO();
+                    ShopDTO shopDto = shopDao.getByUserID(userId);
+                    int shopId = shopDto.getShopID();
+                    int soldCount = proDao.getTotalSoldCount(shopId);
+                    
+                    response.getWriter().println(gson.toJson(soldCount));
+                    break;
+                } catch (SQLException ex) {
+                    Logger.getLogger(ShopController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            case "getTotalRevenue": {
+                try {
+                    ShopDAO shopDao = new ShopDAO();
+                    int userId = Integer.parseInt(request.getParameter("userId"));
+                    ShopDTO shopDto = shopDao.getByUserID(userId);
+                    int shopId = shopDto.getShopID();
+                    double totalRevenue = shopDao.getTotalRevenue(shopId);
+                    response.getWriter().println(gson.toJson(totalRevenue));
+                    break;
+                } catch (SQLException ex) {
+                    Logger.getLogger(ShopController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+            }
             
-
-
         }
     }
 
@@ -94,7 +141,7 @@ public class ShopController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        
         if (request.getParameter("redect") != null) {
             try {
                 UserDTO userDTO = (UserDTO) request.getSession().getAttribute("user");

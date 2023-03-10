@@ -41,7 +41,7 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
                 + "      ,[approve_at]\n"
                 + "      ,[discount]\n"
                 + "      ,[sold_count]\n"
-                + "      ,[authen]   FROM [EcommmercePlatform].[dbo].[Product]");
+                + "      ,[authen]   FROM [EcommmercePlatform].[dbo].[Product] where authen = 1 and status = 1");
         ResultSet rs = stm.executeQuery();
         ArrayList<ProductDTO> list = new ArrayList<>();
         while (rs.next()) {
@@ -81,7 +81,7 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
                 + "      ,[approve_at]\n"
                 + "      ,[discount]\n"
                 + "      ,[sold_count]\n"
-                + "      ,[authen]   FROM [EcommmercePlatform].[dbo].[Product] where category_id = ?");
+                + "      ,[authen]   FROM [EcommmercePlatform].[dbo].[Product] where category_id = ? and authen = 1 and status = 1 ");
         stm.setInt(1, categoryID);
         ResultSet rs = stm.executeQuery();
         ArrayList<ProductDTO> list = new ArrayList<>();
@@ -120,7 +120,7 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
                 + "      ,[approve_at]\n"
                 + "      ,[discount]\n"
                 + "      ,[sold_count]\n"
-                + "      ,[authen]   FROM [EcommmercePlatform].[dbo].[Product] where name like ?");
+                + "      ,[authen]   FROM [EcommmercePlatform].[dbo].[Product] where name like ? where authen = 1 and status = 1");
         stm.setString(1, "%" + name + "%");
         ResultSet rs = stm.executeQuery();
         ArrayList<ProductDTO> list = new ArrayList<>();
@@ -159,7 +159,7 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
                 + "      ,[approve_at]\n"
                 + "      ,[discount]\n"
                 + "      ,[sold_count]\n"
-                + "      ,[authen]   FROM [EcommmercePlatform].[dbo].[Product] where name like ?");
+                + "      ,[authen]   FROM [EcommmercePlatform].[dbo].[Product] where name like ? and authen = 1 and status = 1");
         stm.setString(1, "%" + name + "%");
         ResultSet rs = stm.executeQuery();
         ArrayList<ProductDTO> list = new ArrayList<>();
@@ -703,6 +703,17 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
         return list;
     }
 
+    public int getTotalSoldCount(int shopId) throws SQLException {
+        PreparedStatement stm = conn.prepareStatement(" select sum(sold_count) from Product where shop_id = ? ");
+        stm.setInt(1, shopId);
+        ResultSet rs = stm.executeQuery();
+        if (rs.next()) {
+            return rs.getInt(1);
+        }
+        return 0;
+
+    }
+
     @Override
     public void update(ProductDTO t) throws SQLException {
         try {
@@ -726,7 +737,7 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
     public void delete(ProductDTO t) throws SQLException {
         try {
 
-            PreparedStatement stm = conn.prepareStatement("delete from Product where product_id = '149'");
+            PreparedStatement stm = conn.prepareStatement("delete from Product where product_id =?");
             System.err.println(stm.toString());
             stm.setDouble(1, t.getProductID());
             stm.executeUpdate();
@@ -742,14 +753,8 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
             ArrayList<CategoryDTO> lt = cdao.getAll();
 //            ProductDTO dtoa = dao.get(449);
 //            System.out.println(dtoa);
-
-            dao.getAllProductByShopId(2).forEach(System.out::println);
-            ArrayList<ArrayList<ProductDTO>> lsit = dao.getAllTOP20BestSellingProductsByCategoryIDs(lt);
-
-            for (ArrayList<ProductDTO> productDTO : lsit) {
-                System.out.println(productDTO.toString());
-
-            }
+            int t = dao.getTotalSoldCount(1);
+            System.out.println("t" + t);
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class
                     .getName()).log(Level.SEVERE, null, ex);

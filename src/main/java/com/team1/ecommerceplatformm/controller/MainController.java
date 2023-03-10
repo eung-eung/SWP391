@@ -42,6 +42,7 @@ public class MainController extends HttpServlet {
         HttpSession session = request.getSession();
         ProductDAO proDAO = new ProductDAO();
         String url = "";
+        System.out.println("btn" + btnAction);
         try {
             if (btnAction == null) {
                 CategoryDAO cateDAO = new CategoryDAO();

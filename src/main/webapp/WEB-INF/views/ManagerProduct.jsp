@@ -48,6 +48,7 @@
     </head>
     <body>
         <div class="container1">
+
             <div class="nav-bar">
                 <div class="nav-content">
                     <div class="home">
@@ -68,7 +69,7 @@
                     <div class="nav-cursive"></div>
                 </div>
             </div>
-            <div style="margin-top: 50px; display: block" id="render" >
+            <div style="margin-top: 50px; display: block" id="render">
                 <div style="float: left" id="render1"></div>
                 <div style="float: right" id="render2"></div>
                 <div class="table-wrapper">
@@ -193,14 +194,25 @@
                     </form>
                 </div>
             </div>
+
         </div> 
+
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
         <script>
-                                    fetch("MainController?btnAction=product&productAction=getQuantity&shopId=1")
-                                            .then(res => res.json())
-                                            .then(data => {
-                                                data.forEach(i => console.log(i))
-                                            });
+                                    const formatter = new Intl.NumberFormat('vi-VN', {
+                                        style: 'currency',
+                                        currency: 'VND',
+                                    });
+                                    function getPercent(list, number) {
+                                        let total = 0;
+                                        for (let i = 0; i < list.length; i++) {
+                                            total += list[i];
+                                        }
+                                        let percent = number / total * 100;
+                                        return percent.toFixed();
+                                    }
+
                                     const content = document.querySelector(".nav-content");
                                     const buttons = document.querySelectorAll(".nav-button");
                                     const cursive = document.querySelector(".nav-cursive");
@@ -222,36 +234,64 @@
                                                 // Hiển thị biểu đồ lên trang web
                                                 document.querySelector("#render").innerHTML = `<div class="dashboard-container">
 
-        <div class="block">
+<div class="block-container">        
+<div class="block">
             <div class="total-title">tổng sản phẩm</div>
-            <div class="total-content"><i class="fa-solid fa-box-open"></i><span>2000 sản phẩm
+            <div class="total-content total-products"><i class="fa-solid fa-box-open"></i><span>2000 sản phẩm
                 </span>
             </div>
         </div>
         <div class="block">
             <div class="total-title">tổng doanh thu</div>
-            <div class="total-content"> <i class="fa-solid fa-dollar-sign"></i><span>2000M
+            <div class="total-content total-revenue"> <i class="fa-solid fa-dollar-sign"></i><span>2000M
                 </span>
             </div>
         </div>
         <div class="block">
             <div class="total-title">tổng sản phẩm đã bán</div>
-            <div class="total-content"><i class="fa-solid fa-money-bill-trend-up"></i><span>2000 sản phẩm
+            <div class="total-content soldCount"><i class="fa-solid fa-money-bill-trend-up"></i><span>2000 sản phẩm
                 </span>
             </div>
         </div>
-
-        <div class="chart-container">
-            <h3>Top 5 sản phẩm có doanh thu cao nhất</h3>
-            <div class="top10-benefit">
+</div>
+        <div class="chart-container-benefit">
+         
+            <div class="top5-benefit">
 
             </div>
+        
         </div>
+        <div class="chart-container-pie-quantity">
+            <div class="quantity-pieChart"></div>
+        </div>
+        <div class="chart-container-col-top5-highest-revenue">
+            <div class="top5-highest-revenue"></div>
+        </div>
+            
+        <div class="chart-container-col-top10-seller">
+            <div class="top10-best-seller"></div>
+        </div>    
     </div>`
+                                                document.querySelector(".quantity-pieChart").innerHTML = `<canvas id="pieChartQuantity"></canvas>`
+                                                document.querySelector(".top5-benefit").innerHTML = `<canvas id="myChart"></canvas><br/>`;
+                                                fetch("MainController?btnAction=shop&shopAction=getTotalRevenue&userId=${sessionScope.user.userID}")
+                                                        .then(res => res.json())
+                                                        .then(totalRevenue => {
+                                                            console.log(totalRevenue)
+                                                            document.querySelector('.total-revenue').innerHTML = formatter.format(totalRevenue)
+                                                        })
+                                                fetch("MainController?btnAction=shop&shopAction=currentTotal&userId=${sessionScope.user.userID}")
+                                                        .then(res => res.json())
+                                                        .then(quantity => {
+                                                            document.querySelector('.total-products').innerHTML = quantity + " sản phẩm"
+                                                        })
 
-
-                                                document.querySelector(".top10-benefit").innerHTML = `<canvas id="myChart"></canvas><br/>`;
-// Lấy dữ liệu từ server
+                                                fetch("MainController?btnAction=shop&shopAction=getTotalSoldCount&userId=${sessionScope.user.userID}")
+                                                        .then(res => res.json())
+                                                        .then(soldCount => {
+                                                            document.querySelector('.soldCount').innerHTML = soldCount + " sản phẩm"
+                                                        })
+                                                // Lấy dữ liệu từ server
                                                 fetch('Dashboard?top10benefit=true')
                                                         .then(res => res.json())
                                                         .then(data => {
@@ -286,6 +326,13 @@
                                                                     plugins: {
                                                                         legend: {
                                                                             display: false
+                                                                        },
+                                                                        title: {
+                                                                            display: true,
+                                                                            text: 'Top 5 sản phẩm có doanh thu cao nhất',
+                                                                            font: {
+                                                                                size: 29
+                                                                            }
                                                                         },
                                                                     }
                                                                     ,
@@ -346,7 +393,7 @@
 //                                                                }
 //                                                            });
 //                                                        });
-                                                document.querySelector("#render").innerHTML += `<br/><canvas id="myChartss"></canvas><br/>`;
+                                                document.querySelector(".top5-highest-revenue").innerHTML = `<br/><canvas id="myChartss"></canvas><br/>`;
                                                 fetch('Dashboard?bymonth=true')
                                                         .then(res => res.json())
                                                         .then(data => {
@@ -377,25 +424,28 @@
                                                                         }]
                                                                 },
                                                                 options: {
-                                                                    legend: {
-                                                                        display: false
+                                                                    plugins: {
+                                                                        title: {
+                                                                            display: true,
+                                                                            text: 'Top 5 sản phẩm bán chạy nhất trong tháng',
+                                                                            font: {
+                                                                                size: 29
+                                                                            }
+                                                                        },
+                                                                        legend: {
+                                                                            display: false
+                                                                        }
                                                                     },
                                                                     scales: {
-                                                                        yAxes: [{
-                                                                                ticks: {
-                                                                                    beginAtZero: true
-                                                                                },
-                                                                                scaleLabel: {
-                                                                                    display: true,
-                                                                                    labelString: 'Number of sales'
-                                                                                }
-                                                                            }]
+                                                                        x: {
+                                                                            display: false //this will remove all the x-axis grid lines
+                                                                        }
                                                                     }
                                                                 }
                                                             }
                                                             );
                                                         });
-                                                document.querySelector("#render").innerHTML += `<br/><canvas id="myChartsss"></canvas><br/>`;
+                                                document.querySelector(".top10-best-seller").innerHTML += `<br/><canvas id="myChartsss"></canvas><br/>`;
                                                 fetch('MainController?btnAction=dashboard')
                                                         .then(res => res.json())
                                                         .then(data => {
@@ -429,6 +479,23 @@
                                                                     legend: {
                                                                         display: false
                                                                     },
+                                                                    scales: {
+                                                                        x: {
+                                                                            display: false //this will remove all the x-axis grid lines
+                                                                        }
+                                                                    },
+                                                                    plugins: {
+                                                                        title: {
+                                                                            display: true,
+                                                                            text: 'Top 10 sản phẩm bán chạy nhất',
+                                                                            font: {
+                                                                                size: 29
+                                                                            }
+                                                                        },
+                                                                        legend: {
+                                                                            display: false
+                                                                        }
+                                                                    },
 //                                                                    scales: {
 //                                                                        yAxes: [{
 //                                                                                ticks: {
@@ -444,9 +511,40 @@
                                                             }
                                                             );
                                                         })
+                                                fetch("MainController?btnAction=product&productAction=getQuantity&shopId=1")
+                                                        .then(res => res.json())
+                                                        .then(data => {
+                                                            const nameCate = data.map(i => i.name)
+                                                            const quantityProductInCate = data.map(i => i.quantity)
+                                                            data.forEach(i => console.log(i))
+                                                            console.log(quantityProductInCate)
+                                                            console.log(nameCate)
+                                                            new Chart("pieChartQuantity", {
+                                                                type: "doughnut",
+                                                                data: {
+                                                                    labels: nameCate,
+                                                                    datasets: [{
 
-
-
+                                                                            data: quantityProductInCate
+                                                                        }]
+                                                                },
+                                                                options: {
+                                                                    title: {
+                                                                        display: true,
+                                                                        text: "Số lượng sản phẩm từng category"
+                                                                    },
+                                                                    plugins: {
+                                                                        title: {
+                                                                            display: true,
+                                                                            text: 'Số lượng sản phẩm từng loại sản phẩm',
+                                                                            font: {
+                                                                                size: 29
+                                                                            }
+                                                                        }
+                                                                    },
+                                                                }
+                                                            });
+                                                        });
                                             } else if (manageProduct.classList.contains("active")) {
                                                 document.querySelector("#render").innerHTML = `
                                                  <div style="float: left" id="render1"></div>

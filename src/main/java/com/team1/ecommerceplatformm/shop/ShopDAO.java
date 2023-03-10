@@ -80,7 +80,7 @@ public class ShopDAO extends AbstractDAO<ShopDTO> {
     public ShopDTO getShopQuantities(int shopId) throws SQLException {
         PreparedStatement stm = conn.prepareStatement("  select s.shop_name,count(p.product_id) from Shop s \n"
                 + "								inner join Product p on p.shop_id = s.shop_id\n"
-                + "								where s.shop_id = ? group by s.shop_name");
+                + "								where s.shop_id = ?  and p.authen = 1 and p.status = 1 group by s.shop_name");
         stm.setInt(1, shopId);
         ResultSet rs = stm.executeQuery();
         ShopDTO dto = new ShopDTO();
@@ -128,16 +128,29 @@ public class ShopDAO extends AbstractDAO<ShopDTO> {
         return dto;
 
     }
+
+    public double getTotalRevenue(int shopId) throws SQLException {
+        PreparedStatement stm = conn.prepareStatement("  select sum(o.quantity * o.price) as total from OrderDetails o inner join Product p\n"
+                + "  on o.product_id = p.product_id  where shop_id = ?");
+        stm.setInt(1, shopId);
+        ResultSet rs = stm.executeQuery();
+        if (rs.next()) {
+            return rs.getDouble(1);
+        }
+        return 0;
+    }
+
     public static void main(String[] args) {
         try {
             ShopDAO dao = new ShopDAO();
             ShopDTO dto = dao.getShopByShopId(1);
             System.out.println(dto);
-                System.out.println(dto.getShopName());
+            System.out.println(dto.getShopName());
         } catch (SQLException ex) {
             Logger.getLogger(ShopDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
     @Override
     public void save(ShopDTO t) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
