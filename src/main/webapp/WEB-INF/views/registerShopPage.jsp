@@ -22,47 +22,29 @@
             <div class="container">
                 <div class="form">
                     <h2>Đăng ký trở thành cửa hàng của chúng tôi</h2>
+                    <form id="resgis" action="./ShopController" method="post"></form>
                     <div class="register-items">
-
                         <div class="register-item">
                             <label for="shopName">Tên cửa hàng <i class="fa-solid fa-store"></i></label>
                         </div>
                         <div class="register-item">
-                            <input id="shopName" type="text"/>
+                            <input form="resgis" required name="shopName"  id="shopName" type="text"/>
                         </div>
                     </div>
+                    <div class="register-items">
+                        <div class="register-item">
+                            <label for="gmail">Gmail cửa hàng <i class="fa-solid fa-store"></i></label>
+                        </div>
+                        <div class="register-item">
+                            <input form="resgis" required name="gmail"  id="gmail" type="text"/>
+                        </div>
+                    </div>
+
+
 
                     <div class="register-items">
 
-                        <div class="register-item">
-                            <label for="paypalAccount">Email <i class="fa-regular fa-envelope"></i></label>
-                        </div>
-                        <div class="register-item">
-                            <input id="email" type="email"/>
-                        </div>
-                    </div>
-                     <div class="register-items">
-
-                        <div class="register-item">
-                            <label for="paypalAccount">Số điện thoại <i class="fa-solid fa-phone"></i></label>
-                        </div>
-                        <div class="register-item">
-                            <input id="phoneNumber" type="number"/>
-                        </div>
-                    </div>
-                     <div class="register-items">
-
-                        <div class="register-item">
-                            <label for="paypalAccount">Mã Xác thực <i class="fa-solid fa-barcode"></i></label>
-                        </div>
-                        <div class="register-item">
-                            <input id="otp" type="number"/>
-                        </div>
-                    </div>
-                     
-                    <div class="register-items">
-
-                        <button type="button" id="submit">Lưu</button>
+                        <button form="resgis" type="submit" id="submit">Lưu</button>
                     </div>
                 </div>
             </div>

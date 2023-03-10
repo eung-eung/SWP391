@@ -62,6 +62,26 @@ public class CategoryDAO extends AbstractDAO<CategoryDTO> {
         return list;
     }
 
+    public ArrayList<CategoryDTO> getQuantityProductEachCategoryByShopId(int shopId) throws SQLException {
+        PreparedStatement stm = conn.prepareStatement("  select count(product_id),c.category_id,c.name \n"
+                + "  from Product p inner join Category c on p.category_id = c.category_id\n"
+                + "  where shop_id =?\n"
+                + "group by c.category_id ,c.name  ");
+        stm.setInt(1, shopId);
+        ResultSet rs = stm.executeQuery();
+        ArrayList<CategoryDTO> list = new ArrayList<>();
+        while (rs.next()) {
+            CategoryDTO dto = new CategoryDTO();
+            dto.setQuantity(rs.getInt(1));
+            dto.setCategoryID(rs.getInt(2));
+            dto.setName(rs.getString(3));
+            list.add(dto);
+        }
+        rs.close();
+        stm.close();
+        return list;
+    }
+
     @Override
     public void save(CategoryDTO t) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
@@ -81,7 +101,7 @@ public class CategoryDAO extends AbstractDAO<CategoryDTO> {
         try {
             CategoryDAO dao = new CategoryDAO();
             ArrayList<CategoryDTO> list = new ArrayList<>();
-            list = dao.getTop5CategoriesByTotalSoldCount();
+            list = dao.getQuantityProductEachCategoryByShopId(1);
             System.out.println(list);
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);

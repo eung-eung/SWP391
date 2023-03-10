@@ -336,6 +336,40 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
         return list;
     }
 
+    public ArrayList<Top10ByBenefit> Top10Benefit(int shopId) throws SQLException {
+        PreparedStatement stm = conn.prepareStatement("SELECT \n"
+                + "    S.shop_id,\n"
+                + "    P.product_id,\n"
+                + "	SUM(OD.quantity) AS quatity,\n"
+                + "    SUM(OD.quantity * OD.price  ) AS revenue\n"
+                + "FROM \n"
+                + "    [dbo].[Order] O\n"
+                + "    JOIN [dbo].[OrderDetails] OD ON O.order_id = OD.order_id\n"
+                + "    JOIN [dbo].[Product] P ON OD.product_id = P.product_id\n"
+                + "    JOIN [dbo].[Shop] S ON P.shop_id = S.shop_id\n"
+                + "	where s.shop_id = ?\n"
+                + "GROUP BY \n"
+                + "    S.shop_id,\n"
+                + "    P.product_id\n"
+                + "Order by\n"
+                + "revenue desc");
+        stm.setInt(1, shopId);
+        ResultSet rs = stm.executeQuery();
+        ArrayList<Top10ByBenefit> list = new ArrayList<>();
+        ProductByMonth pd = new ProductByMonth();
+        int count = 1;
+        while (rs.next()) {
+            if (count == 10) {
+                list.add(new Top10ByBenefit(rs.getInt("shop_id"), rs.getInt("product_id"), rs.getInt("quatity"), rs.getInt("revenue"), getNameProduct(rs.getInt("product_id"))));
+                return list;
+            }
+            list.add(new Top10ByBenefit(rs.getInt("shop_id"), rs.getInt("product_id"), rs.getInt("quatity"), rs.getInt("revenue"), getNameProduct(rs.getInt("product_id"))));
+            count++;
+
+        }
+        return list;
+    }
+
     public ArrayList<ProductDTO> getTop10ProductByShopId(int shopId) throws SQLException {
         PreparedStatement stm = conn.prepareStatement("SELECT TOP(10) [product_id]\n"
                 + "      ,[shop_id]\n"
@@ -375,6 +409,39 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
             list.add(dto);
         }
         return list;
+    }
+
+    public ArrayList<BenefitByMonth> getBenefitbymonth(int shopId) throws SQLException {
+        PreparedStatement stm = conn.prepareStatement("SELECT \n"
+                + "    S.shop_id,\n"
+                + "    MONTH(O.order_date) AS month, \n"
+                + "	SUM(OD.quantity) AS quatity,\n"
+                + "    SUM(OD.quantity * OD.price ) AS revenue\n"
+                + "FROM \n"
+                + "    [dbo].[Order] O\n"
+                + "    JOIN [dbo].[OrderDetails] OD ON O.order_id = OD.order_id\n"
+                + "    JOIN [dbo].[Product] P ON OD.product_id = P.product_id\n"
+                + "    JOIN [dbo].[Shop] S ON P.shop_id = S.shop_id\n"
+                + "	WHERE S.shop_id = ? \n"
+                + "GROUP BY \n"
+                + "    S.shop_id,\n"
+                + "    MONTH(O.order_date)");
+        stm.setInt(1, shopId);
+        ResultSet rs = stm.executeQuery();
+        ArrayList<BenefitByMonth> list = new ArrayList<>();
+        ProductByMonth pd = new ProductByMonth();
+        while (rs.next()) {
+            list.add(new BenefitByMonth(rs.getInt("shop_id"), rs.getInt("month"), rs.getInt("quatity"), rs.getInt("revenue")));
+        }
+        return list;
+    }
+
+    public String getNameProduct(int pdid) throws SQLException {
+        PreparedStatement stm = conn.prepareStatement("select name from Product where product_id = ? ");
+        stm.setInt(1, pdid);
+        ResultSet rs = stm.executeQuery();
+        rs.next();
+        return rs.getString("name");
     }
 
     @Override
@@ -571,6 +638,40 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
             System.err.println("LOI NAY O SAVE:" + e);
         }
 
+    }
+
+    public ArrayList<ProductByMonth> getProductByMonth(int shopId) throws SQLException {
+        PreparedStatement stm = conn.prepareStatement("SELECT \n"
+                + "    S.shop_id,\n"
+                + "    P.product_id,\n"
+                + "    YEAR(O.order_date) AS year,\n"
+                + "    MONTH(O.order_date) AS month, \n"
+                + "	SUM(OD.quantity) AS quatity,\n"
+                + "    SUM(OD.quantity * OD.price * (1 - OD.discount)) AS revenue\n"
+                + "FROM \n"
+                + "    [dbo].[Order] O\n"
+                + "    JOIN [dbo].[OrderDetails] OD ON O.order_id = OD.order_id\n"
+                + "    JOIN [dbo].[Product] P ON OD.product_id = P.product_id\n"
+                + "    JOIN [dbo].[Shop] S ON P.shop_id = S.shop_id\n"
+                + "	WHERE S.shop_id = ? \n"
+                + "GROUP BY \n"
+                + "    S.shop_id,\n"
+                + "    P.product_id,\n"
+                + "    YEAR(O.order_date),\n"
+                + "    MONTH(O.order_date)\n"
+                + "ORDER BY \n"
+                + "    S.shop_id,\n"
+                + "    P.product_id,\n"
+                + "    YEAR(O.order_date),\n"
+                + "    MONTH(O.order_date)");
+        stm.setInt(1, shopId);
+        ResultSet rs = stm.executeQuery();
+        ArrayList<ProductByMonth> list = new ArrayList<>();
+        ProductByMonth pd = new ProductByMonth();
+        while (rs.next()) {
+            list.add(new ProductByMonth(rs.getInt("shop_id"), rs.getInt("product_id"), rs.getInt("year"), rs.getInt("month"), rs.getInt("quatity"), new ProductDAO().getNameProduct(rs.getInt("product_id"))));
+        }
+        return list;
     }
 
     @Override

@@ -23,7 +23,7 @@ public class Constants {
     public final static String DASHBOARD_CONTROLLER = "Dashboard";
     public final static String PRODUCT_MANAGER_CONTROLLER = "ProductManagerController";
     public final static String SHOW_TRANSACTION_HISTORY_PAGE = "WEB-INF/views/showTransactionHistory.jsp";
-     public final static String SHOW_DETAIL_TRANSACTION_HISTORY_PAGE = "WEB-INF/views/showDetailTransactionHistory.jsp";
+    public final static String SHOW_DETAIL_TRANSACTION_HISTORY_PAGE = "WEB-INF/views/showDetailTransactionHistory.jsp";
     public final static String SHOW_PRODUCT_PAGE = "WEB-INF/views/showProductsResult.jsp";
     public final static String SHOW_REGISTER_SHOP_PAGE = "WEB-INF/views/registerShopPage.jsp";
     public final static String SHOW_USER_PROFILE_PAGE = "WEB-INF/views/userDetailPage.jsp";
@@ -36,6 +36,12 @@ public class Constants {
     public final static String UPDATE_PRODUCT = "WEB-INF/views/UpdateProduct.jsp";
     public final static String UPLOAD_IMAGE = "WEB-INF/views/iploadimage.jsp";
     public final static String DASHBOARD = "WEB-INF/views/DashBoard.jsp";
+
+    public final static String EMAIL_TK = "vinhtran120402@gmail.com";
+    public final static String EMAIL_MK = "qawvmteeujaryuzj";
+
+    //local host
+    public final static String URL_LOCALHOST = "http://localhost:8080/";
 
     public final static String URLFIREBASE = "D:\\FPT SPRING 2023\\SWP391\\EcommercePlatformm\\src\\main\\webapp\\assets\\thucaixemsao.json";
     public final static String URLFIREBASE_URL = "https://tesst-8ebfb-default-rtdb.firebaseio.com/";

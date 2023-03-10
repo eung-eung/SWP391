@@ -5,6 +5,8 @@
 package com.team1.ecommerceplatformm.controller;
 
 import com.google.gson.Gson;
+import com.team1.ecommerceplatformm.category.CategoryDAO;
+import com.team1.ecommerceplatformm.category.CategoryDTO;
 import com.team1.ecommerceplatformm.imageProduct.ImageProductDAO;
 import com.team1.ecommerceplatformm.imageProduct.ImageProductDTO;
 import com.team1.ecommerceplatformm.product.ProductDAO;
@@ -17,8 +19,11 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.sql.SQLException;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -60,12 +65,12 @@ public class ProductController extends HttpServlet {
                     request.setAttribute("productListByCateID", productListByCateID);
                     isForward = true;
                     url = Constants.SHOW_PRODUCT_PAGE;
-                    
-                    switch(sort){
-                        case "asc" :
+
+                    switch (sort) {
+                        case "asc":
                             Collections.sort(productListByCateID, Comparator.comparing(ProductDTO::getPrice));
                             break;
-                        case "desc" :
+                        case "desc":
                             Collections.sort(productListByCateID, Comparator.comparing(ProductDTO::getPrice).reversed());
                             break;
                     }
@@ -102,7 +107,24 @@ public class ProductController extends HttpServlet {
                     ArrayList<ProductDTO> list20 = productDao.getTOP20BestSellingProductsByCategoryID(categoryId);
                     response.getWriter().println(gson.toJson(list20));
                     break;
-                    
+
+                }
+                case "getQuantity": {
+
+                    try {
+                        int shopId = Integer.parseInt(request.getParameter("shopId"));
+                        CategoryDAO cDao = new CategoryDAO();
+                        ArrayList<CategoryDTO> listCate = cDao.getQuantityProductEachCategoryByShopId(shopId);
+                        System.out.println("li" + listCate);
+//                    System.err.println("a" + a);
+//                    a++;
+//                    Gson gson = new Gson();
+                        response.getWriter().println(gson.toJson(listCate));
+                        break;
+                    } catch (SQLException ex) {
+                        Logger.getLogger(ShopController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
                 }
             }
 

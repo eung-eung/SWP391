@@ -4,10 +4,14 @@
  */
 package com.team1.ecommerceplatformm.controller;
 
+import com.google.gson.Gson;
+import com.team1.ecommerceplatformm.category.CategoryDAO;
+import com.team1.ecommerceplatformm.category.CategoryDTO;
 import com.team1.ecommerceplatformm.product.ProductDAO;
 import com.team1.ecommerceplatformm.product.ProductDTO;
 import com.team1.ecommerceplatformm.shop.ShopDAO;
 import com.team1.ecommerceplatformm.shop.ShopDTO;
+import com.team1.ecommerceplatformm.user.UserDTO;
 import com.team1.ecommerceplatformm.utils.Constants;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -42,13 +46,14 @@ public class ShopController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String shopAction = request.getParameter("shopAction");
         System.out.println("vào shop controller");
+        int a = 0;
         switch (shopAction) {
             case "register": {
                 System.out.println("vào shop controller case register  ");
                 request.getRequestDispatcher(Constants.SHOW_REGISTER_SHOP_PAGE).forward(request, response);
                 break;
             }
-            case "show":{
+            case "show": {
                 try {
                     System.out.println("show");
                     int shopId = Integer.parseInt(request.getParameter("shopID"));
@@ -62,15 +67,17 @@ public class ShopController extends HttpServlet {
                         System.out.println("dasd" + productDTO);
                     }
                     request.setAttribute("listProductsShop", list);
-                     request.setAttribute("shop", sDTO);
-                     request.setAttribute("total", s2.getTotal());
-                     request.setAttribute("avatar", s3.getAvatar());
+                    request.setAttribute("shop", sDTO);
+                    request.setAttribute("total", s2.getTotal());
+                    request.setAttribute("avatar", s3.getAvatar());
                     request.getRequestDispatcher(Constants.SHOW_STORE_PAGE).forward(request, response);
                     break;
                 } catch (SQLException ex) {
                     Logger.getLogger(ShopController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
+            
+
 
         }
     }
@@ -88,6 +95,21 @@ public class ShopController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        if (request.getParameter("redect") != null) {
+            try {
+                UserDTO userDTO = (UserDTO) request.getSession().getAttribute("user");
+                ShopDTO shopDTO = new ShopDTO();
+                shopDTO.setShopName(request.getParameter("shopName"));
+                shopDTO.setUserID(userDTO.getUserID());
+                new ShopDAO().save(shopDTO);
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
+            }
+            System.err.println("Save Shop !");
+            response.sendRedirect("MainController");
+        } else {
+            processRequest(request, response);
+        }
     }
 
     /**
