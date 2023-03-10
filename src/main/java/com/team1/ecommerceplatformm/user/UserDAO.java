@@ -167,6 +167,20 @@ public class UserDAO extends AbstractDAO<UserDTO> {
     public void delete(UserDTO t) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+    
+    public ArrayList<Integer> getCountOfUser() throws SQLException{
+       PreparedStatement stm = conn.prepareStatement("SELECT COUNT(role_id) as count FROM [User] GROUP BY role_id");
+        ResultSet rs = stm.executeQuery();
+        int count;
+        ArrayList<Integer> list = new ArrayList<>();
+        while(rs.next()){
+            count = rs.getInt("count");
+            list.add(count);
+        }
+        rs.close();
+        stm.close();
+        return list;
+   }
 
 //    public static void main(String[] args) throws SQLException {
 //        UserDAO dao = new UserDAO();
