@@ -148,6 +148,11 @@
                 background-color: #f1f1f1;
                 color: black;
             }
+            
+            .chart{
+                height: 370px;
+                width: 100%;
+            }
 
         </style>
 
