@@ -170,9 +170,9 @@
                                         </dd>
 
                                         <dt class="product-view-name"></dt>
-                                        <dd class="product-view-value">
-                                            New
-                                        </dd> 
+<!--                                        <dd class="product-view-value">
+                                            
+                                        </dd> -->
                                     </dl>
                                 </div>
 

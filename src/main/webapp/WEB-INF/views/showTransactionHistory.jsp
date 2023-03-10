@@ -48,7 +48,7 @@
                                                         <a href="<c:url value="MainController?btnAction=shop&shopAction=show&shopID=${item.shopId}" />"><i class="fa-solid fa-shop"></i>${item.shopName}</a>
                                                     </div>
                                                     <div class="product-review">
-                                                        <span>Chat với cửa hàng</span>
+                                                        <!--<span>Chat với cửa hàng</span>-->
                                                         <span>Đánh giá sản phẩm</span>
                                                     </div>
                                                 </div>

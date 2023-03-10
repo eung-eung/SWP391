@@ -509,6 +509,7 @@
                                             cartList.innerHTML = ""
                                             document.querySelector(".checkout-button").style.display = "none"
                                             document.querySelector(".total").innerHTML = ""
+                                            window.location.href = "MainController?btnAction=user&userAction=transaction"
                                         })
                             }
                         }).render('#paypal-button-container');

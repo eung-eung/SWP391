@@ -17,7 +17,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <link type="text/css" rel="stylesheet" href="<c:url value="/assets/css/ManagerProduct.css" />" />
 
         <style>
@@ -124,7 +124,7 @@
                                            href="./UpdateProduct?productid=${prolist[loop.index - 1].getProductID()}">Update</a>
                                     </td>
                                     <td>
-                                        <a style="padding: 14px;background-color: red; text-decoration: none;color: white;border-radius: 4px" 
+                                        <a class="delete" style="padding: 14px;background-color: red; text-decoration: none;color: white;border-radius: 4px" 
                                            href="./DeleteProduct?productid=${prolist[loop.index - 1].getProductID()}">Delete</a>
                                     </td>
                                 </tr>
@@ -198,41 +198,61 @@
         </div> 
 
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
         <script>
-                                    const formatter = new Intl.NumberFormat('vi-VN', {
-                                        style: 'currency',
-                                        currency: 'VND',
+                                    $('.delete').click(function (event) {
+                                        event.preventDefault();
+                                        swal({
+                                            title: "Bạn có muốn xóa?",
+                                            //                    text: "Once deleted, you will not be able to recover this imaginary file!",
+                                            icon: "warning",
+                                            buttons: true,
+                                            dangerMode: true,
+                                        })
+                                                .then((willDelete) => {
+                                                    if (willDelete) {
+                                                        swal("Đã xóa thành công", {
+                                                            icon: "success",
+                                                        });
+                                                        window.location = $(this).attr('href');
+                                                    }
+                                                });
                                     });
-                                    function getPercent(list, number) {
-                                        let total = 0;
-                                        for (let i = 0; i < list.length; i++) {
-                                            total += list[i];
-                                        }
-                                        let percent = number / total * 100;
-                                        return percent.toFixed();
-                                    }
 
-                                    const content = document.querySelector(".nav-content");
-                                    const buttons = document.querySelectorAll(".nav-button");
-                                    const cursive = document.querySelector(".nav-cursive");
-                                    const manageProduct = document.querySelector("#manageProduct")
-                                    const top10benefit = document.querySelector("#top10benefit")
-                                    cursive.style.top = `\${buttons[0].offsetTop}px`
-                                    function random_rgba() {
-                                        var o = Math.round, r = Math.random, s = 255;
-                                        return 'rgba(' + o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s) + ',' + r().toFixed(1) + ')';
-                                    }
-                                    buttons.forEach(button => button.addEventListener("click", function (event) {//themdata
-                                            cursive.style.top = `\${button.offsetTop}px`
-                                            buttons.forEach(button => {
-                                                button.classList.remove("active")
-                                            })
+        </script>
+        <script>
+            const formatter = new Intl.NumberFormat('vi-VN', {
+                style: 'currency',
+                currency: 'VND',
+            });
+            function getPercent(list, number) {
+                let total = 0;
+                for (let i = 0; i < list.length; i++) {
+                    total += list[i];
+                }
+                let percent = number / total * 100;
+                return percent.toFixed();
+            }
 
-                                            button.classList.toggle("active")
-                                            if (top10benefit.classList.contains('active')) { //themdata
-                                                // Hiển thị biểu đồ lên trang web
-                                                document.querySelector("#render").innerHTML = `<div class="dashboard-container">
+            const content = document.querySelector(".nav-content");
+            const buttons = document.querySelectorAll(".nav-button");
+            const cursive = document.querySelector(".nav-cursive");
+            const manageProduct = document.querySelector("#manageProduct")
+            const top10benefit = document.querySelector("#top10benefit")
+            cursive.style.top = `\${buttons[0].offsetTop}px`
+            function random_rgba() {
+                var o = Math.round, r = Math.random, s = 255;
+                return 'rgba(' + o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s) + ',' + r().toFixed(1) + ')';
+            }
+            buttons.forEach(button => button.addEventListener("click", function (event) {//themdata
+                    cursive.style.top = `\${button.offsetTop}px`
+                    buttons.forEach(button => {
+                        button.classList.remove("active")
+                    })
+
+                    button.classList.toggle("active")
+                    if (top10benefit.classList.contains('active')) { //themdata
+                        // Hiển thị biểu đồ lên trang web
+                        document.querySelector("#render").innerHTML = `<div class="dashboard-container">
 
 <div class="block-container">        
 <div class="block">
@@ -272,78 +292,78 @@
             <div class="top10-best-seller"></div>
         </div>    
     </div>`
-                                                document.querySelector(".quantity-pieChart").innerHTML = `<canvas id="pieChartQuantity"></canvas>`
-                                                document.querySelector(".top5-benefit").innerHTML = `<canvas id="myChart"></canvas><br/>`;
-                                                fetch("MainController?btnAction=shop&shopAction=getTotalRevenue&userId=${sessionScope.user.userID}")
-                                                        .then(res => res.json())
-                                                        .then(totalRevenue => {
-                                                            console.log(totalRevenue)
-                                                            document.querySelector('.total-revenue').innerHTML = formatter.format(totalRevenue)
-                                                        })
-                                                fetch("MainController?btnAction=shop&shopAction=currentTotal&userId=${sessionScope.user.userID}")
-                                                        .then(res => res.json())
-                                                        .then(quantity => {
-                                                            document.querySelector('.total-products').innerHTML = quantity + " sản phẩm"
-                                                        })
+                        document.querySelector(".quantity-pieChart").innerHTML = `<canvas id="pieChartQuantity"></canvas>`
+                        document.querySelector(".top5-benefit").innerHTML = `<canvas id="myChart"></canvas><br/>`;
+                        fetch("MainController?btnAction=shop&shopAction=getTotalRevenue&userId=${sessionScope.user.userID}")
+                                .then(res => res.json())
+                                .then(totalRevenue => {
+                                    console.log(totalRevenue)
+                                    document.querySelector('.total-revenue').innerHTML = formatter.format(totalRevenue)
+                                })
+                        fetch("MainController?btnAction=shop&shopAction=currentTotal&userId=${sessionScope.user.userID}")
+                                .then(res => res.json())
+                                .then(quantity => {
+                                    document.querySelector('.total-products').innerHTML = quantity + " sản phẩm"
+                                })
 
-                                                fetch("MainController?btnAction=shop&shopAction=getTotalSoldCount&userId=${sessionScope.user.userID}")
-                                                        .then(res => res.json())
-                                                        .then(soldCount => {
-                                                            document.querySelector('.soldCount').innerHTML = soldCount + " sản phẩm"
-                                                        })
-                                                // Lấy dữ liệu từ server
-                                                fetch('Dashboard?top10benefit=true')
-                                                        .then(res => res.json())
-                                                        .then(data => {
-                                                            // Xử lý dữ liệu và hiển thị biểu đồ
-                                                            let test_labels = data;
-                                                            let label_main = [];
-                                                            let data_main = [];
-                                                            let rgba_main = [];
-                                                            for (let i = 0; i < test_labels.length; i++) {
-                                                                label_main.push(test_labels[i].name);
-                                                                data_main.push(test_labels[i].revenue);
-                                                                rgba_main.push(random_rgba());
-                                                            }
-                                                            let ctx = document.getElementById('myChart').getContext('2d');
-                                                            let myChart = new Chart(ctx, {
-                                                                type: 'bar',
-                                                                data: {
-                                                                    labels: label_main,
-                                                                    datasets: [{
-                                                                            labels: label_main,
-                                                                            data: data_main,
-                                                                            backgroundColor: rgba_main,
-                                                                            borderColor: [
-                                                                                'rgba(255, 99, 132, 1)',
-                                                                                'rgba(54, 162, 235, 1)',
-                                                                                'rgba(54, 162, 235, 1)',
-                                                                            ],
-                                                                        }]
-                                                                },
-                                                                options: {
+                        fetch("MainController?btnAction=shop&shopAction=getTotalSoldCount&userId=${sessionScope.user.userID}")
+                                .then(res => res.json())
+                                .then(soldCount => {
+                                    document.querySelector('.soldCount').innerHTML = soldCount + " sản phẩm"
+                                })
+                        // Lấy dữ liệu từ server
+                        fetch('Dashboard?top10benefit=true')
+                                .then(res => res.json())
+                                .then(data => {
+                                    // Xử lý dữ liệu và hiển thị biểu đồ
+                                    let test_labels = data;
+                                    let label_main = [];
+                                    let data_main = [];
+                                    let rgba_main = [];
+                                    for (let i = 0; i < test_labels.length; i++) {
+                                        label_main.push(test_labels[i].name);
+                                        data_main.push(test_labels[i].revenue);
+                                        rgba_main.push(random_rgba());
+                                    }
+                                    let ctx = document.getElementById('myChart').getContext('2d');
+                                    let myChart = new Chart(ctx, {
+                                        type: 'bar',
+                                        data: {
+                                            labels: label_main,
+                                            datasets: [{
+                                                    labels: label_main,
+                                                    data: data_main,
+                                                    backgroundColor: rgba_main,
+                                                    borderColor: [
+                                                        'rgba(255, 99, 132, 1)',
+                                                        'rgba(54, 162, 235, 1)',
+                                                        'rgba(54, 162, 235, 1)',
+                                                    ],
+                                                }]
+                                        },
+                                        options: {
 
-                                                                    plugins: {
-                                                                        legend: {
-                                                                            display: false
-                                                                        },
-                                                                        title: {
-                                                                            display: true,
-                                                                            text: 'Top 5 sản phẩm có doanh thu cao nhất',
-                                                                            font: {
-                                                                                size: 29
-                                                                            }
-                                                                        },
-                                                                    }
-                                                                    ,
-                                                                    scales: {
-                                                                        x: {
-                                                                            display: false //this will remove all the x-axis grid lines
-                                                                        }
-                                                                    }
-                                                                }
-                                                            });
-                                                        });
+                                            plugins: {
+                                                legend: {
+                                                    display: false
+                                                },
+                                                title: {
+                                                    display: true,
+                                                    text: 'Top 5 sản phẩm có doanh thu cao nhất',
+                                                    font: {
+                                                        size: 29
+                                                    }
+                                                },
+                                            }
+                                            ,
+                                            scales: {
+                                                x: {
+                                                    display: false //this will remove all the x-axis grid lines
+                                                }
+                                            }
+                                        }
+                                    });
+                                });
 // Lấy dữ liệu từ server  // Hiển thị biểu đồ lên trang web
 //                                                document.querySelector("#render").innerHTML += `<br/><canvas  style="max-width: 350px; max-height="350px" id="myCharts"></canvas><br/>`;
 //                                                fetch('Dashboard?totalbymonth=true')
@@ -393,109 +413,109 @@
 //                                                                }
 //                                                            });
 //                                                        });
-                                                document.querySelector(".top5-highest-revenue").innerHTML = `<br/><canvas id="myChartss"></canvas><br/>`;
-                                                fetch('Dashboard?bymonth=true')
-                                                        .then(res => res.json())
-                                                        .then(data => {
-                                                            let test_labels = data;
-                                                            console.log(test_labels);
-                                                            let label_main = [];
-                                                            let data_main = [];
-                                                            let rgba_main = [];
-                                                            for (let i = 0; i < test_labels.length; i++) {
-                                                                label_main.push(test_labels[i].name + ' Tháng:' + test_labels[i].month);
-                                                                data_main.push(test_labels[i].quality);
-                                                                rgba_main.push(random_rgba());
-                                                            }
-                                                            let ctxss = document.getElementById('myChartss').getContext('2d');
-                                                            let myChartss = new Chart(ctxss, {
-                                                                type: 'bar',
-                                                                data: {
-                                                                    labels: label_main,
-                                                                    datasets: [{
+                        document.querySelector(".top5-highest-revenue").innerHTML = `<br/><canvas id="myChartss"></canvas><br/>`;
+                        fetch('Dashboard?bymonth=true')
+                                .then(res => res.json())
+                                .then(data => {
+                                    let test_labels = data;
+                                    console.log(test_labels);
+                                    let label_main = [];
+                                    let data_main = [];
+                                    let rgba_main = [];
+                                    for (let i = 0; i < test_labels.length; i++) {
+                                        label_main.push(test_labels[i].name + ' Tháng:' + test_labels[i].month);
+                                        data_main.push(test_labels[i].quality);
+                                        rgba_main.push(random_rgba());
+                                    }
+                                    let ctxss = document.getElementById('myChartss').getContext('2d');
+                                    let myChartss = new Chart(ctxss, {
+                                        type: 'bar',
+                                        data: {
+                                            labels: label_main,
+                                            datasets: [{
 //                                                                            label: '',
-                                                                            data: data_main,
-                                                                            backgroundColor: rgba_main,
-                                                                            borderColor: [
-                                                                                'rgba(255, 99, 132, 1)',
-                                                                                'rgba(54, 162, 235, 1)',
-                                                                                'rgba(54, 162, 235, 1)',
-                                                                            ],
-                                                                        }]
-                                                                },
-                                                                options: {
-                                                                    plugins: {
-                                                                        title: {
-                                                                            display: true,
-                                                                            text: 'Top 5 sản phẩm bán chạy nhất trong tháng',
-                                                                            font: {
-                                                                                size: 29
-                                                                            }
-                                                                        },
-                                                                        legend: {
-                                                                            display: false
-                                                                        }
-                                                                    },
-                                                                    scales: {
-                                                                        x: {
-                                                                            display: false //this will remove all the x-axis grid lines
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                            );
-                                                        });
-                                                document.querySelector(".top10-best-seller").innerHTML += `<br/><canvas id="myChartsss"></canvas><br/>`;
-                                                fetch('MainController?btnAction=dashboard')
-                                                        .then(res => res.json())
-                                                        .then(data => {
-                                                            let test_labels = data;
+                                                    data: data_main,
+                                                    backgroundColor: rgba_main,
+                                                    borderColor: [
+                                                        'rgba(255, 99, 132, 1)',
+                                                        'rgba(54, 162, 235, 1)',
+                                                        'rgba(54, 162, 235, 1)',
+                                                    ],
+                                                }]
+                                        },
+                                        options: {
+                                            plugins: {
+                                                title: {
+                                                    display: true,
+                                                    text: 'Top 5 sản phẩm bán chạy nhất trong tháng',
+                                                    font: {
+                                                        size: 29
+                                                    }
+                                                },
+                                                legend: {
+                                                    display: false
+                                                }
+                                            },
+                                            scales: {
+                                                x: {
+                                                    display: false //this will remove all the x-axis grid lines
+                                                }
+                                            }
+                                        }
+                                    }
+                                    );
+                                });
+                        document.querySelector(".top10-best-seller").innerHTML += `<br/><canvas id="myChartsss"></canvas><br/>`;
+                        fetch('MainController?btnAction=dashboard')
+                                .then(res => res.json())
+                                .then(data => {
+                                    let test_labels = data;
 //                                                            console.log(test_labels);
-                                                            let label_main = [];
-                                                            let data_main = [];
-                                                            let rgba_main = [];
-                                                            for (let i = 0; i < test_labels.length; i++) {
-                                                                label_main.push(test_labels[i].name);
-                                                                data_main.push(test_labels[i].soldCount);
-                                                                rgba_main.push(random_rgba());
-                                                            }
-                                                            let ctxx = document.getElementById('myChartsss').getContext('2d');
-                                                            let myChartsss = new Chart(ctxx, {
-                                                                type: 'bar',
-                                                                data: {
-                                                                    labels: label_main,
-                                                                    datasets: [{
+                                    let label_main = [];
+                                    let data_main = [];
+                                    let rgba_main = [];
+                                    for (let i = 0; i < test_labels.length; i++) {
+                                        label_main.push(test_labels[i].name);
+                                        data_main.push(test_labels[i].soldCount);
+                                        rgba_main.push(random_rgba());
+                                    }
+                                    let ctxx = document.getElementById('myChartsss').getContext('2d');
+                                    let myChartsss = new Chart(ctxx, {
+                                        type: 'bar',
+                                        data: {
+                                            labels: label_main,
+                                            datasets: [{
 //                                                                            label: '',
-                                                                            data: data_main,
-                                                                            backgroundColor: rgba_main,
-                                                                            borderColor: [
-                                                                                'rgba(255, 99, 132, 1)',
-                                                                                'rgba(54, 162, 235, 1)',
-                                                                                'rgba(54, 162, 235, 1)',
-                                                                            ],
-                                                                        }]
-                                                                },
-                                                                options: {
-                                                                    legend: {
-                                                                        display: false
-                                                                    },
-                                                                    scales: {
-                                                                        x: {
-                                                                            display: false //this will remove all the x-axis grid lines
-                                                                        }
-                                                                    },
-                                                                    plugins: {
-                                                                        title: {
-                                                                            display: true,
-                                                                            text: 'Top 10 sản phẩm bán chạy nhất',
-                                                                            font: {
-                                                                                size: 29
-                                                                            }
-                                                                        },
-                                                                        legend: {
-                                                                            display: false
-                                                                        }
-                                                                    },
+                                                    data: data_main,
+                                                    backgroundColor: rgba_main,
+                                                    borderColor: [
+                                                        'rgba(255, 99, 132, 1)',
+                                                        'rgba(54, 162, 235, 1)',
+                                                        'rgba(54, 162, 235, 1)',
+                                                    ],
+                                                }]
+                                        },
+                                        options: {
+                                            legend: {
+                                                display: false
+                                            },
+                                            scales: {
+                                                x: {
+                                                    display: false //this will remove all the x-axis grid lines
+                                                }
+                                            },
+                                            plugins: {
+                                                title: {
+                                                    display: true,
+                                                    text: 'Top 10 sản phẩm bán chạy nhất',
+                                                    font: {
+                                                        size: 29
+                                                    }
+                                                },
+                                                legend: {
+                                                    display: false
+                                                }
+                                            },
 //                                                                    scales: {
 //                                                                        yAxes: [{
 //                                                                                ticks: {
@@ -507,46 +527,46 @@
 //                                                                                }
 //                                                                            }]
 //                                                                    }
-                                                                }
-                                                            }
-                                                            );
-                                                        })
-                                                fetch("MainController?btnAction=product&productAction=getQuantity&shopId=1")
-                                                        .then(res => res.json())
-                                                        .then(data => {
-                                                            const nameCate = data.map(i => i.name)
-                                                            const quantityProductInCate = data.map(i => i.quantity)
-                                                            data.forEach(i => console.log(i))
-                                                            console.log(quantityProductInCate)
-                                                            console.log(nameCate)
-                                                            new Chart("pieChartQuantity", {
-                                                                type: "doughnut",
-                                                                data: {
-                                                                    labels: nameCate,
-                                                                    datasets: [{
+                                        }
+                                    }
+                                    );
+                                })
+                        fetch("MainController?btnAction=product&productAction=getQuantity&shopId=1")
+                                .then(res => res.json())
+                                .then(data => {
+                                    const nameCate = data.map(i => i.name)
+                                    const quantityProductInCate = data.map(i => i.quantity)
+                                    data.forEach(i => console.log(i))
+                                    console.log(quantityProductInCate)
+                                    console.log(nameCate)
+                                    new Chart("pieChartQuantity", {
+                                        type: "doughnut",
+                                        data: {
+                                            labels: nameCate,
+                                            datasets: [{
 
-                                                                            data: quantityProductInCate
-                                                                        }]
-                                                                },
-                                                                options: {
-                                                                    title: {
-                                                                        display: true,
-                                                                        text: "Số lượng sản phẩm từng category"
-                                                                    },
-                                                                    plugins: {
-                                                                        title: {
-                                                                            display: true,
-                                                                            text: 'Số lượng sản phẩm từng loại sản phẩm',
-                                                                            font: {
-                                                                                size: 29
-                                                                            }
-                                                                        }
-                                                                    },
-                                                                }
-                                                            });
-                                                        });
-                                            } else if (manageProduct.classList.contains("active")) {
-                                                document.querySelector("#render").innerHTML = `
+                                                    data: quantityProductInCate
+                                                }]
+                                        },
+                                        options: {
+                                            title: {
+                                                display: true,
+                                                text: "Số lượng sản phẩm từng category"
+                                            },
+                                            plugins: {
+                                                title: {
+                                                    display: true,
+                                                    text: 'Số lượng sản phẩm từng loại sản phẩm',
+                                                    font: {
+                                                        size: 29
+                                                    }
+                                                }
+                                            },
+                                        }
+                                    });
+                                });
+                    } else if (manageProduct.classList.contains("active")) {
+                        document.querySelector("#render").innerHTML = `
                                                  <div style="float: left" id="render1"></div>
                                                  <div style="float: right" id="render2"></div>
                         <div class="table-wrapper">
@@ -612,52 +632,52 @@
             </div>            
                         `
 
-                                            }
-                                        }))
+                    }
+                }))
         </script>
         <script src="<c:url value="/assets/Javascript/ManagerProduct.js" />"></script> 
         <script>
-                                    function loadFile(event, s) {
-                                        var output = document.getElementById('output' + s);
-                                        output.innerHTML = '';
-                                        // Lặp qua từng file ảnh được chọn
-                                        for (var i = 0; i < event.target.files.length; i++) {
-                                            // Đọc file ảnh
-                                            var file = event.target.files[i];
-                                            var reader = new FileReader();
-                                            // Khi đọc file thành công
-                                            reader.onload = function () {
-                                                // Tạo một đối tượng Image mới
-                                                var img = new Image();
-                                                // Gán giá trị thuộc tính src cho đối tượng Image
-                                                img.src = reader.result;
-                                                // Thêm đối tượng Image vào trang web
-                                                output.appendChild(img);
-                                            }
+            function loadFile(event, s) {
+                var output = document.getElementById('output' + s);
+                output.innerHTML = '';
+                // Lặp qua từng file ảnh được chọn
+                for (var i = 0; i < event.target.files.length; i++) {
+                    // Đọc file ảnh
+                    var file = event.target.files[i];
+                    var reader = new FileReader();
+                    // Khi đọc file thành công
+                    reader.onload = function () {
+                        // Tạo một đối tượng Image mới
+                        var img = new Image();
+                        // Gán giá trị thuộc tính src cho đối tượng Image
+                        img.src = reader.result;
+                        // Thêm đối tượng Image vào trang web
+                        output.appendChild(img);
+                    }
 
-                                            // Đọc file ảnh dưới dạng URL
-                                            reader.readAsDataURL(file);
-                                        }
-                                    }
+                    // Đọc file ảnh dưới dạng URL
+                    reader.readAsDataURL(file);
+                }
+            }
 
-                                    var loadFile2 = function (event) {
-                                        var output = document.getElementById('output2');
-                                        output.innerHTML = ""; // xóa nội dung trong #output để tạo lại các ảnh mới
+            var loadFile2 = function (event) {
+                var output = document.getElementById('output2');
+                output.innerHTML = ""; // xóa nội dung trong #output để tạo lại các ảnh mới
 
-                                        for (var i = 0; i < event.target.files.length; i++) {
-                                            var reader = new FileReader();
-                                            reader.onload = (function (file) {
-                                                return function (e) {
-                                                    var img = document.createElement('img');
-                                                    img.src = e.target.result;
-                                                    img.width = 200; // chỉnh kích thước ảnh
-                                                    img.height = 200;
-                                                    output.appendChild(img); // thêm ảnh vào #output
-                                                };
-                                            })(event.target.files[i]);
-                                            reader.readAsDataURL(event.target.files[i]);
-                                        }
-                                    };
+                for (var i = 0; i < event.target.files.length; i++) {
+                    var reader = new FileReader();
+                    reader.onload = (function (file) {
+                        return function (e) {
+                            var img = document.createElement('img');
+                            img.src = e.target.result;
+                            img.width = 200; // chỉnh kích thước ảnh
+                            img.height = 200;
+                            output.appendChild(img); // thêm ảnh vào #output
+                        };
+                    })(event.target.files[i]);
+                    reader.readAsDataURL(event.target.files[i]);
+                }
+            };
         </script>
 
         <script>

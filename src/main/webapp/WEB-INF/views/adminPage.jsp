@@ -13,7 +13,7 @@
               rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-
+        <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
         <style>
             body{
                 position: relative;
@@ -289,7 +289,7 @@
                         });
                         // Add event listener for opening and closing details
                         $('#example tbody').on('click', 'td.dt-control', function (event) {
-                              console.log(event);
+                            console.log(event);
                             fetch("MainController?btnAction=product&productAction=showProductbyShopId&shopID=1", {
                                 method: 'GET'
                             }).then(rs => rs.json())
@@ -391,6 +391,8 @@
                         });
 //                      column chart
                         var productPerMonthChart = new CanvasJS.Chart("productPerMonthChart", {
+//                            height: 550, //in pixels
+                            width: 1600,
                             title: {
                                 text: "Product post per month"
                             },
@@ -480,6 +482,6 @@
 //        }
 
     </script>
-    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
 
 </html>
