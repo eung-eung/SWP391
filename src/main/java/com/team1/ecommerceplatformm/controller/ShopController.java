@@ -4,6 +4,12 @@
  */
 package com.team1.ecommerceplatformm.controller;
 
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 import com.team1.ecommerceplatformm.category.CategoryDAO;
 import com.team1.ecommerceplatformm.category.CategoryDTO;
@@ -20,10 +26,16 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.io.IOUtils;
 
 /**
  *
@@ -170,7 +182,76 @@ public class ShopController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            UserDTO userDTO = (UserDTO) request.getSession().getAttribute("user");
+            ShopDTO shopDTO = new ShopDTO();
+            shopDTO.setShopName(request.getParameter("shopName"));
+            shopDTO.setUserID(userDTO.getUserID());
+
+            // xử lý ảnh
+            byte[] img = null;
+//            System.out.println(shopDTO.getShopName());
+            List<Part> fileParts = (List<Part>) request.getParts();
+            // lấy tất cả ảnh trả về từ giao diện
+            FileInputStream serviceAccount;
+            FirebaseOptions options;
+            FirebaseApp firebaseApp = null;
+            InputStream fileContent = null;
+            FirebaseDatabase database = null;
+            DatabaseReference rootRef = null;
+            DatabaseReference studentsRef = null;
+            boolean imgCount = true;
+            for (Part filePart : fileParts) {
+                String fileName = filePart.getSubmittedFileName();
+                if (fileName != null) {
+
+                    // Xử lý ảnh tại đây
+                    fileContent = filePart.getInputStream();
+                    img = IOUtils.readFully(fileContent, fileContent.available());
+
+                    try {
+                        serviceAccount = new FileInputStream(Constants.URLFIREBASE);
+                        options = new FirebaseOptions.Builder()
+                                .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                                .setDatabaseUrl(Constants.URLFIREBASE_URL)
+                                .setStorageBucket("demo1")
+                                .build();
+                        firebaseApp = FirebaseApp.initializeApp(options);
+                    } catch (Exception e) {
+                        System.out.println(e);
+                    }
+                    String encodedString = Base64.getEncoder().encodeToString(img);
+                    String url = "data:image/png;base64," + encodedString;
+                    if (imgCount) {
+                        shopDTO.setFrontIdentity(url);
+                    } else {
+                        shopDTO.setBackIdentity(url);
+                    }
+                    database = FirebaseDatabase.getInstance(Constants.URLFIREBASE_URL);
+                    rootRef = database.getReference("mynode");
+                    studentsRef = rootRef.child(shopDTO.getShopName() + "");
+                   
+                    studentsRef.setValue(url, new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                            if (databaseError != null) {
+                                System.out.println("Data luu that bai" + databaseError.getMessage());
+                            } else {
+                                System.out.println("Data Luu thanh cong"); 
+                            }
+                        }
+                    });
+                    imgCount = false;
+                } 
+            }
+             new ShopDAO().save(shopDTO);
+
+//                new ShopDAO().save(shopDTO);
+        } catch (Exception e) {
+            System.err.println("Loi :  " + e.getMessage());
+        }
+        System.err.println("Save Shop !");
+        response.sendRedirect("MainController");
     }
 
     /**

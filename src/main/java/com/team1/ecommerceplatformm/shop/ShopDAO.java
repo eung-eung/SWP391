@@ -157,8 +157,48 @@ public class ShopDAO extends AbstractDAO<ShopDTO> {
     }
 
     @Override
-    public void update(ShopDTO t) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void update(ShopDTO shopDTO) throws SQLException {
+        try {
+            PreparedStatement stm = conn.prepareStatement(""
+                    + "UPDATE [Shop]\n"
+                    + "   SET [user_id] = ? \n"
+                    + "      ,[shop_name] = ?\n"
+                    + "      ,[status] = ? \n"
+                    + "      ,[front_identity] = ?\n"
+                    + "      ,[back_identity] = ?\n"
+                    + " WHERE shop_id = ?");
+
+            stm.setInt(1, shopDTO.getUserID());
+            stm.setString(2, shopDTO.getShopName());
+            stm.setBoolean(3, shopDTO.isStatus());
+            stm.setString(4, shopDTO.getFrontIdentity());
+            stm.setString(5, shopDTO.getBackIdentity());
+            stm.setInt(6, shopDTO.getShopID());
+            stm.executeUpdate();
+            stm.close();
+            System.out.println(shopDTO.getUserID());
+        } catch (Exception e) {
+            System.err.println("Loi update SHop" + e.getMessage());
+        }
+    }
+
+    public List<ShopDTO> getAllShopRegiter() throws SQLException {
+        ArrayList<ShopDTO> list = new ArrayList<>();
+        PreparedStatement stm = conn.prepareStatement("select * from Shop   WHERE status = 0 AND approve = 0");
+        ResultSet rs = stm.executeQuery();
+
+        while (rs.next()) {
+            ShopDTO dto = new ShopDTO();
+            dto.setShopID(rs.getInt(1));
+            dto.setUserID(rs.getInt(2));
+            dto.setCreateAt(rs.getDate(3));
+            dto.setShopName(rs.getString(4));
+            dto.setFrontIdentity(rs.getString("front_identity"));
+            dto.setBackIdentity(rs.getString("back_identity"));
+            list.add(dto);
+//            System.err.println(dto.toString());
+        }
+        return list;
     }
 
     @Override

@@ -170,9 +170,9 @@
                                         </dd>
 
                                         <dt class="product-view-name"></dt>
-<!--                                        <dd class="product-view-value">
-                                            
-                                        </dd> -->
+                                        <!--                                        <dd class="product-view-value">
+                                                                                    
+                                                                                </dd> -->
                                     </dl>
                                 </div>
 
@@ -191,12 +191,24 @@
                                         <div id="decrease" onclick="decreaseValue()"><i
                                                 class="fa-solid fa-angle-down"></i></div>
                                     </div>
-                                    <div class="form-action">
-                                        <input type="submit" id="form-action-addToCart" class="addToCart-button"
-                                               value="Thêm vào giỏ hàng">
-                                        <input type="hidden" id="productID"value="${productDetail.productID}">
-                                        <input type="hidden" id="shopID"value="${productDetail.shopID}">
-                                    </div>
+                                    <c:choose>
+                                        <c:when test="${productDetail.status}">
+                                            <div class="form-action">
+                                                <input type="submit" id="form-action-addToCart" class="addToCart-button"
+                                                       value= "Thêm vào giỏ hàng">
+                                                <input type="hidden" id="productID"value="${productDetail.productID}">
+                                                <input type="hidden" id="shopID"value="${productDetail.shopID}">
+                                            </div>
+                                        </c:when>
+                                        <c:when test="${!productDetail.status}">
+                                            <div class="form-action">
+                                                <!--                                                <input type="submit" id="form-action-addToCart" class="addToCart-button"
+                                                                                                       value= "Thêm vào giỏ hàng">-->
+                                                <div class="addToCart-button ban-product">không còn bán</div>
+                                            </div>
+                                        </c:when>
+                                    </c:choose>
+
                                 </div>
                                 <!--</form>-->
                             </div>
@@ -374,55 +386,7 @@
                     btn.value = 1
                 }
             }
-            document.querySelector("#form-action-addToCart").addEventListener('click', function () {
-                stopAddCart(this)
-                let quantity = parseInt(document.querySelector("#quantity").value);
-                let productID = document.querySelector("#productID").value;
-                let srcImg = document.querySelector("#image").src;
-                let price = document.querySelector(".price-after-discount").innerHTML;
 
-                let shopID = document.querySelector("#shopID").value;
-                let productName = document.querySelector(".product-view-title").innerHTML;
-//                let productName = document.querySelector()
-                console.log(shopID)
-//                console.log("log" isLogined)
-
-                if (user == 1) {
-                    swal("", "Vui lòng đăng nhập để có thể thêm vào giỏ hàng", "warning");
-                    return
-
-                } else {
-                    let arr = []
-//                
-                    let cart = JSON.parse(window.localStorage.getItem('cart'));
-
-
-                    if (cart == null) {
-                        let cartItem = new CartItem(productID, srcImg, quantity, price, shopID, productName);
-
-                        window.localStorage.setItem('cart', JSON.stringify([cartItem]))
-
-
-                    } else {
-                        let inCart = false
-                        cart.forEach(item => {
-                            if (item.productID == productID) {
-                                let currentQuantity = parseInt(item.quantity)
-                                item.quantity = currentQuantity + quantity;
-                                inCart = true
-                            }
-
-                        })
-                        if (inCart == false) {
-                            let cartItem = new CartItem(productID, srcImg, quantity, price, shopID, productName);
-                            cart.push(cartItem)
-                        }
-                        window.localStorage.setItem('cart', JSON.stringify(cart))
-
-                    }
-                    swal("", "Thêm vào giỏ hàng thành công!", "success");
-                }
-            })
 
             fetch("MainController?btnAction=product&productAction=showSameCategoryProduct&categoryID=" + ${productDetail.categoryID}, {
                 method: 'GET'
@@ -473,5 +437,55 @@
 //                        document.querySelectorAll(".price")
                     }
                     )
+
+            document.querySelector("#form-action-addToCart").addEventListener('click', function () {
+                stopAddCart(this)
+                let quantity = parseInt(document.querySelector("#quantity").value);
+                let productID = document.querySelector("#productID").value;
+                let srcImg = document.querySelector("#image").src;
+                let price = document.querySelector(".price-after-discount").innerHTML;
+
+                let shopID = document.querySelector("#shopID").value;
+                let productName = document.querySelector(".product-view-title").innerHTML;
+//                let productName = document.querySelector()
+                console.log(shopID)
+//                console.log("log" isLogined)
+
+                if (user == 1) {
+                    swal("", "Vui lòng đăng nhập để có thể thêm vào giỏ hàng", "warning");
+                    return
+
+                } else {
+                    let arr = []
+//                
+                    let cart = JSON.parse(window.localStorage.getItem('cart'));
+
+
+                    if (cart == null) {
+                        let cartItem = new CartItem(productID, srcImg, quantity, price, shopID, productName);
+
+                        window.localStorage.setItem('cart', JSON.stringify([cartItem]))
+
+
+                    } else {
+                        let inCart = false
+                        cart.forEach(item => {
+                            if (item.productID == productID) {
+                                let currentQuantity = parseInt(item.quantity)
+                                item.quantity = currentQuantity + quantity;
+                                inCart = true
+                            }
+
+                        })
+                        if (inCart == false) {
+                            let cartItem = new CartItem(productID, srcImg, quantity, price, shopID, productName);
+                            cart.push(cartItem)
+                        }
+                        window.localStorage.setItem('cart', JSON.stringify(cart))
+
+                    }
+                    swal("", "Thêm vào giỏ hàng thành công!", "success");
+                }
+            })
     </script>
 </html>

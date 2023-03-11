@@ -46,7 +46,11 @@ body {
     grid-template-columns: repeat(2, 1fr);
 
 }
-
+.ban-product{
+    width: 50%;
+    text-align: center;
+    text-transform: uppercase;
+}
 .col-left {
     padding: 10px;
 }

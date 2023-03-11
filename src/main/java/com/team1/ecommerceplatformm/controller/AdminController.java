@@ -4,6 +4,7 @@
  */
 package com.team1.ecommerceplatformm.controller;
 
+import Core.SendMailv2;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -14,6 +15,7 @@ import com.team1.ecommerceplatformm.product.ProductDTO;
 import com.team1.ecommerceplatformm.shop.ShopDAO;
 import com.team1.ecommerceplatformm.shop.ShopDTO;
 import com.team1.ecommerceplatformm.user.UserDAO;
+import com.team1.ecommerceplatformm.user.UserDTO;
 import com.team1.ecommerceplatformm.utils.Constants;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -150,7 +152,24 @@ public class AdminController extends HttpServlet {
                 }
 
             }
+            case "accept": {
+                ShopDAO shopDao = new ShopDAO();
+                UserDAO userDAO = new UserDAO();
+                int idShop = Integer.parseInt(request.getParameter("idShopRegister"));
+                try {
+                    ShopDTO shopDTO = shopDao.get(idShop);
+                    shopDTO.setStatus(true);
 
+                    shopDao.update(shopDTO);
+                    UserDTO userDTO = userDAO.get(shopDTO.getUserID());
+                    SendMailv2.sendFunction(userDTO.getEmail(), "Your store has been confirmed ", "Notification");
+                } catch (SQLException ex) {
+                    Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                response.sendRedirect("AdminController?adminAction=show");
+//                Shop
+                break;
+            }
             default:
                 throw new AssertionError();
         }
