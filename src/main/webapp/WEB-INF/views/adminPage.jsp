@@ -1,3 +1,7 @@
+<%@page import="com.team1.ecommerceplatformm.user.UserDTO"%>
+<%@page import="java.util.Enumeration"%>
+<%@page import="com.google.gson.Gson"%>
+<%@page import="com.team1.ecommerceplatformm.product.ProductDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
@@ -13,7 +17,7 @@
               rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-        <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
         <style>
             body{
                 position: relative;
@@ -33,7 +37,7 @@
                 width: 14%;
                 height: 100vh;
                 margin-right:10px;
-                background: #58ccfb;
+                background: #ff5c00;
             }
 
             .admin_page_navbar div{
@@ -45,20 +49,20 @@
             .admin_page_navbar_header{
                 position: relative;
                 padding: 7px 15px;
-                background-color: #58ccfb;
+                background-color: #ff5c00;
                 border-top-left-radius: 5px;
                 border-top-right-radius: 5px;
                 font-weight: 700;
                 letter-spacing: 1.5px;
                 text-align: center;
-                color: white;
+                color: #fff !important;
             }
 
             .admin_page_navbar_header::before{
                 content: '';
                 position: absolute;
                 width: 110%;
-                border: 1px solid #3c3d45;
+                border: 1px solid #fff;
                 bottom: -30%;
                 left: -5%;
                 -ms-transform: rotate(90deg);
@@ -98,11 +102,11 @@
             }
 
             .shop_request{
-                display: none
+                display: none;
             }
 
             .product_request{
-
+                display: none;
             }
 
             .btn_active{
@@ -110,9 +114,89 @@
                 color: black;
             }
 
-            .chart{
-                height: 370px;
+            .prevent_click {
+                pointer-events: none;
+                opacity: 0.5;
+            }
+
+            /*card*/
+            .shop_request_list{
                 width: 100%;
+            }
+
+            .request_card{
+                width: 90%;
+                height: 31vh;
+                margin: 10px auto;
+                display: flex;
+                border: 1px solid black;
+                border-radius: 15px;
+                overflow: hidden;
+            }
+
+            .card_image{
+                width: 20.9%;
+                height: 100%
+            }
+
+            .card_image img{
+                max-width: 100%;
+                max-height: 100%;
+            }
+
+            .card_content{
+                width: 70.1%;
+                height: 100%;
+                background-color: #abf1ff;
+            }
+
+            .card_button{
+                width: 10%;
+                height: 100%;
+                border-left: 1px solid black;
+            }
+
+            .card_button_item{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                height: 50%;
+                font-size: 20px;
+                color: white;
+            }
+
+            .card_button_accept{
+                background-color: #198754;
+            }
+
+            .card_button_deny{
+                background-color: #dc3545;
+                border-top: 1px solid black;
+            }
+
+            .card_content_detail{
+                display: flex;
+            }
+            .card_content_detail div{
+                width: 50%;
+                margin: 10px 10px;
+                font-size: 20px;
+                border-bottom: 1px solid black;
+            }
+
+            .shop_detail{
+                margin-top: 2%;
+                height: 31%;
+                width: 200%;
+                border-top: 1px solid black;
+                background-color: #3fd1ee;
+                display: flex;
+                align-items: center;
+            }
+
+            .shop_detail div{
+                border-bottom: none;
             }
 
         </style>
@@ -131,7 +215,6 @@
 
     <body>
         <jsp:include page="header.jsp" />
-
         <div class="admin_page">
             <div class="admin_page_navbar rounded shadow">
                 <div class="admin_page_navbar_header" >
@@ -154,14 +237,6 @@
 
             <div class="admin_page_content">
 
-                <div class="shop_request">
-                    shop register accept
-                </div>
-
-                <div class="product_request">
-                    product register accept
-                </div>
-
                 <div class="admin_dashboard">
                     <div class="pieChart">
                         <div id="productChart" class="piechart" style="height: 370px; width: 100%"></div>
@@ -173,7 +248,7 @@
                 </div>
 
                 <div class="admin_table">
-                    <table id="example" class="display" style="width:100%">
+                    <table id="shop_list" class="display" style="width:100%">
                         <thead>
                             <tr>
                                 <th></th>
@@ -198,10 +273,42 @@
                         </tfoot>
                     </table>
                 </div>
+
+                <div class="shop_request shopRegis">
+                    shop request list
+                </div>
+
+                <div class="product_request productRegis">
+                    <table id="product_request" class="display" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Shop ID</th>
+                                <th>Product ID</th>
+                                <th>Price</th>
+                                <th>Category ID</th>
+                                <th>quanity</th>
+                                <th>Create at</th>
+                                <th>Option</th>
+                            </tr>
+                        </thead>
+
+                        <tfoot>
+                            <tr>
+                                <th>Shop ID</th>
+                                <th>Product ID</th>
+                                <th>Price</th>
+                                <th>Category ID</th>
+                                <th>quanity</th>
+                                <th>Create at</th>
+                                <th>Option</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
             </div>
         </div>
     </body>
-    <!--?btnAction=product&productAction=showProductbyShopId&shopID=1-->
     <script>
 
         const btnGroup = document.querySelectorAll(".admin_page_text");
@@ -252,7 +359,8 @@
             })
                     .then(rs => rs.json())
                     .then(data => {
-                        const table = $('#example').DataTable({
+                        console.log(data);
+                        const table = $('#shop_list').DataTable({
 
                             data: data
                             ,
@@ -262,7 +370,6 @@
                                     orderable: false,
                                     data: null,
                                     defaultContent: '',
-                                    shopID: data.shopID
                                 },
                                 {
                                     'data': 'shopID'
@@ -273,7 +380,7 @@
                                 {
                                     'data': 'status',
                                     render: function (data, type, row, meta) {
-                                        return data ? "Äang hoáº¡t Äá»ng" : "NgÆ°ng hoáº¡t Äá»ng";
+                                        return data ? "Đang hoạt động" : "Ngưng hoạt động";
                                     }
 
                                 },
@@ -281,33 +388,30 @@
                                     data: null,
                                     orderable: false,
                                     render: function (data, type, row) {
-                                        return '<a type = "button" class = " ban_btn btn btn-danger" onclick="return confirm(`Are you sure you want to delete this item?`)"  href="http://localhost:8080/EcommercePlatformm/MainController?btnAction=admin&adminAction=show">Ban</a>';
+                                        return row.status ? `<a type = "button" class = " ban_btn btn btn-danger" onclick="return confirm('Are you sure you want to delete this item?')"  
+                                        href="<c:url value="/MainController?btnAction=admin&adminAction=updateBanShop&shopID=\${row.shopID}"></c:url>">Ban</a>` :
+                                                `<a type = "button" class = " ban_btn btn btn-danger" onclick="return confirm('Are you sure you want to delete this item?')"  
+                                        href="<c:url value="/MainController?btnAction=admin&adminAction=updateUnBanShop&shopID=\${row.shopID}"></c:url>">Unban</a>`;
                                     }
                                 }
                             ],
                             order: [[0, 'asc']]
                         });
                         // Add event listener for opening and closing details
-                        $('#example tbody').on('click', 'td.dt-control', function (event) {
-                            console.log(event);
-                            fetch("MainController?btnAction=product&productAction=showProductbyShopId&shopID=1", {
-                                method: 'GET'
-                            }).then(rs => rs.json())
-                                    .then(data => {
-//                                        
-                                        console.log(data);
-//                                        let tr = $(this).closest('tr');
-//                                        let row = table.row(tr);
-//                                        if (row.child.isShown()) {
-//                                            // This row is already open - close it
-//                                            row.child.hide();
-//                                            tr.removeClass('shown');
-//                                        } else {
-//                                            // Open this row
-//                                            row.child(format(row.data())).show();
-//                                            tr.addClass('shown');
-//                                        }
-                                    });
+                        $('#shop_list tbody').on('click', 'td.dt-control', function () {
+
+                            let tr = $(this).closest('tr');
+                            let row = table.row(tr);
+                            if (row.child.isShown()) {
+                                // This row is already open - close it
+                                row.child.hide();
+                                tr.removeClass('shown');
+                            } else {
+                                // Open this row
+                                row.child(format(row.data())).show();
+                                tr.addClass('shown');
+                            }
+
 
                         });
                     });
@@ -363,6 +467,7 @@
                         var productChart = new CanvasJS.Chart("productChart", {
                             theme: "light2", // "light1", "dark1", "dark2"
                             animationEnabled: true,
+                            witdh: 1600,
                             title: {
                                 text: "Product"
                             },
@@ -391,8 +496,7 @@
                         });
 //                      column chart
                         var productPerMonthChart = new CanvasJS.Chart("productPerMonthChart", {
-//                            height: 550, //in pixels
-                            width: 1600,
+                            witdh: 1600,
                             title: {
                                 text: "Product post per month"
                             },
@@ -413,32 +517,73 @@
                         userChart.render();
                         productPerMonthChart.render();
                     });
+
+            fetch("MainController?btnAction=admin&adminAction=authenProduct", {
+                method: 'GET'
+            })
+                    .then(rs => rs.json())
+                    .then(data => {
+        <%
+            UserDTO user = (UserDTO) session.getAttribute("user");
+            int userID = 0;
+            if (user != null) {
+                userID = user.getUserID();
+            }
+            session.setAttribute("userId", userID);
+        %>
+                        var userId = '<%= session.getAttribute("userId")%>';
+                        console.log(data);
+                        const table = $('#product_request').DataTable({
+
+                            data: data
+                            ,
+                            'columns': [
+                                {'data': 'shopID'},
+                                {'data': 'productID'},
+                                {'data': 'price'},
+                                {'data': 'categoryID'},
+                                {'data': 'quanity'},
+                                {'data': 'createAt'},
+                                {
+                                    data: null,
+                                    orderable: false,
+                                    render: function (data, type, row) {
+                                        return `<a type = "button" class = " ban_btn btn btn-success" onclick="return confirm('Are you sure you want to accept this product?')"  href="<c:url value="/MainController?btnAction=admin&adminAction=approveProduct&productId=\${row.productID}&userId=\${userId}"></c:url>">Accept</a>
+                                        <a type = "button" class = " ban_btn btn btn-danger" onclick="return confirm('Are you sure you want to delete this product?')" href="<c:url value="/MainController?btnAction=admin&adminAction=rejectProduct&productId=\${row.productID}&userId=\${userId}"></c:url>">Deny</a>`;
+                                    }
+                                }
+                            ],
+                            order: [[0, 'asc']]
+                        });
+                    });
         });
 
         function format(d) {
             // `d` is the original data object for the row
             let data = "";
-            d.product.forEach(element => {
-                data = data + getProduct(element);
+            d.listProducts.forEach(element => {
+                data = data + getProduct(element, d.status);
             });
             return (
                     '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
                     '<tr>' +
-                    '<td>Product id:</td>' +
-                    '<td>Name:</td>' +
-                    '<td>Price:</td>' +
-                    '<td>Sold count:</td>' +
+                    '<td>Product ID</td>' +
+                    '<td>Name</td>' +
+                    '<td>Price</td>' +
+                    '<td>Sold count</td>' +
+                    '<td>Status</td>' +
+                    '<td>Action</td>' +
                     data +
                     '</tr>' +
                     '</table>'
                     );
         }
 
-        function getProduct(element) {
+        function getProduct(element, status) {
             return (
                     '</tr>' +
                     '<td>' +
-                    element.id +
+                    element.productID +
                     '</td>' +
                     '<td>' +
                     element.name +
@@ -447,7 +592,15 @@
                     element.price +
                     '</td>' +
                     '<td>' +
-                    element.sold_count +
+                    element.soldCount +
+                    '</td>' +
+                    '<td>' +
+                    (element.status ? "Đang hoạt động" : "Ngưng hoạt động") +
+                    '</td>' +
+                    '<td>' +
+                    (element.status ? '<a type = "button" class = " ban_btn btn btn-danger ' + (!status ? "prevent_click" : "") + '" onclick="return confirm(`Are you sure you want to ban this item?`)"  href="/EcommercePlatformm/MainController?btnAction=admin&adminAction=updateBanProduct&productId=' + (element.productID) + '" >Ban</a>' :
+                            '<a type = "button" class = " ban_btn btn btn-danger ' + (!status ? "prevent_click" : "") + '" onclick="return confirm(`Are you sure you want to unban this item?`)"  href="/EcommercePlatformm/MainController?btnAction=admin&adminAction=updateUnBanProduct&productId=' + (element.productID) + '" >Unban</a>')
+                    +
                     '</td>' +
                     '<tr>'
                     );
@@ -482,6 +635,6 @@
 //        }
 
     </script>
-
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 
 </html>

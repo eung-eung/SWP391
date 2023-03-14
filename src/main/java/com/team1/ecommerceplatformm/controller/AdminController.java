@@ -4,7 +4,6 @@
  */
 package com.team1.ecommerceplatformm.controller;
 
-import Core.SendMailv2;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -15,7 +14,6 @@ import com.team1.ecommerceplatformm.product.ProductDTO;
 import com.team1.ecommerceplatformm.shop.ShopDAO;
 import com.team1.ecommerceplatformm.shop.ShopDTO;
 import com.team1.ecommerceplatformm.user.UserDAO;
-import com.team1.ecommerceplatformm.user.UserDTO;
 import com.team1.ecommerceplatformm.utils.Constants;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -64,6 +62,11 @@ public class AdminController extends HttpServlet {
 //                    ArrayList<ProductDTO> listProduct = new ArrayList<>();
 
                     listShop = shopDao.getAll();
+
+                    for (ShopDTO shop : listShop) {
+                        List<ProductDTO> listProduct = proDao.getAllProductByShopId(shop.getShopID());
+                        shop.setListProducts((ArrayList<ProductDTO>) listProduct);
+                    }
 
                     Gson gson = new Gson();
 
@@ -150,26 +153,126 @@ public class AdminController extends HttpServlet {
                 } catch (SQLException ex) {
                     Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
                 }
-
-            }
-            case "accept": {
-                ShopDAO shopDao = new ShopDAO();
-                UserDAO userDAO = new UserDAO();
-                int idShop = Integer.parseInt(request.getParameter("idShopRegister"));
-                try {
-                    ShopDTO shopDTO = shopDao.get(idShop);
-                    shopDTO.setStatus(true);
-
-                    shopDao.update(shopDTO);
-                    UserDTO userDTO = userDAO.get(shopDTO.getUserID());
-                    SendMailv2.sendFunction(userDTO.getEmail(), "Your store has been confirmed ", "Notification");
-                } catch (SQLException ex) {
-                    Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                response.sendRedirect("AdminController?adminAction=show");
-//                Shop
                 break;
             }
+            case "updateBanShop" : {
+                try{
+                    int shopid = Integer.parseInt(request.getParameter("shopID"));
+                
+                ShopDAO shopDao = new ShopDAO();
+                ProductDAO proDao = new ProductDAO();
+                
+                shopDao.updateBanShopStatus(shopid);
+                proDao.updateBanProductStatusByShop(shopid);
+                
+                }catch (SQLException ex) {
+                    Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                request.getRequestDispatcher(Constants.ADMIN_PAGE).forward(request, response);
+                break;
+            }
+            case "updateUnBanShop" : {
+                try{
+                    int shopid = Integer.parseInt(request.getParameter("shopID"));
+                
+                ShopDAO shopDao = new ShopDAO();
+                ProductDAO proDao = new ProductDAO();
+                
+                shopDao.updateUnBanShopStatus(shopid);
+                
+                proDao.updateUnbanProductStatusByShop(shopid);
+                
+                }catch (SQLException ex) {
+                    Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                request.getRequestDispatcher(Constants.ADMIN_PAGE).forward(request, response);
+                break;
+            }
+            case "updateBanProduct" : {
+                try{
+                    int productId = Integer.parseInt(request.getParameter("productId"));
+                
+                ProductDAO proDao = new ProductDAO();
+                
+                
+                proDao.updateBanProductStatus(productId);
+                
+                }catch (SQLException ex) {
+                    Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                request.getRequestDispatcher(Constants.ADMIN_PAGE).forward(request, response);
+                break;
+            }
+             case "updateUnBanProduct" : {
+                try{
+                    int productId = Integer.parseInt(request.getParameter("productId"));
+                
+                ProductDAO proDao = new ProductDAO();
+                
+                
+                proDao.updateUnbanProductStatus(productId);
+                
+                }catch (SQLException ex) {
+                    Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                request.getRequestDispatcher(Constants.ADMIN_PAGE).forward(request, response);
+                break;
+            }
+            
+             case  "authenProduct":{
+                 try{
+                    ProductDAO proDao = new ProductDAO();
+                    ArrayList<ProductDTO> listProduct = new ArrayList<>();
+                    listProduct= proDao.getProductAuthen();
+                    
+                    Gson gson = new Gson();
+
+                    response.getWriter().println(gson.toJson(listProduct));
+                 }catch(SQLException ex){
+                     Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+                 }
+                 
+                 
+             }
+             case "approveProduct":{
+                 try{
+                    int productId = Integer.parseInt(request.getParameter("productId"));
+                    int userId = Integer.parseInt(request.getParameter("userId"));
+                
+                ProductDAO proDao = new ProductDAO();
+                
+                long millis=System.currentTimeMillis(); 
+                java.sql.Date date = new java.sql.Date(millis); 
+                proDao.updateAcceptProductAuthen(userId, date, productId);
+                
+                }catch (SQLException ex) {
+                    Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                request.getRequestDispatcher(Constants.ADMIN_PAGE).forward(request, response);
+//chua biet thay link kieu giiiiii
+                break;
+             }
+             case "rejectProduct":{
+                 try{
+                    int productId = Integer.parseInt(request.getParameter("productId"));
+                    int userId = Integer.parseInt(request.getParameter("userId"));
+                
+                ProductDAO proDao = new ProductDAO();
+                
+                long millis=System.currentTimeMillis(); 
+                java.sql.Date date = new java.sql.Date(millis); 
+                proDao.updateRejectProductAuthen(userId, date, productId);
+                
+                }catch (SQLException ex) {
+                    Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                request.getRequestDispatcher(Constants.ADMIN_PAGE).forward(request, response);
+//chua biet thay link kieu giiiiii
+                break;
+             }
+             
+            
+            
             default:
                 throw new AssertionError();
         }

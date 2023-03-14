@@ -150,7 +150,31 @@ public class ShopDAO extends AbstractDAO<ShopDTO> {
             Logger.getLogger(ShopDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
+    public void updateBanShopStatus(int shopId) throws SQLException{
+        try{
+        PreparedStatement stm = conn.prepareStatement("UPDATE Shop SET [status] = 'false' WHERE shop_id = ? ");  
+        stm.setInt(1, shopId);
+        stm.executeUpdate();
+        stm.close();
+        conn.close();
+        }catch(Exception e){
+            System.err.println("LOI NAY O Update:" + e);
+        }
+    }
+    
+    public void updateUnBanShopStatus(int shopId) throws SQLException{
+        try{
+        PreparedStatement stm = conn.prepareStatement("UPDATE Shop SET [status] = 'true' WHERE shop_id = ? ");  
+        stm.setInt(1, shopId);
+        stm.executeUpdate();
+        stm.close();
+        conn.close();
+        }catch(Exception e){
+            System.err.println("LOI NAY O Update:" + e);
+        }
+    }
+    
     @Override
     public void save(ShopDTO t) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
