@@ -9,6 +9,7 @@ import com.team1.ecommerceplatformm.category.CategoryDTO;
 import com.team1.ecommerceplatformm.common.AbstractDAO;
 import com.team1.ecommerceplatformm.imageProduct.ImageProductDAO;
 import com.team1.ecommerceplatformm.shop.ShopDAO;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -330,7 +331,6 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
             dto.setDiscount(rs.getFloat("discount"));
             dto.setSoldCount(rs.getInt("sold_count"));
             dto.setAuthen(rs.getBoolean("authen"));
-            dto.setMainImg(imageProductDAO.getMainImageByProductID(rs.getInt("product_id")));
             list.add(dto);
         }
         return list;
@@ -405,7 +405,6 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
             dto.setDiscount(rs.getFloat("discount"));
             dto.setSoldCount(rs.getInt("sold_count"));
             dto.setAuthen(rs.getBoolean("authen"));
-            dto.setMainImg(imageProductDAO.getMainImageByProductID(rs.getInt("product_id")));
             list.add(dto);
         }
         return list;
@@ -712,6 +711,120 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
         }
         return 0;
 
+    }
+    
+    public void updateBanProductStatusByShop(int shopId) throws SQLException{
+        try{
+        PreparedStatement stm = conn.prepareStatement("UPDATE Product SET [status] = null	WHERE shop_id = ? ");  
+        stm.setInt(1, shopId);
+        stm.executeUpdate();
+        stm.close();
+        conn.close();
+        }catch(Exception e){
+            System.err.println("LOI NAY O Update:" + e);
+        }
+    }
+    
+    public void updateUnbanProductStatusByShop(int shopId) throws SQLException{
+        try{
+        PreparedStatement stm = conn.prepareStatement("UPDATE Product SET [status] = 1 WHERE shop_id = ? ");  
+        stm.setInt(1, shopId);
+        stm.executeUpdate();
+        stm.close();
+        conn.close();
+        }catch(Exception e){
+            System.err.println("LOI NAY O Update:" + e);
+        }
+    }
+    
+    public void updateBanProductStatus(int productid) throws SQLException{
+        try{
+        PreparedStatement stm = conn.prepareStatement("UPDATE Product SET [status] = 0 WHERE product_id = ? ");  
+        stm.setInt(1, productid);
+        stm.executeUpdate();
+        stm.close();
+        conn.close();
+        }catch(Exception e){
+            System.err.println("LOI NAY O Update:" + e);
+        }
+    }
+    
+    public void updateUnbanProductStatus(int productid) throws SQLException{
+        try{
+        PreparedStatement stm = conn.prepareStatement("UPDATE Product SET [status] = 1 WHERE product_id = ? ");  
+        stm.setInt(1, productid);
+        stm.executeUpdate();
+        stm.close();
+        conn.close();
+        }catch(Exception e){
+            System.err.println("LOI NAY O Update:" + e);
+        }
+    }
+    
+    public ArrayList<ProductDTO> getProductAuthen() throws SQLException {
+        PreparedStatement stm = conn.prepareStatement("SELECT [product_id]\n"
+                + "      ,[shop_id]\n"
+                + "      ,[category_id]\n"
+                + "      ,[user_admin_id]\n"
+                + "      ,[price]\n"
+                + "      ,[name]\n"
+                + "      ,[description]\n"
+                + "      ,[quantity]\n"
+                + "      ,[status]\n"
+                + "      ,[create_at]\n"
+                + "      ,[approve_at]\n"
+                + "      ,[discount]\n"
+                + "      ,[sold_count]\n"
+                + "      ,[authen]   FROM [EcommmercePlatform].[dbo].[Product] WHERE [authen] IS NULL");
+        ResultSet rs = stm.executeQuery();
+        ArrayList<ProductDTO> list = new ArrayList<>();
+        while (rs.next()) {
+            ProductDTO dto = new ProductDTO();
+            dto.setProductID(rs.getInt("product_id"));
+            dto.setShopID(rs.getInt("shop_id"));
+            dto.setCategoryID(rs.getInt("category_id"));
+            dto.setUserAdminID(rs.getInt("user_admin_id"));
+            dto.setPrice(rs.getDouble("price"));
+            dto.setName(rs.getString("name"));
+            dto.setDescription(rs.getString("description"));
+            dto.setQuanity(rs.getInt("quantity"));
+            dto.setStatus(rs.getBoolean("status"));
+            dto.setCreateAt(rs.getDate("create_at"));
+            dto.setApproveAt(rs.getDate("approve_at"));
+            dto.setDiscount(rs.getFloat("discount"));
+            dto.setSoldCount(rs.getInt("sold_count"));
+            dto.setAuthen(rs.getBoolean("authen"));
+            list.add(dto);
+        }
+        rs.close();
+        stm.close();
+        return list;
+    }
+    
+    public void updateAcceptProductAuthen(int user_admin_id, Date aprrove_at, int product_id ) throws SQLException{
+        try {
+            PreparedStatement stm = conn.prepareStatement("UPDATE Product SET [authen] = 1, [status] = 1, [user_admin_id] = ?, [approve_at] = ?	WHERE [product_id] = ?");
+            System.err.println(stm.toString());
+            stm.setInt(1, user_admin_id);
+            stm.setDate(2, aprrove_at);
+            stm.setDouble(3, product_id);
+            stm.executeUpdate();
+        } catch (Exception e) {
+            System.err.println("LOI NAY O delete:" + e);
+        }
+    }
+    
+    public void updateRejectProductAuthen(int user_admin_id, Date aprrove_at, int product_id ) throws SQLException{
+        try {
+            PreparedStatement stm = conn.prepareStatement("UPDATE Product SET [authen] = 1, [status] = 0, [user_admin_id] = ?, [approve_at] = ?	WHERE [product_id] = ?");
+            System.err.println(stm.toString());
+            stm.setInt(1, user_admin_id);
+            stm.setDate(2, aprrove_at);
+            stm.setDouble(3, product_id);
+            stm.executeUpdate();
+        } catch (Exception e) {
+            System.err.println("LOI NAY O delete:" + e);
+        }
     }
 
     @Override
