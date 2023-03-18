@@ -33,6 +33,7 @@ public class ShopDAO extends AbstractDAO<ShopDTO> {
             dto.setUserID(rs.getInt(2));
             dto.setCreateAt(rs.getDate(3));
             dto.setShopName(rs.getString(4));
+            dto.setStatus(rs.getBoolean(5));
             list.add(dto);
 //            System.err.println(dto.toString());
         }
@@ -153,7 +154,7 @@ public class ShopDAO extends AbstractDAO<ShopDTO> {
     
     public void updateBanShopStatus(int shopId) throws SQLException{
         try{
-        PreparedStatement stm = conn.prepareStatement("UPDATE Shop SET [status] = 'false' WHERE shop_id = ? ");  
+        PreparedStatement stm = conn.prepareStatement("UPDATE Shop SET [status] = 0 WHERE shop_id = ? ");  
         stm.setInt(1, shopId);
         stm.executeUpdate();
         stm.close();
@@ -165,7 +166,7 @@ public class ShopDAO extends AbstractDAO<ShopDTO> {
     
     public void updateUnBanShopStatus(int shopId) throws SQLException{
         try{
-        PreparedStatement stm = conn.prepareStatement("UPDATE Shop SET [status] = 'true' WHERE shop_id = ? ");  
+        PreparedStatement stm = conn.prepareStatement("UPDATE Shop SET [status] = 1 WHERE shop_id = ? ");  
         stm.setInt(1, shopId);
         stm.executeUpdate();
         stm.close();
