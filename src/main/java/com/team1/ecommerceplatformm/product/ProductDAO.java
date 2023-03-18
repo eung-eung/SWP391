@@ -314,7 +314,6 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
         stm.setInt(1, shopId);
         ResultSet rs = stm.executeQuery();
         ArrayList<ProductDTO> list = new ArrayList<>();
-        ImageProductDAO imageProductDAO = new ImageProductDAO();
         while (rs.next()) {
             ProductDTO dto = new ProductDTO();
             dto.setProductID(rs.getInt("product_id"));
