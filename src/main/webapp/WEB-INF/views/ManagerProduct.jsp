@@ -80,7 +80,7 @@
                             <a href="#addEmployeeModal"  class="btn btn-success" data-toggle="modal"><i class="fa-solid fa-plus"></i><span>Thêm vào sản phẩm</span></a>
                         </div>
                         <div>
-                            <form id="myForm" action="./UpdateShop" method="post">
+                            <form id="myForm" action="UpdateShopNew" method="post">
                                 <input hidden value="${shop.shopID}" readonly  name="shopId"/>
                                 Shop name <input onchange="submitForm()" class=" btn-success" 
                                                  value="${shop.shopName}" required title="tên shop" name="shopName"/>
@@ -98,8 +98,7 @@
                                 <th>Name</th>
                                 <th hidden>Description</th>
                                 <th>Quantity</th>
-                                <th>Created At</th> 
-                                <th>Img</th> 
+                                <th>Created At</th>  
                                 <th>Update</th>
                                 <th>Delete</th>
                             </tr>
@@ -119,8 +118,7 @@
                                         <textarea readonly class="limited-textarea" form="form${prolist[loop.index - 1].getProductID()}"  name="Description" rows="4" cols="50">${prolist[loop.index - 1].getDescription()}</textarea> 
                                     </td>
                                     <td>${prolist[loop.index - 1].getQuanity()}</td>
-                                    <td>${prolist[loop.index - 1].getCreateAt()}</td>
-                                    <td><img src="${prolist[loop.index - 1].mainImg.url}" width="100px" height="100px" alt="alt"/></td> 
+                                    <td>${prolist[loop.index - 1].getCreateAt()}</td> 
                                     <td>
                                         <a style="padding: 14px;background-color: greenyellow; text-decoration: none;color: white;border-radius: 4px" 
                                            href="./UpdateProduct?productid=${prolist[loop.index - 1].getProductID()}">Update</a>
@@ -579,7 +577,7 @@
                             <a href="#addEmployeeModal"  class="btn btn-success" data-toggle="modal"><i class="fa-solid fa-plus"></i><span>Thêm vào sản phẩm</span></a>
                         </div>
                         <div>
-                            <form id="myForm" action="./UpdateShop" method="post">
+                            <form id="myForm" action="./UpdateShopNew" method="post">
                                 <input hidden value="${shop.shopID}" readonly  name="shopId"/>
                                 Shop name <input onchange="submitForm()" class=" btn-success" 
                                                  value="${shop.shopName}" required title="tên shop" name="shopName"/>

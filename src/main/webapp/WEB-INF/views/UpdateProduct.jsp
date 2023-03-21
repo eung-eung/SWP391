@@ -65,7 +65,7 @@
                                 <label>Discount</label>
                                 <input form="editInfo" value="${product.getDiscount()}" name="discount" type="number" class="form-control" required>
                             </div>
-                            <form id="imgupload"  action="./UpdateImage?idProduct=${product.getProductID()}" method="post" enctype="multipart/form-data"  >
+                            <form id="imguploadT"  action="./UpdateImage?idProduct=${product.getProductID()}" method="post" enctype="multipart/form-data"  >
                                 <div class="form-group">
                                     <label>MainImg:</label><br/> 
                                     <input hidden="true" form="imguploadT" type="text" value="${product.getMainImg().imageID}" name="imageid">
@@ -77,90 +77,82 @@
                                     </label> <br/>
                             </form>
                             <div class="form-group">
-                                <label>Img:  </label><br/>
+                                <label>Img:  </label>
+                                <label> <br/>
+                                    <form id="imgupload2"  action="./UploadImageFirebase?productid=${product.getProductID()}" method="post" enctype="multipart/form-data"  ></form>
 
-                                <input hidden="true" form="imgupload" type="text" value="${product.getMainImg()}" name="imageid">
-                                <img   src="${product.getMainImg().getUrl()}" alt="alt" style="max-height: 240px;max-width: 240px;"> 
-                                <label><br/>
-                                    <input class="" form="imgupload"  type="file" value="Update Image"
-                                           accept="image/*" name="img_item" id="file1" style="display:none" onchange="submitFormById('imgupload')" >
-                                    <input type="button" value="Update Img" onclick="triggerClick('file1')">
-                                </label> <br/>
-                                <div class="form-group">
-                                    <label>Img:  </label>
-                                    <label> <br/>
-                                        <form id="imgupload2"  action="./UploadImageFirebase?productid=${product.getProductID()}" method="post" enctype="multipart/form-data"  ></form>
+                                    <input class="" form="imgupload2"  type="file" value="Update Image"
+                                           accept="image/*" name="img_item" id="file2" style="display:none" onchange="submitFormById('imgupload2')" >
+                                    <input type="button" value="Add more Img" onclick="triggerClick('file2')">
+                                </label>
+                                <c:forEach var="item" items="${product.getImgs()}">
+                                    <br/> 
+                                    <form id="imgupload_${item.getImageID()}"  action="./UpdateImage?idProduct=${product.getProductID()}" method="post" enctype="multipart/form-data"  ></form>
+                                    <input hidden="true" form="imgupload_${item.getImageID()}" type="text" value="${item.getImageID()}" name="imageid"> 
 
-                                        <input class="" form="imgupload2"  type="file" value="Update Image"
-                                               accept="image/*" name="img_item" id="file2" style="display:none" onchange="submitFormById('imgupload2')" >
-                                        <input type="button" value="Add more Img" onclick="triggerClick('file2')">
-                                    </label>
-                                    <c:forEach var="item" items="${product.getImgs()}">
-                                        <br/>
-                                        <form id="imgupload_${item.getImageID()}"  action="./UpdateImage?idProduct=${product.getProductID()}" method="post" enctype="multipart/form-data"  ></form>
-                                        <input hidden="true" form="imgupload_${item.getImageID()}" type="text" value="${item.getImageID()}" name="imageid"> 
-                                        <img src="${item.getUrl()}" alt="alt" style="max-height: 240px;max-width: 240px;">
-                                        <label><br/>
-                                            <input class="" form="imgupload_${item.getImageID()}"  type="file" value="Update Image"
-                                                   accept="image/*" name="img_item" id="file_${item.getImageID()}" style="display:none" onchange="submitFormById('imgupload_${item.getImageID()}')" >
-                                            <input style="background-color: greenyellow" type="button" value="Update Img" onclick="triggerClick('file_${item.getImageID()}')">
-                                        </label> 
-                                        <a href="./DeleteImage?ImageID=${item.getImageID()}&idProduct=${product.getProductID()}"><button style="background-color: red">Delete</button> </a>
-                                        <br/>  </c:forEach>  
-                                    </div> 
-                                </div>
-                                <div class="modal-footer">
-                                    <input type="submit" class="btn btn-success" value="Edit" form="editInfo" >
-                                </div>
+                                    <img src="${item.getUrl()}" alt="alt" style="max-height: 240px;max-width: 240px;">
 
+                                    <label><br/>
+                                        <input class="" form="imgupload_${item.getImageID()}"  type="file" value="Update Image"
+                                               accept="image/*" name="img_item" id="file_${item.getImageID()}" style="display:none" onchange="submitFormById('imgupload_${item.getImageID()}')" >
+                                        <input style="background-color: greenyellow" type="button" value="Update Img" onclick="triggerClick('file_${item.getImageID()}')">
+                                    </label> 
+                                        <a form="imgupload_${item.getImageID()}" href="./DeleteImage?ImageID=${item.getImageID()}&idProduct=${product.getProductID()}"><button type="button" style="background-color: red">Delete</button> </a>
+                                    <br/>  </c:forEach>  
+                                </div> 
                             </div>
+                            <div class="modal-footer">
+                                <input type="submit" class="btn btn-success" value="Edit" form="editInfo" >
+                            </div>
+
                         </div>
                     </div>
-
                 </div>
+
             </div>
-            <script>
-                function triggerClick(s) {
-                    document.getElementById(s).click();
+        </div>
+        <script>
+            function triggerClick(s) {
+                document.getElementById(s).click();
+            }
+
+            function submitFormById(formId) {
+                // Lấy đối tượng form
+                var form = document.getElementById(formId);
+
+                // Kiểm tra nếu form tồn tại
+                if (form) {
+                    // Submit form
+                    form.submit();
                 }
-
-                function submitFormById(formId) {
-                    // Lấy đối tượng form
-                    var form = document.getElementById(formId);
-
-                    // Kiểm tra nếu form tồn tại
-                    if (form) {
-                        // Submit form
-                        form.submit();
-                    }
-                }
+            }
 
 
 
 
-                // Lấy thẻ img và nút tải lên
-                const imgElement = document.querySelector('.form-group img');
-                const uploadButton = document.querySelector('.form-group input[type="submit"]');
+            // Lấy thẻ img và nút tải lên
+            const imgElement = document.querySelector('.form-group img');
+            const uploadButton = document.querySelector('.form-group input[type="submit"]');
 
-                // Khi người dùng chọn một tệp tin ảnh mới để tải lên
-                uploadButton.addEventListener('click', () => {
-                    const fileInput = document.createElement('input');
-                    fileInput.type = 'file';
-                    fileInput.accept = 'image/*';
-                    fileInput.onchange = () => {
-                        // Nếu người dùng đã chọn tệp tin ảnh mới, thay đổi giá trị src của thẻ img
-                        const file = fileInput.files[0];
-                        const reader = new FileReader();
-                        reader.readAsDataURL(file);
-                        reader.onload = () => {
-                            imgElement.src = reader.result;
-                        };
+            // Khi người dùng chọn một tệp tin ảnh mới để tải lên
+            uploadButton.addEventListener('click', () => {
+                const fileInput = document.createElement('input');
+                fileInput.type = 'file';
+                fileInput.accept = 'image/*';
+                fileInput.onchange = () => {
+                    // Nếu người dùng đã chọn tệp tin ảnh mới, thay đổi giá trị src của thẻ img
+                    const file = fileInput.files[0];
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = () => {
+                        imgElement.src = reader.result;
                     };
-                    fileInput.click();
-                });
-            </script>
+                };
+                fileInput.click();
+            });
+        </script>
 
-            <script src="<c:url value="/assets/Javascript/ManagerProduct.js" />"></script> 
-    </body>
+        <script src="<c:url value="/assets/Javascript/ManagerProduct.js" />"></script> 
+</body>
 </html>
 

@@ -206,6 +206,23 @@ public class ShopDAO extends AbstractDAO<ShopDTO> {
             System.err.println("Loi update SHop" + e.getMessage());
         }
     }
+    
+     public void update(int id, String name){
+        try {
+            PreparedStatement stm = conn.prepareStatement(""
+                    + "UPDATE [Shop]\n"
+                    + "   SET  \n"
+                    + "     [shop_name] = ?\n"
+                    + " WHERE shop_id = ?");
+
+            stm.setString(1, name);
+            stm.setInt(2, id);
+            stm.executeUpdate();
+            stm.close();
+        } catch (Exception e) {
+            System.err.println("Loi update SHop" + e.getMessage());
+        }
+    }
 
     public List<ShopDTO> getAllShopRegiter() throws SQLException {
         ArrayList<ShopDTO> list = new ArrayList<>();

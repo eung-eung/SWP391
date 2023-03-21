@@ -711,55 +711,55 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
         return 0;
 
     }
-    
-    public void updateBanProductStatusByShop(int shopId) throws SQLException{
-        try{
-        PreparedStatement stm = conn.prepareStatement("UPDATE Product SET [status] = null	WHERE shop_id = ? ");  
-        stm.setInt(1, shopId);
-        stm.executeUpdate();
-        stm.close();
-        conn.close();
-        }catch(Exception e){
+
+    public void updateBanProductStatusByShop(int shopId) throws SQLException {
+        try {
+            PreparedStatement stm = conn.prepareStatement("UPDATE Product SET [status] = null	WHERE shop_id = ? ");
+            stm.setInt(1, shopId);
+            stm.executeUpdate();
+            stm.close();
+            conn.close();
+        } catch (Exception e) {
             System.err.println("LOI NAY O Update:" + e);
         }
     }
-    
-    public void updateUnbanProductStatusByShop(int shopId) throws SQLException{
-        try{
-        PreparedStatement stm = conn.prepareStatement("UPDATE Product SET [status] = 1 WHERE shop_id = ? ");  
-        stm.setInt(1, shopId);
-        stm.executeUpdate();
-        stm.close();
-        conn.close();
-        }catch(Exception e){
+
+    public void updateUnbanProductStatusByShop(int shopId) throws SQLException {
+        try {
+            PreparedStatement stm = conn.prepareStatement("UPDATE Product SET [status] = 1 WHERE shop_id = ? ");
+            stm.setInt(1, shopId);
+            stm.executeUpdate();
+            stm.close();
+            conn.close();
+        } catch (Exception e) {
             System.err.println("LOI NAY O Update:" + e);
         }
     }
-    
-    public void updateBanProductStatus(int productid) throws SQLException{
-        try{
-        PreparedStatement stm = conn.prepareStatement("UPDATE Product SET [status] = 0 WHERE product_id = ? ");  
-        stm.setInt(1, productid);
-        stm.executeUpdate();
-        stm.close();
-        conn.close();
-        }catch(Exception e){
+
+    public void updateBanProductStatus(int productid) throws SQLException {
+        try {
+            PreparedStatement stm = conn.prepareStatement("UPDATE Product SET [status] = 0 WHERE product_id = ? ");
+            stm.setInt(1, productid);
+            stm.executeUpdate();
+            stm.close();
+            conn.close();
+        } catch (Exception e) {
             System.err.println("LOI NAY O Update:" + e);
         }
     }
-    
-    public void updateUnbanProductStatus(int productid) throws SQLException{
-        try{
-        PreparedStatement stm = conn.prepareStatement("UPDATE Product SET [status] = 1 WHERE product_id = ? ");  
-        stm.setInt(1, productid);
-        stm.executeUpdate();
-        stm.close();
-        conn.close();
-        }catch(Exception e){
+
+    public void updateUnbanProductStatus(int productid) throws SQLException {
+        try {
+            PreparedStatement stm = conn.prepareStatement("UPDATE Product SET [status] = 1 WHERE product_id = ? ");
+            stm.setInt(1, productid);
+            stm.executeUpdate();
+            stm.close();
+            conn.close();
+        } catch (Exception e) {
             System.err.println("LOI NAY O Update:" + e);
         }
     }
-    
+
     public ArrayList<ProductDTO> getProductAuthen() throws SQLException {
         PreparedStatement stm = conn.prepareStatement("SELECT [product_id]\n"
                 + "      ,[shop_id]\n"
@@ -799,8 +799,8 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
         stm.close();
         return list;
     }
-    
-    public void updateAcceptProductAuthen(int user_admin_id, Date aprrove_at, int product_id ) throws SQLException{
+
+    public void updateAcceptProductAuthen(int user_admin_id, Date aprrove_at, int product_id) throws SQLException {
         try {
             PreparedStatement stm = conn.prepareStatement("UPDATE Product SET [authen] = 1, [status] = 1, [user_admin_id] = ?, [approve_at] = ?	WHERE [product_id] = ?");
             System.err.println(stm.toString());
@@ -812,8 +812,8 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
             System.err.println("LOI NAY O delete:" + e);
         }
     }
-    
-    public void updateRejectProductAuthen(int user_admin_id, Date aprrove_at, int product_id ) throws SQLException{
+
+    public void updateRejectProductAuthen(int user_admin_id, Date aprrove_at, int product_id) throws SQLException {
         try {
             PreparedStatement stm = conn.prepareStatement("UPDATE Product SET [authen] = 1, [status] = 0, [user_admin_id] = ?, [approve_at] = ?	WHERE [product_id] = ?");
             System.err.println(stm.toString());
@@ -844,24 +844,18 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
             System.err.println("LOI NAY O Update:" + e);
         }
     }
+    // mơ sql server ho e
 
     @Override
     public void delete(ProductDTO t) throws SQLException {
         try {
 
             PreparedStatement stm = conn.prepareStatement(""
-                    + "DELETE FROM image_product \n"
-                    + "WHERE product_id = ?;\n"
-                    + " \n"
-                    + "DELETE FROM OrderDetails \n"
-                    + "WHERE product_id = ?;\n"
-                    + "\n"
-                    + "DELETE FROM Product \n"
-                    + "WHERE product_id = ?;");
+                    + "UPDATE [Product]\n"
+                    + "   SET  [status] = 0\n"
+                    + " WHERE product_id = ?");
             System.err.println(stm.toString());
             stm.setDouble(1, t.getProductID());
-            stm.setDouble(2, t.getProductID());
-            stm.setDouble(3, t.getProductID());
             stm.executeUpdate();
         } catch (Exception e) {
             System.err.println("LOI NAY O delete:" + e);

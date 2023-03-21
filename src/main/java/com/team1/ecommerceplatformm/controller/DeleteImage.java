@@ -11,6 +11,7 @@ import com.team1.ecommerceplatformm.imageProduct.ImageProductDAO;
 import com.team1.ecommerceplatformm.imageProduct.ImageProductDTO;
 import com.team1.ecommerceplatformm.utils.Constants;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,7 +22,12 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
- 
+  
+@MultipartConfig(
+        fileSizeThreshold = 1024 * 1024 * 1, // 1 MB
+        maxFileSize = 1024 * 1024 * 10, // 10 MB
+        maxRequestSize = 1024 * 1024 * 100 // 100 MB
+)
 @WebServlet(name = "DeleteImage", urlPatterns = {"/DeleteImage"})
 public class DeleteImage extends HttpServlet {
 
@@ -63,11 +69,12 @@ public class DeleteImage extends HttpServlet {
         
         ImageProductDTO imgtemp = new ImageProductDTO();
         imgtemp.setImageID(Integer.parseInt(req.getParameter("ImageID")));  
+        System.out.println("\n\n\n"+ imgtemp.getImageID()+"\n\n\n");
         try {
             new ImageProductDAO().delete(imgtemp);
             System.err.println("Data delete ql:" + imgtemp.toString());
         } catch (SQLException ex) {
-            Logger.getLogger(UpdateImage.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Loi o delete "+ ex.getMessage());
         }
         if (req.getParameter("idProduct") != null) {
           resp.sendRedirect("UpdateProduct?productid="+req.getParameter("idProduct"));
