@@ -22,22 +22,22 @@
             <div class="container">
                 <div class="form">
                     <h2>Đăng ký trở thành cửa hàng của chúng tôi</h2>
-                    <form id="resgis" action="./ShopController" method="post" enctype="multipart/form-data">
+                    <form action="./ShopController" method="post" enctype="multipart/form-data">
                          
                         <div class="register-items">
                             <div class="register-item">
-                                <label for="shopName">Tên cửa hàng <i class="fa-solid fa-store"></i></label>
+                                <label for="shopName1">Tên cửa hàng <i class="fa-solid fa-store"></i></label>
                             </div>
                             <div class="register-item">
-                                <input  required name="shopName"  id="shopName" type="text"/>
+                                <input required name="shopName" id="shopName1" type="text"/>
                             </div>
                         </div>
                         <div class="register-items">
                             <div class="register-item">
-                                <label for="gmail">Gmail cửa hàng<i class="fa-solid fa-store"></i></label>
+                                <label for="gmail1">Gmail cửa hàng<i class="fa-solid fa-store"></i></label>
                             </div>
                             <div class="register-item">
-                                <input  required name="gmail" id="gmail" type="text"/>
+                                <input required name="gmail" id="gmail1" type="text"/>
                             </div>
                         </div>
                         <div class="register-items">
@@ -57,7 +57,7 @@
                         </div> 
                         <div class="register-items">
 
-                            <button form="resgis" type="submit" id="submit">Lưu</button>
+                            <button form="resgis" type="submit">Lưu</button>
                         </div>
                     </form>
                 </div>

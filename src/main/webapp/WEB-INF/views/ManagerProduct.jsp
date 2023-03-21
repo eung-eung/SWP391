@@ -99,6 +99,7 @@
                                 <th hidden>Description</th>
                                 <th>Quantity</th>
                                 <th>Created At</th> 
+                                <th>Img</th> 
                                 <th>Update</th>
                                 <th>Delete</th>
                             </tr>
@@ -118,7 +119,8 @@
                                         <textarea readonly class="limited-textarea" form="form${prolist[loop.index - 1].getProductID()}"  name="Description" rows="4" cols="50">${prolist[loop.index - 1].getDescription()}</textarea> 
                                     </td>
                                     <td>${prolist[loop.index - 1].getQuanity()}</td>
-                                    <td>${prolist[loop.index - 1].getCreateAt()}</td> 
+                                    <td>${prolist[loop.index - 1].getCreateAt()}</td>
+                                    <td><img src="${prolist[loop.index - 1].mainImg.url}" width="100px" height="100px" alt="alt"/></td> 
                                     <td>
                                         <a style="padding: 14px;background-color: greenyellow; text-decoration: none;color: white;border-radius: 4px" 
                                            href="./UpdateProduct?productid=${prolist[loop.index - 1].getProductID()}">Update</a>

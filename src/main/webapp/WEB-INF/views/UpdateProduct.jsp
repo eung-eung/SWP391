@@ -23,7 +23,7 @@
         </style>
     <body>
         <div class="container">
-            
+
             <div id="editEmployeeModal">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -65,9 +65,19 @@
                                 <label>Discount</label>
                                 <input form="editInfo" value="${product.getDiscount()}" name="discount" type="number" class="form-control" required>
                             </div>
-                            <form id="imgupload"  action="./UpdateImage?idProduct=${product.getProductID()}" method="post" enctype="multipart/form-data"  ></form>
+                            <form id="imgupload"  action="./UpdateImage?idProduct=${product.getProductID()}" method="post" enctype="multipart/form-data"  >
+                                <div class="form-group">
+                                    <label>MainImg:</label><br/> 
+                                    <input hidden="true" form="imguploadT" type="text" value="${product.getMainImg().imageID}" name="imageid">
+                                    <img src="${product.getMainImg().getUrl()}" alt="alt" style="max-height: 240px;max-width: 240px;"> 
+                                    <label><br/>
+                                        <input class="" form="imguploadT"  type="file" value="Update Image"
+                                               accept="image/*" name="img_item" id="fileA" style="display:none" onchange="submitFormById('imguploadT')" >
+                                        <input type="button" value="Update Img" onclick="triggerClick('fileA')">
+                                    </label> <br/>
+                            </form>
                             <div class="form-group">
-                                <label>MainImg:</label><br/>
+                                <label>Img:  </label><br/>
 
                                 <input hidden="true" form="imgupload" type="text" value="${product.getMainImg()}" name="imageid">
                                 <img   src="${product.getMainImg().getUrl()}" alt="alt" style="max-height: 240px;max-width: 240px;"> 

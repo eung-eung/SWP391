@@ -849,9 +849,19 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
     public void delete(ProductDTO t) throws SQLException {
         try {
 
-            PreparedStatement stm = conn.prepareStatement("delete from Product where product_id =?");
+            PreparedStatement stm = conn.prepareStatement(""
+                    + "DELETE FROM image_product \n"
+                    + "WHERE product_id = ?;\n"
+                    + " \n"
+                    + "DELETE FROM OrderDetails \n"
+                    + "WHERE product_id = ?;\n"
+                    + "\n"
+                    + "DELETE FROM Product \n"
+                    + "WHERE product_id = ?;");
             System.err.println(stm.toString());
             stm.setDouble(1, t.getProductID());
+            stm.setDouble(2, t.getProductID());
+            stm.setDouble(3, t.getProductID());
             stm.executeUpdate();
         } catch (Exception e) {
             System.err.println("LOI NAY O delete:" + e);
