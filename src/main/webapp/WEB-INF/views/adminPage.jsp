@@ -90,9 +90,14 @@
             }
 
             .pieChart{
-                width: 100%;
+                width: 50%;
                 height: 100%;
                 display: flex;
+            }
+
+            .pieChartTotal{
+                display: flex;
+                justify-content: space-around;
             }
 
             .column_chart{
@@ -208,6 +213,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
         <script type="text/javascript" charset="utf8"
         src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <title>Admin Page</title>
     </head>
 
@@ -239,11 +245,17 @@
 
                 <div class="admin_dashboard">
                     <div class="pieChart">
-                        <div id="productChart" class="piechart" style="height: 370px; width: 100%"></div>
-                        <div id="userChart" class="piechart" style="height: 370px; width: 100%"></div>
+                        <canvas id="productChart" class="pieChart"></canvas>
+                        <canvas id="userChart" class="pieChart"></canvas>
+                    </div>
+                    <div class="pieChartTotal">
+                        <div class="pieChartFisrtTotal">
+                        </div>
+                        <div class="pieChartSecondTotal">
+                        </div>
                     </div>
                     <div class="column_chart">
-                        <div id="productPerMonthChart" style="height: 370px; width: 100%;"></div>
+                        <canvas id="productPerMonthChart"></canvas>
                     </div>
                 </div>
 
@@ -351,9 +363,186 @@
         });
 
         document.querySelector(".header-bottom").hidden = true;
-        $(document).ready(function () {
 
-//          get shop and product data
+        $(document).ready(async function () {
+            await getShopProductData();
+            await setChartData();
+            await authenProduct();
+        });
+
+        const setChartData = function () {
+            fetch("MainController?btnAction=admin&adminAction=dashboard", {
+                method: 'GET'
+            })
+                    .then(rs => rs.json())
+                    .then(async data => {
+                        console.log(data);
+
+                        let productAmount = 0;
+                        for (let i = 0; i < data.listCount.length; i++) {
+                            productAmount += data.listCount[i];
+                        }
+
+                        let userAmount = 0;
+                        for (let i = 0; i < data.listUser.length; i++) {
+                            userAmount += data.listUser[i];
+                        }
+
+//                      set column data
+
+                        let rgba_main = [];
+                        for (let i = 0; i < data.listMonth.length; i++) {
+                            rgba_main.push(random_rgba());
+                        }
+
+//                      set piechart total
+
+                        const firstPiechart = document.querySelector(".pieChartFisrtTotal");
+                        const secondPiechart = document.querySelector(".pieChartSecondTotal");
+                        firstPiechart.innerHTML = ("Total: " + productAmount);
+                        secondPiechart.innerHTML = ("Total: " + userAmount);
+
+//                      add data to chart   
+//                      product piechart
+
+                        let productChart = new Chart("productChart", {
+                            type: "pie",
+                            data: {
+                                labels: data.listName,
+                                datasets: [{
+
+                                        data: data.listCount
+                                    }]
+                            },
+                            options: {
+                                title: {
+                                    display: true,
+                                    text: "Product"
+                                },
+                                plugins: {
+                                    title: {
+                                        display: true,
+                                        text: 'Product',
+                                        font: {
+                                            size: 29
+                                        }
+                                    }
+                                }
+                            }
+                        });
+
+//                      user piechart
+                        var userChart = new Chart("userChart", {
+                            type: "pie",
+                            data: {
+                                labels: data.listNameOfUser,
+                                datasets: [{
+
+                                        data: data.listUser
+                                    }]
+                            },
+                            options: {
+                                title: {
+                                    display: true,
+                                    text: "Product"
+                                },
+                                plugins: {
+                                    title: {
+                                        display: true,
+                                        text: 'Product',
+                                        font: {
+                                            size: 29
+                                        }
+                                    }
+                                }
+                            }
+                        });
+
+
+                        let productPerMonthChart = new Chart("productPerMonthChart", {
+                            type: 'bar',
+                            data: {
+                                labels: data.listMonth,
+                                datasets: [{
+//                                        label: '',
+                                        data: data.listCountByMonth,
+                                        backgroundColor: rgba_main,
+                                        borderColor: [
+                                            'rgba(255, 99, 132, 1)',
+                                            'rgba(54, 162, 235, 1)',
+                                            'rgba(54, 162, 235, 1)'
+                                        ]
+                                    }]
+                            },
+                            options: {
+                                plugins: {
+                                    title: {
+                                        display: true,
+                                        text: 'Product post per month',
+                                        font: {
+                                            size: 29
+                                        }
+                                    },
+                                    legend: {
+                                        display: false
+                                    }
+                                },
+                                scales: {
+                                    x: {
+                                        display: false //this will remove all the x-axis grid lines
+                                    }
+                                }
+                            }
+                        });
+//                      set data to chart
+                        productChart.update();
+                        userChart.update();
+                        productPerMonthChart.update();
+                    })
+        };
+
+        const authenProduct = function () {
+            fetch("MainController?btnAction=admin&adminAction=authenProduct", {
+                method: 'GET'
+            })
+                    .then(rs => rs.json())
+                    .then(data => {
+        <%
+            UserDTO user = (UserDTO) session.getAttribute("user");
+            int userID = 0;
+            if (user != null) {
+                userID = user.getUserID();
+            }
+            session.setAttribute("userId", userID);
+        %>
+                        var userId = '<%= session.getAttribute("userId")%>';
+                        console.log(data);
+                        const table = $('#product_request').DataTable({
+
+                            data: data
+                            ,
+                            'columns': [
+                                {'data': 'shopID'},
+                                {'data': 'productID'},
+                                {'data': 'price'},
+                                {'data': 'categoryID'},
+                                {'data': 'quanity'},
+                                {'data': 'createAt'},
+                                {
+                                    data: null,
+                                    orderable: false,
+                                    render: function (data, type, row) {
+                                        return `<a type = "button" class = " ban_btn btn btn-success" onclick="return confirm('Are you sure you want to accept this product?')"  href="<c:url value="/MainController?btnAction=admin&adminAction=approveProduct&productId=\${row.productID}&userId=\${userId}"></c:url>">Accept</a>
+                                        <a type = "button" class = " ban_btn btn btn-danger" onclick="return confirm('Are you sure you want to delete this product?')" href="<c:url value="/MainController?btnAction=admin&adminAction=rejectProduct&productId=\${row.productID}&userId=\${userId}"></c:url>">Deny</a>`;
+                                    }
+                                }
+                            ],
+                            order: [[0, 'asc']]
+                        });
+                    });
+        };
+
+        const getShopProductData = function () {
             fetch("MainController?btnAction=admin&adminAction=render", {
                 method: 'GET'
             })
@@ -415,168 +604,12 @@
 
                         });
                     });
+        };
 
-
-//          chart data
-            fetch("MainController?btnAction=admin&adminAction=dashboard", {
-                method: 'GET'
+        function removeActive(list) {
+            list.forEach((item) => {
+                item.classList.remove("btn_active");
             })
-                    .then(rs => rs.json())
-                    .then(data => {
-                        console.log(data);
-
-//                      set produt data
-
-                        const listCount = data.listCount;
-                        const listName = data.listName;
-                        let productData = [];
-                        for (let i = 0; i < listCount.length; i++) {
-                            let obj = {
-                                y: getPercent(listCount, listCount[i]),
-                                label: listName[i]
-                            };
-                            productData[i] = obj;
-                        }
-
-//                      set user data
-
-                        const listUser = data.listUser;
-                        const listNameOfUser = data.listNameOfUser;
-                        let userData = [];
-                        for (let i = 0; i < listUser.length; i++) {
-                            let obj = {
-                                y: getPercent(listUser, listUser[i]),
-                                label: listNameOfUser[i]
-                            };
-                            userData[i] = obj;
-                        }
-
-//                      set column data
-                        const listMonth = data.listMonth;
-                        const listCountByMonth = data.listCountByMonth;
-                        let columnData = [];
-                        for (let i = 0; i < listMonth.length; i++) {
-                            let obj = {
-                                y: listCountByMonth[i],
-                                label: listMonth[i]
-                            };
-                            columnData[i] = obj;
-                        }
-//                      add data to chart   
-//                      product piechart
-                        var productChart = new CanvasJS.Chart("productChart", {
-                            theme: "light2", // "light1", "dark1", "dark2"
-                            animationEnabled: true,
-                            witdh: 1600,
-                            title: {
-                                text: "Product"
-                            },
-                            data: [{
-                                    type: "pie",
-                                    toolTipContent: "<b>{label}</b>: {y}%",
-                                    indexLabelFontSize: 16,
-                                    indexLabel: "{label} - {y}%",
-                                    dataPoints: productData
-                                }]
-                        });
-//                      user piechart
-                        var userChart = new CanvasJS.Chart("userChart", {
-                            theme: "light2", // "light1", "dark1", "dark2"
-                            animationEnabled: true,
-                            title: {
-                                text: "User"
-                            },
-                            data: [{
-                                    type: "pie",
-                                    toolTipContent: "<b>{label}</b>: {y}%",
-                                    indexLabelFontSize: 16,
-                                    indexLabel: "{label} - {y}%",
-                                    dataPoints: userData
-                                }]
-                        });
-//                      column chart
-                        var productPerMonthChart = new CanvasJS.Chart("productPerMonthChart", {
-                            witdh: 1600,
-                            title: {
-                                text: "Product post per month"
-                            },
-                            axisX: {
-                                title: "Month"
-                            },
-                            axisY: {
-                                title: "Amount",
-                                includeZero: true
-                            },
-                            data: [{
-                                    type: "column",
-                                    yValueFormatString: "",
-                                    dataPoints: columnData
-                                }]
-                        });
-                        productChart.render();
-                        userChart.render();
-                        productPerMonthChart.render();
-                    });
-
-            fetch("MainController?btnAction=admin&adminAction=authenProduct", {
-                method: 'GET'
-            })
-                    .then(rs => rs.json())
-                    .then(data => {
-        <%
-            UserDTO user = (UserDTO) session.getAttribute("user");
-            int userID = 0;
-            if (user != null) {
-                userID = user.getUserID();
-            }
-            session.setAttribute("userId", userID);
-        %>
-                        var userId = '<%= session.getAttribute("userId")%>';
-                        console.log(data);
-                        const table = $('#product_request').DataTable({
-
-                            data: data
-                            ,
-                            'columns': [
-                                {'data': 'shopID'},
-                                {'data': 'productID'},
-                                {'data': 'price'},
-                                {'data': 'categoryID'},
-                                {'data': 'quanity'},
-                                {'data': 'createAt'},
-                                {
-                                    data: null,
-                                    orderable: false,
-                                    render: function (data, type, row) {
-                                        return `<a type = "button" class = " ban_btn btn btn-success" onclick="return confirm('Are you sure you want to accept this product?')"  href="<c:url value="/MainController?btnAction=admin&adminAction=approveProduct&productId=\${row.productID}&userId=\${userId}"></c:url>">Accept</a>
-                                        <a type = "button" class = " ban_btn btn btn-danger" onclick="return confirm('Are you sure you want to delete this product?')" href="<c:url value="/MainController?btnAction=admin&adminAction=rejectProduct&productId=\${row.productID}&userId=\${userId}"></c:url>">Deny</a>`;
-                                    }
-                                }
-                            ],
-                            order: [[0, 'asc']]
-                        });
-                    });
-        });
-
-        function format(d) {
-            // `d` is the original data object for the row
-            let data = "";
-            d.listProducts.forEach(element => {
-                data = data + getProduct(element, d.status);
-            });
-            return (
-                    '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
-                    '<tr>' +
-                    '<td>Product ID</td>' +
-                    '<td>Name</td>' +
-                    '<td>Price</td>' +
-                    '<td>Sold count</td>' +
-                    '<td>Status</td>' +
-                    '<td>Action</td>' +
-                    data +
-                    '</tr>' +
-                    '</table>'
-                    );
         }
 
         function getProduct(element, status) {
@@ -606,7 +639,6 @@
                     );
         }
 
-
         function getPercent(list, number) {
             let total = 0;
             for (let i = 0; i < list.length; i++) {
@@ -616,23 +648,31 @@
             return percent.toFixed();
         }
 
-        function removeActive(list) {
-            list.forEach((item) => {
-                item.classList.remove("btn_active")
-            })
+        function format(d) {
+            // `d` is the original data object for the row
+            let data = "";
+            d.listProducts.forEach(element => {
+                data = data + getProduct(element, d.status);
+            });
+            return (
+                    '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
+                    '<tr>' +
+                    '<td>Product ID</td>' +
+                    '<td>Name</td>' +
+                    '<td>Price</td>' +
+                    '<td>Sold count</td>' +
+                    '<td>Status</td>' +
+                    '<td>Action</td>' +
+                    data +
+                    '</tr>' +
+                    '</table>'
+                    );
         }
-
-//      css function 
-//        var header = document.querySelector(".admin_page_navbar");
-//        var sticky = header.offsetTop;
-//
-//        function myFunction() {
-//            if (window.pageYOffset > sticky) {
-//                header.classList.add("sticky");
-//            } else {
-//                header.classList.remove("sticky");
-//            }
-//        }
+        
+        function random_rgba() {
+                var o = Math.round, r = Math.random, s = 255;
+                return 'rgba(' + o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s) + ',' + r().toFixed(1) + ')';
+            }
 
     </script>
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
