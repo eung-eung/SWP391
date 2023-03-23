@@ -87,7 +87,9 @@ public class UpdateImage  extends HttpServlet{
         });
         if (request.getParameter("idProduct") != null) {
             resp.sendRedirect("UpdateProduct?productid="+request.getParameter("idProduct"));
-        }else{
+
+        }
+        else{
              resp.sendRedirect("UploadImageFirebase");
         }
        

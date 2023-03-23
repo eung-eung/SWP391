@@ -1,9 +1,4 @@
-<%-- 
-    Document   : registerShopPage
-    Created on : Feb 24, 2023, 7:17:36 AM
-    Author     : boyvi
---%>
-
+ 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -15,6 +10,12 @@
         <link type="text/css" rel="stylesheet" href="<c:url value="/assets/css/detailProduct.css" />" />
         <link type="text/css" rel="stylesheet" href="<c:url value="/assets/css/registerShopPage.css" />" />
         <title>JSP Page</title>
+        <style>
+            .output img {
+                width: 200px;
+                height: 200px;
+            }
+        </style>
     </head>
     <body>
         <jsp:include page="header.jsp" />
@@ -43,8 +44,8 @@
                         <div class="register-items">
                             <div class="form-group">
                                 <label  for="mainImage">Chứng minh nhân dân mặt trước</label>
-                                <input  type="file" required accept="image/*" multiple name="cmndmt_img_item" id="file"  onchange="loadFile(event, 1)" style="display: block;">
-                                <div class="output" id="output1"></div>
+                                <input type="file" required accept="image/*" multiple name="cmndmt_img_item" id="file"  onchange="loadFile(event, 1)" style="display: block;">
+                                <div   class="output" id="output1"></div>
                             </div> 
                         </div>                         
 
@@ -55,9 +56,8 @@
                                 <div class="output" id="output2"></div>
                             </div> 
                         </div> 
-                        <div class="register-items">
-
-                            <button form="resgis" type="submit">Lưu</button>
+                        <div class="register-items"> 
+                            <button type="submit" id="submit">Lưu</button>
                         </div>
                     </form>
                 </div>

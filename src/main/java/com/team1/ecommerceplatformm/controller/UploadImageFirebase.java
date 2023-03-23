@@ -1,6 +1,5 @@
 package com.team1.ecommerceplatformm.controller;
 
-
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
@@ -9,6 +8,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 import com.team1.ecommerceplatformm.imageProduct.ImageProductDAO;
 import com.team1.ecommerceplatformm.imageProduct.ImageProductDTO;
 import com.team1.ecommerceplatformm.product.ProductDAO;
@@ -75,21 +75,26 @@ public class UploadImageFirebase extends HttpServlet {
         studentsRef.setValue(url, new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+
                 if (databaseError != null) {
                     System.out.println("Data luu that bai" + databaseError.getMessage());
                 } else {
-                    System.out.println("Data Luu thanh cong");
-                    ImageProductDTO imgtemp = new ImageProductDTO();
-                    imgtemp.setProductID(Integer.parseInt(child__Product_ID));
-                    imgtemp.setMainImage(false);
-                    imgtemp.setUrl(url);
-                    System.err.println("Data saves ql:" + imgtemp.toString());
-                    new ImageProductDAO().save(imgtemp);
+
+                        System.out.println("Data Luu thanh cong");
+                        ImageProductDTO imgtemp = new ImageProductDTO();
+                        imgtemp.setProductID(Integer.parseInt(child__Product_ID));
+                        imgtemp.setMainImage(false);
+                        imgtemp.setUrl(url);
+                        
+                        System.err.println("Data saves ql:" + imgtemp.toString());
+                        new ImageProductDAO().save(imgtemp);              
                 }
+
             }
         });
 
         resp.sendRedirect("UpdateProduct?productid=" + request.getParameter("productid"));
+//        request.getRequestDispatcher("UpdateProduct?productid=" + request.getParameter("productid"));
     }
 
     @Override

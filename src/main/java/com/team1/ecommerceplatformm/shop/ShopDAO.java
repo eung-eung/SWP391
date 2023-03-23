@@ -151,34 +151,49 @@ public class ShopDAO extends AbstractDAO<ShopDTO> {
             Logger.getLogger(ShopDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public void updateBanShopStatus(int shopId) throws SQLException{
-        try{
-        PreparedStatement stm = conn.prepareStatement("UPDATE Shop SET [status] = 0 WHERE shop_id = ? ");  
-        stm.setInt(1, shopId);
-        stm.executeUpdate();
-        stm.close();
-        conn.close();
-        }catch(Exception e){
+
+    public void updateBanShopStatus(int shopId) throws SQLException {
+        try {
+            PreparedStatement stm = conn.prepareStatement("UPDATE Shop SET [status] = 0 WHERE shop_id = ? ");
+            stm.setInt(1, shopId);
+            stm.executeUpdate();
+            stm.close();
+            conn.close();
+        } catch (Exception e) {
             System.err.println("LOI NAY O Update:" + e);
         }
     }
-    
-    public void updateUnBanShopStatus(int shopId) throws SQLException{
-        try{
-        PreparedStatement stm = conn.prepareStatement("UPDATE Shop SET [status] = 1 WHERE shop_id = ? ");  
-        stm.setInt(1, shopId);
-        stm.executeUpdate();
-        stm.close();
-        conn.close();
-        }catch(Exception e){
+
+    public void updateUnBanShopStatus(int shopId) throws SQLException {
+        try {
+            PreparedStatement stm = conn.prepareStatement("UPDATE Shop SET [status] = 1 WHERE shop_id = ? ");
+            stm.setInt(1, shopId);
+            stm.executeUpdate();
+            stm.close();
+            conn.close();
+        } catch (Exception e) {
             System.err.println("LOI NAY O Update:" + e);
         }
     }
-    
+
     @Override
     public void save(ShopDTO t) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            PreparedStatement stm = conn.prepareStatement(""
+                    + "  INSERT INTO [Shop] ([user_id],[created_at],[shop_name],[status],[approve], front_identity, back_identity)\n"
+                    + "VALUES (?,GETDATE(),?,0,0,?,?)");
+
+            stm.setInt(1, t.getUserID());
+            stm.setString(2, t.getShopName());
+            stm.setString(3, t.getFrontIdentity());
+            stm.setString(4, t.getBackIdentity());
+
+            stm.executeUpdate();
+            stm.close();
+            System.out.println(t.getUserID());
+        } catch (Exception e) {
+            System.err.println("Loi save SHop" + e.getMessage());
+        }
     }
 
     @Override
@@ -206,8 +221,8 @@ public class ShopDAO extends AbstractDAO<ShopDTO> {
             System.err.println("Loi update SHop" + e.getMessage());
         }
     }
-    
-     public void update(int id, String name){
+
+    public void update(int id, String name) {
         try {
             PreparedStatement stm = conn.prepareStatement(""
                     + "UPDATE [Shop]\n"

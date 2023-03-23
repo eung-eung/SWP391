@@ -371,11 +371,9 @@
                                     + '&phone=' + document.querySelector('#phone').value
                                     + '&username=' + document.querySelector('#username').value
 //                                + '&token=' + getParameterByName('token', url)
-                                    , true)//true: bất đồng bộ( call api delay vài giây thì các code dưới vẫn chạy bt)
+                                    , true)
                             http.onreadystatechange = function () {
-                                //trường hợp đã gửi req thành công và nhận dc response
-                                //và status < 300: không lỗi thì cho resolve để .then
-                                //trả về resolve or reject tùy vào if else dưới
+                   
                                 //
                                 if (this.readyState == 4) {
                                     if (this.status < 300) {
@@ -399,11 +397,9 @@
                         + '&phone=' + document.querySelector('#phone').value
                         + '&username=' + document.querySelector('#username').value
 //                                + '&token=' + getParameterByName('token', url)
-                        , true)//true: bất đồng bộ( call api delay vài giây thì các code dưới vẫn chạy bt)
+                        , true)
                 http.onreadystatechange = function () {
-                    //trường hợp đã gửi req thành công và nhận dc response
-                    //và status < 300: không lỗi thì cho resolve để .then
-                    //trả về resolve or reject tùy vào if else dưới
+              
                     //
                     if (this.readyState == 4) {
                         if (this.status < 300) {

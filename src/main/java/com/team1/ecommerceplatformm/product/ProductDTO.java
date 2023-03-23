@@ -33,7 +33,7 @@ public class ProductDTO {
     private String name;
     private String description;
     private int quanity;
-    private boolean status;
+    private int status;
     private Date createAt;
     private Date approveAt;
     private float discount;

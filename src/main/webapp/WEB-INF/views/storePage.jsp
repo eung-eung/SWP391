@@ -87,7 +87,7 @@
                                     <div class="product-content">
                                         <div class="top-block">
                                             <a href="<c:url value="MainController?btnAction=product&productAction=showDetail&productID=${p.productID}"></c:url>" class="product-content-image">
-                                                <img src="${p.mainImg.url}" alt="">
+                                                <img src="${p.getMainImg().getUrl()}" alt="">
                                             </a>
 
                                         </div>
