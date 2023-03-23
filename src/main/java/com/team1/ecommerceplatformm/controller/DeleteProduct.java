@@ -27,7 +27,7 @@ public class DeleteProduct extends HttpServlet {
             ProductDTO temp = new ProductDTO();
             temp = new ProductDAO().get(Integer.parseInt(req.getParameter("productid")));
 //            System.out.println("[rpid" + []);
-            temp.setStatus(false);
+            temp.setStatus(2);
             (new ProductDAO()).delete(temp);
             System.out.println(temp.toString());
         } catch (SQLException ex) {

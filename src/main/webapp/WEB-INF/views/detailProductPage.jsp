@@ -191,8 +191,9 @@
                                         <div id="decrease" onclick="decreaseValue()"><i
                                                 class="fa-solid fa-angle-down"></i></div>
                                     </div>
+                                 
                                     <c:choose>
-                                        <c:when test="${productDetail.status}">
+                                        <c:when test="${productDetail.status == 1}">
                                             <div class="form-action">
                                                 <input type="submit" id="form-action-addToCart" class="addToCart-button"
                                                        value= "Thêm vào giỏ hàng">
@@ -200,7 +201,8 @@
                                                 <input type="hidden" id="shopID"value="${productDetail.shopID}">
                                             </div>
                                         </c:when>
-                                        <c:when test="${!productDetail.status}">
+                                      
+                                        <c:when test="${productDetail.status == 0 || productDetail.status == 2}">
                                             <div class="form-action">
                                                 <!--                                                <input type="submit" id="form-action-addToCart" class="addToCart-button"
                                                                                                        value= "Thêm vào giỏ hàng">-->

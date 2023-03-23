@@ -55,7 +55,7 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
             dto.setName(rs.getString("name"));
             dto.setDescription(rs.getString("description"));
             dto.setQuanity(rs.getInt("quantity"));
-            dto.setStatus(rs.getBoolean("status"));
+            dto.setStatus(rs.getInt("status"));
             dto.setCreateAt(rs.getDate("create_at"));
             dto.setApproveAt(rs.getDate("approve_at"));
             dto.setDiscount(rs.getFloat("discount"));
@@ -96,7 +96,7 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
             dto.setName(rs.getString("name"));
             dto.setDescription(rs.getString("description"));
             dto.setQuanity(rs.getInt("quantity"));
-            dto.setStatus(rs.getBoolean("status"));
+            dto.setStatus(rs.getInt("status"));
             dto.setCreateAt(rs.getDate("create_at"));
             dto.setApproveAt(rs.getDate("approve_at"));
             dto.setDiscount(rs.getFloat("discount"));
@@ -108,7 +108,7 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
     }
 
     public ArrayList<ProductDTO> getAllProductByName(String name) throws SQLException {
-        PreparedStatement stm = conn.prepareStatement("SELECT [product_id]\n"
+        PreparedStatement stm = conn.prepareStatement("SELECT TOP (1000) [product_id]\n"
                 + "      ,[shop_id]\n"
                 + "      ,[category_id]\n"
                 + "      ,[user_admin_id]\n"
@@ -121,7 +121,9 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
                 + "      ,[approve_at]\n"
                 + "      ,[discount]\n"
                 + "      ,[sold_count]\n"
-                + "      ,[authen]   FROM [EcommmercePlatform].[dbo].[Product] where name like ? where authen = 1 and status = 1");
+                + "      ,[authen]\n"
+                + "  FROM [EcommmercePlatform].[dbo].[Product]\n"
+                + "  where name like ? and authen = 1 and status = 1");
         stm.setString(1, "%" + name + "%");
         ResultSet rs = stm.executeQuery();
         ArrayList<ProductDTO> list = new ArrayList<>();
@@ -135,7 +137,7 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
             dto.setName(rs.getString("name"));
             dto.setDescription(rs.getString("description"));
             dto.setQuanity(rs.getInt("quantity"));
-            dto.setStatus(rs.getBoolean("status"));
+            dto.setStatus(rs.getInt("status"));
             dto.setCreateAt(rs.getDate("create_at"));
             dto.setApproveAt(rs.getDate("approve_at"));
             dto.setDiscount(rs.getFloat("discount"));
@@ -174,7 +176,7 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
             dto.setName(rs.getString("name"));
             dto.setDescription(rs.getString("description"));
             dto.setQuanity(rs.getInt("quantity"));
-            dto.setStatus(rs.getBoolean("status"));
+            dto.setStatus(rs.getInt("status"));
             dto.setCreateAt(rs.getDate("create_at"));
             dto.setApproveAt(rs.getDate("approve_at"));
             dto.setDiscount(rs.getFloat("discount"));
@@ -272,7 +274,7 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
             dto.setName(rs.getString("product_name"));
             dto.setDescription(rs.getString("description"));
             dto.setQuanity(rs.getInt("quantity"));
-            dto.setStatus(rs.getBoolean("status"));
+            dto.setStatus(rs.getInt("status"));
             dto.setCreateAt(rs.getDate("create_at"));
             dto.setApproveAt(rs.getDate("approve_at"));
             dto.setDiscount(rs.getFloat("discount"));
@@ -313,6 +315,7 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
                 + "      ,[authen]   FROM [EcommmercePlatform].[dbo].[Product] where [shop_id] = ?");
         stm.setInt(1, shopId);
         ResultSet rs = stm.executeQuery();
+        ImageProductDAO imgDao = new ImageProductDAO();
         ArrayList<ProductDTO> list = new ArrayList<>();
         while (rs.next()) {
             ProductDTO dto = new ProductDTO();
@@ -324,12 +327,13 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
             dto.setName(rs.getString("name"));
             dto.setDescription(rs.getString("description"));
             dto.setQuanity(rs.getInt("quantity"));
-            dto.setStatus(rs.getBoolean("status"));
+            dto.setStatus(rs.getInt("status"));
             dto.setCreateAt(rs.getDate("create_at"));
             dto.setApproveAt(rs.getDate("approve_at"));
             dto.setDiscount(rs.getFloat("discount"));
             dto.setSoldCount(rs.getInt("sold_count"));
             dto.setAuthen(rs.getBoolean("authen"));
+            dto.setMainImg(imgDao.getMainImageByProductID(rs.getInt("product_id")));
             list.add(dto);
         }
         return list;
@@ -398,7 +402,7 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
             dto.setName(rs.getString("name"));
             dto.setDescription(rs.getString("description"));
             dto.setQuanity(rs.getInt("quantity"));
-            dto.setStatus(rs.getBoolean("status"));
+            dto.setStatus(rs.getInt("status"));
             dto.setCreateAt(rs.getDate("create_at"));
             dto.setApproveAt(rs.getDate("approve_at"));
             dto.setDiscount(rs.getFloat("discount"));
@@ -506,7 +510,7 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
             dto.setName(rs.getString("product_name"));
             dto.setDescription(rs.getString("description"));
             dto.setQuanity(rs.getInt("quantity"));
-            dto.setStatus(rs.getBoolean("status"));
+            dto.setStatus(rs.getInt("status"));
             dto.setCreateAt(rs.getDate("create_at"));
             dto.setApproveAt(rs.getDate("approve_at"));
             dto.setDiscount(rs.getFloat("discount"));
@@ -787,7 +791,7 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
             dto.setName(rs.getString("name"));
             dto.setDescription(rs.getString("description"));
             dto.setQuanity(rs.getInt("quantity"));
-            dto.setStatus(rs.getBoolean("status"));
+            dto.setStatus(rs.getInt("status"));
             dto.setCreateAt(rs.getDate("create_at"));
             dto.setApproveAt(rs.getDate("approve_at"));
             dto.setDiscount(rs.getFloat("discount"));
@@ -830,15 +834,15 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
     public void update(ProductDTO t) throws SQLException {
         try {
 
-            PreparedStatement stm = conn.prepareStatement("update Product set price= ? ,name=?,description=?,quantity=?,discount=?, status=? where product_id = ?");
+            PreparedStatement stm = conn.prepareStatement("update Product set price= ? ,name=?,description=?,quantity=?,discount=? where product_id = ?");
             System.err.println(stm.toString());
             stm.setDouble(1, t.getPrice());
             stm.setString(2, t.getName());
             stm.setString(3, t.getDescription());
             stm.setInt(4, t.getQuanity());
             stm.setDouble(5, t.getDiscount());
-            stm.setBoolean(6, t.isStatus());
-            stm.setDouble(7, t.getProductID());
+//            stm.setInt(6, t.isStatus());
+            stm.setDouble(6, t.getProductID());
             stm.executeUpdate();
         } catch (Exception e) {
             System.err.println("LOI NAY O Update:" + e);
@@ -852,7 +856,7 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
 
             PreparedStatement stm = conn.prepareStatement(""
                     + "UPDATE [Product]\n"
-                    + "   SET  [status] = 0\n"
+                    + "   SET  [status] = 2\n"
                     + " WHERE product_id = ?");
             System.err.println(stm.toString());
             stm.setDouble(1, t.getProductID());
@@ -870,6 +874,10 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
 //            ProductDTO dtoa = dao.get(449);
 //            System.out.println(dtoa);
             int t = dao.getTotalSoldCount(1);
+            ArrayList<ProductDTO> l = dao.getAllProductByName("a");
+            for (ProductDTO productDTO : l) {
+                System.out.println(productDTO);
+            }
             System.out.println("t" + t);
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class

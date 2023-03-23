@@ -130,7 +130,7 @@ public class ProductManagerController extends HttpServlet {
 //        temp.setUserAdminID(Integer.parseInt(user));
         temp.setPrice(Double.parseDouble(price));
         temp.setName(name);
-        temp.setStatus(true);
+        temp.setStatus(1);
         temp.setDescription(description);
         temp.setQuanity(Integer.parseInt(quantity));
         System.out.println(temp.toString());
