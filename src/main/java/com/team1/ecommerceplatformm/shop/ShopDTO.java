@@ -28,11 +28,11 @@ public class ShopDTO {
     private int userID;
     private Date createAt;
     private String shopName;
-    private boolean status;
+    private int status;
+    private int approve;
     private int total;
     private String avatar;
     private ArrayList<ProductDTO> listProducts;
-    private String paypalAccount;
      private String frontIdentity;
     private String backIdentity;
 }
