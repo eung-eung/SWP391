@@ -364,10 +364,11 @@
 
         document.querySelector(".header-bottom").hidden = true;
 
-        $(document).ready(async function () {
-            await getShopProductData();
-            await setChartData();
-            await authenProduct();
+        $(document).ready(function () {
+            getShopProductData();
+            setChartData();
+            authenProduct();
+            authenShop();
         });
 
         const setChartData = function () {
@@ -539,6 +540,47 @@
                             ],
                             order: [[0, 'asc']]
                         });
+                    });
+        };
+        
+        const authenShop = function () {
+            fetch("MainController?btnAction=admin&adminAction=authenShop", {
+                method: 'GET'
+            })
+                    .then(rs => rs.json())
+                    .then(data => {
+                        
+                        console.log(data);
+        <%
+            if (user != null) {
+                userID = user.getUserID();
+            }
+            session.setAttribute("userId", userID);
+        %>
+//                        var userId = '<%= session.getAttribute("userId")%>';
+//                        console.log(data);
+//                        const table = $('#product_request').DataTable({
+//
+//                            data: data
+//                            ,
+//                            'columns': [
+//                                {'data': 'shopID'},
+//                                {'data': 'productID'},
+//                                {'data': 'price'},
+//                                {'data': 'categoryID'},
+//                                {'data': 'quanity'},
+//                                {'data': 'createAt'},
+//                                {
+//                                    data: null,
+//                                    orderable: false,
+//                                    render: function (data, type, row) {
+//                                        return `<a type = "button" class = " ban_btn btn btn-success" onclick="return confirm('Are you sure you want to accept this product?')"  href="<c:url value="/MainController?btnAction=admin&adminAction=approveProduct&productId=\${row.productID}&userId=\${userId}"></c:url>">Accept</a>
+//                                        <a type = "button" class = " ban_btn btn btn-danger" onclick="return confirm('Are you sure you want to delete this product?')" href="<c:url value="/MainController?btnAction=admin&adminAction=rejectProduct&productId=\${row.productID}&userId=\${userId}"></c:url>">Deny</a>`;
+//                                    }
+//                                }
+//                            ],
+//                            order: [[0, 'asc']]
+//                        });
                     });
         };
 

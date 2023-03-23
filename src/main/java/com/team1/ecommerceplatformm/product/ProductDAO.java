@@ -315,7 +315,6 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
                 + "      ,[authen]   FROM [EcommmercePlatform].[dbo].[Product] where [shop_id] = ?");
         stm.setInt(1, shopId);
         ResultSet rs = stm.executeQuery();
-        ImageProductDAO imgDao = new ImageProductDAO();
         ArrayList<ProductDTO> list = new ArrayList<>();
         while (rs.next()) {
             ProductDTO dto = new ProductDTO();
@@ -333,7 +332,6 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
             dto.setDiscount(rs.getFloat("discount"));
             dto.setSoldCount(rs.getInt("sold_count"));
             dto.setAuthen(rs.getBoolean("authen"));
-            dto.setMainImg(imgDao.getMainImageByProductID(rs.getInt("product_id")));
             list.add(dto);
         }
         return list;
