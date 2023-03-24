@@ -269,6 +269,7 @@ public class AdminController extends HttpServlet {
                 break;
              }
              case "authenShop" :{
+                 
                  try{
                     ShopDAO shopDao = new ShopDAO();
                     ArrayList<ShopDTO> listShop = new ArrayList<>();
