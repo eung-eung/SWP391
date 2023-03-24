@@ -19,20 +19,16 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
         <style>
-            body{
-                position: relative;
-            }
 
             .admin_page{
                 display: flex;
                 width: 100%;
                 height: 100%;
                 border-top: 1px solid black;
-                padding: 10px 0;
             }
 
             .admin_page_navbar{
-                position: sticky;
+                position: fixed;
                 top: 0;
                 width: 14%;
                 height: 100vh;
@@ -70,13 +66,15 @@
 
             .admin_page_text{
                 background: white;
+                transition: 0.25s;
             }
 
             .admin_page_text:hover{
                 transition: 0.25s;
                 width: 82%;
                 margin: 20px 0 0 13px;
-                gap: 1px;
+                font-weight: 700;
+                letter-spacing: 2px;
             }
 
             .admin_page_content{
@@ -116,6 +114,7 @@
 
             .btn_active{
                 background-color: #f1f1f1;
+                font-weight: 700;
                 color: black;
             }
 
@@ -220,7 +219,6 @@
 
 
     <body>
-        <jsp:include page="header.jsp" />
         <div class="admin_page">
             <div class="admin_page_navbar rounded shadow">
                 <div class="admin_page_navbar_header" >
@@ -242,7 +240,7 @@
             </div>
 
             <div class="admin_page_content">
-
+                <jsp:include page="header.jsp" />
                 <div class="admin_dashboard">
                     <div class="pieChart">
                         <canvas id="productChart" class="pieChart"></canvas>
@@ -367,6 +365,7 @@
         $(document).ready(async function () {
             await getShopProductData();
             await setChartData();
+            await authenShop();
             await authenProduct();
         });
 
@@ -386,13 +385,6 @@
                         let userAmount = 0;
                         for (let i = 0; i < data.listUser.length; i++) {
                             userAmount += data.listUser[i];
-                        }
-
-//                      set column data
-
-                        let rgba_main = [];
-                        for (let i = 0; i < data.listMonth.length; i++) {
-                            rgba_main.push(random_rgba());
                         }
 
 //                      set piechart total
@@ -466,7 +458,7 @@
                                 datasets: [{
 //                                        label: '',
                                         data: data.listCountByMonth,
-                                        backgroundColor: rgba_main,
+                                        backgroundColor: "rgba(5,112,230,0.6)",
                                         borderColor: [
                                             'rgba(255, 99, 132, 1)',
                                             'rgba(54, 162, 235, 1)',
@@ -540,6 +532,15 @@
                             order: [[0, 'asc']]
                         });
                     });
+        };
+        
+        const authenShop = function () {
+            fetch("MainController?btnAction=admin&adminAction=authenShop", {
+                method: 'GET'
+            })
+                    .then(rs => console.log(rs))  
+//                    .then(data => console.log(data))
+//                    .catch(error => console.log(error));
         };
 
         const getShopProductData = function () {
@@ -668,11 +669,6 @@
                     '</table>'
                     );
         }
-        
-        function random_rgba() {
-                var o = Math.round, r = Math.random, s = 255;
-                return 'rgba(' + o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s) + ',' + r().toFixed(1) + ')';
-            }
 
     </script>
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
