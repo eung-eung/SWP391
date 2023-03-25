@@ -19,20 +19,16 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
         <style>
-            body{
-                position: relative;
-            }
 
             .admin_page{
                 display: flex;
                 width: 100%;
                 height: 100%;
                 border-top: 1px solid black;
-                padding: 10px 0;
             }
 
             .admin_page_navbar{
-                position: sticky;
+                position: fixed;
                 top: 0;
                 width: 14%;
                 height: 100vh;
@@ -70,29 +66,43 @@
 
             .admin_page_text{
                 background: white;
+                transition: 0.25s;
             }
 
             .admin_page_text:hover{
                 transition: 0.25s;
                 width: 82%;
                 margin: 20px 0 0 13px;
-                gap: 1px;
+                font-weight: 700;
+                letter-spacing: 2px;
             }
 
             .admin_page_content{
-                width: 85.5%;
+                width: 85.8%;
                 position: absolute;
                 right: 0;
             }
 
             .admin_dashboard{
                 display: none;
+                border-top: 1px solid black;
+                padding-top: 10px;
+            }
+
+            .admin_table{
+                border-top: 1px solid black;
+                padding-top: 10px;
             }
 
             .pieChart{
-                width: 100%;
+                width: 50%;
                 height: 100%;
                 display: flex;
+            }
+
+            .pieChartTotal{
+                display: flex;
+                justify-content: space-around;
             }
 
             .column_chart{
@@ -103,14 +113,19 @@
 
             .shop_request{
                 display: none;
+                border-top: 1px solid black;
+                padding-top: 10px;
             }
 
             .product_request{
                 display: none;
+                border-top: 1px solid black;
+                padding-top: 10px;
             }
 
             .btn_active{
                 background-color: #f1f1f1;
+                font-weight: 700;
                 color: black;
             }
 
@@ -199,6 +214,40 @@
                 border-bottom: none;
             }
 
+            .ban_btn{
+                margin: 1px 0;
+            }
+
+            .image_modal{
+                position: fixed;
+                top: 0;
+                bottom: 0;
+                right: 0;
+                left: 0;
+                background-color: rgba(38, 38, 38, 0.3);
+                z-index: 100;
+            }
+
+            .image_modal_content{
+                position: relative;
+                width: 50%;
+                height: fit-content;
+                margin: 10% auto;
+                background-color: white;
+                border-radius: 5px;
+            }
+
+            .image_modal_content_cancle{
+                position: absolute;
+                right : 1%;
+                top : 1%;
+            }
+
+            .image_modal_content_image{
+                display: flex;
+                justify-content: center;
+            }
+
         </style>
 
         <script src="https://kit.fontawesome.com/330a21053c.js" crossorigin="anonymous"></script>
@@ -208,13 +257,13 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
         <script type="text/javascript" charset="utf8"
         src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <title>Admin Page</title>
     </head>
 
 
 
     <body>
-        <jsp:include page="header.jsp" />
         <div class="admin_page">
             <div class="admin_page_navbar rounded shadow">
                 <div class="admin_page_navbar_header" >
@@ -236,14 +285,20 @@
             </div>
 
             <div class="admin_page_content">
-
+                <jsp:include page="header.jsp" />
                 <div class="admin_dashboard">
                     <div class="pieChart">
-                        <div id="productChart" class="piechart" style="height: 370px; width: 100%"></div>
-                        <div id="userChart" class="piechart" style="height: 370px; width: 100%"></div>
+                        <canvas id="productChart" class="pieChart"></canvas>
+                        <canvas id="userChart" class="pieChart"></canvas>
+                    </div>
+                    <div class="pieChartTotal">
+                        <div class="pieChartFisrtTotal">
+                        </div>
+                        <div class="pieChartSecondTotal">
+                        </div>
                     </div>
                     <div class="column_chart">
-                        <div id="productPerMonthChart" style="height: 370px; width: 100%;"></div>
+                        <canvas id="productPerMonthChart"></canvas>
                     </div>
                 </div>
 
@@ -253,11 +308,11 @@
                             <tr>
                                 <th></th>
                                 <th>Shop ID</th>
-                                <th>Shop name</th>
+                                <th>Tên shop</th>
                                 <th>User ID</th>
-                                <th>Created at</th>
-                                <th>Status</th>
-                                <th>Action</th>
+                                <th>Ngày tạo</th>
+                                <th>Trạng thái</th>
+                                <th>Cấm</th>
                             </tr>
                         </thead>
 
@@ -265,17 +320,44 @@
                             <tr>
                                 <th></th>
                                 <th>Shop ID</th>
-                                <th>Shop name</th>
+                                <th>Tên shop</th>
                                 <th>User ID</th>
-                                <th>Created at</th>
-                                <th>Status</th>
+                                <th>Ngày tạo</th>
+                                <th>Trạng thái</th>
+                                <th>Cấm</th>
                             </tr>
                         </tfoot>
                     </table>
                 </div>
 
                 <div class="shop_request shopRegis">
-                    shop request list
+                    <table id="shop_request" class="display" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Shop ID</th>
+                                <th>User ID</th>
+                                <th>Tên Shop</th>
+                                <th>Ngày Đăng ký</th>
+                                <th>Trạng thái</th>
+                                <th>Mặt trước CCCD</th>
+                                <th>Mặt sau CCCD</th>
+                                <th>Duyệt</th>
+                            </tr>
+                        </thead>
+
+                        <tfoot>
+                            <tr>
+                                <th>Shop ID</th>
+                                <th>User ID</th>
+                                <th>Tên Shop</th>
+                                <th>Ngày Đăng ký</th>
+                                <th>Trạng thái</th>
+                                <th>Mặt trước CCCD</th>
+                                <th>Mặt sau CCCD</th>
+                                <th>Duyệt</th>
+                            </tr>
+                        </tfoot>
+                    </table>
                 </div>
 
                 <div class="product_request productRegis">
@@ -284,11 +366,11 @@
                             <tr>
                                 <th>Shop ID</th>
                                 <th>Product ID</th>
-                                <th>Price</th>
-                                <th>Category ID</th>
-                                <th>quanity</th>
-                                <th>Create at</th>
-                                <th>Option</th>
+                                <th>Giá</th>
+                                <th>Phân loại</th>
+                                <th>Số lượng</th>
+                                <th>ngày tạo</th>
+                                <th>Duyệt</th>
                             </tr>
                         </thead>
 
@@ -296,11 +378,11 @@
                             <tr>
                                 <th>Shop ID</th>
                                 <th>Product ID</th>
-                                <th>Price</th>
-                                <th>Category ID</th>
-                                <th>quanity</th>
-                                <th>Create at</th>
-                                <th>Option</th>
+                                <th>Giá</th>
+                                <th>Phân loại</th>
+                                <th>Số lượng</th>
+                                <th>ngày tạo</th>
+                                <th>Duyệt</th>
                             </tr>
                         </tfoot>
                     </table>
@@ -308,10 +390,15 @@
 
             </div>
         </div>
+
+        <div class="image_modal" hidden>
+
+        </div>
     </body>
     <script>
 
         const btnGroup = document.querySelectorAll(".admin_page_text");
+
         btnGroup.forEach((item) => {
             const table = document.querySelector(".admin_table");
             const dashboard = document.querySelector(".admin_dashboard");
@@ -350,10 +437,257 @@
             });
         });
 
-        document.querySelector(".header-bottom").hidden = true;
-        $(document).ready(function () {
+//      setup model
+        let image_modal = document.querySelector(".image_modal");
+        let image_button = document.querySelectorAll(".image_button");
+        let image_button_cancle = document.querySelector(".image_modal_content_cancle");
+        image_button.forEach((item) => {
+            item.addEventListener("click", function () {
+                image_modal.hidden = false;
+            })
+        })
 
-//          get shop and product data
+        document.querySelector(".header-bottom").hidden = true;
+        $(document).ready(async function () {
+            await getShopProductData();
+            await setChartData();
+            await authenShop();
+            await authenProduct();
+        });
+        const setChartData = function () {
+            fetch("MainController?btnAction=admin&adminAction=dashboard", {
+                method: 'GET'
+            })
+                    .then(rs => rs.json())
+                    .then(async data => {
+                        console.log(data);
+                        let productAmount = 0;
+                        for (let i = 0; i < data.listCount.length; i++) {
+                            productAmount += data.listCount[i];
+                        }
+
+//                      chuyển sang tiếng việt
+                        let listNameOfUser = [];
+                        for (let i = 0; i < data.listNameOfUser.length; i++) {
+                            switch (data.listNameOfUser[i]) {
+                                case 'Buyer' :
+                                    listNameOfUser.push("Người mua")
+                                    break;
+                                case 'Seller' :
+                                    listNameOfUser.push("Người bán")
+                                    break;
+                                case 'Admin' :
+                                    listNameOfUser.push("Quản trị viên")
+                                    break;
+                                default :
+                                    listNameOfUser.push(listNameOfUser[i])
+
+                            }
+                        }
+
+                        let userAmount = 0;
+                        for (let i = 0; i < data.listUser.length; i++) {
+                            userAmount += data.listUser[i];
+                        }
+
+//                      set piechart total
+
+                        const firstPiechart = document.querySelector(".pieChartFisrtTotal");
+                        const secondPiechart = document.querySelector(".pieChartSecondTotal");
+                        firstPiechart.innerHTML = ("Tổng số : " + productAmount);
+                        secondPiechart.innerHTML = ("Tổng số " + userAmount);
+//                      add data to chart   
+//                      product piechart
+
+                        let productChart = new Chart("productChart", {
+                            type: "pie",
+                            data: {
+                                labels: data.listName,
+                                datasets: [{
+
+                                        data: data.listCount
+                                    }]
+                            },
+                            options: {
+                                title: {
+                                    display: true,
+                                    text: "Sản phẩm"
+                                },
+                                plugins: {
+                                    title: {
+                                        display: true,
+                                        text: 'Sản phẩm',
+                                        font: {
+                                            size: 29
+                                        }
+                                    }
+                                }
+                            }
+                        });
+//                      user piechart
+                        var userChart = new Chart("userChart", {
+                            type: "pie",
+                            data: {
+                                labels: listNameOfUser,
+                                datasets: [{
+
+                                        data: data.listUser
+                                    }]
+                            },
+                            options: {
+                                title: {
+                                    display: true,
+                                    text: "Product"
+                                },
+                                plugins: {
+                                    title: {
+                                        display: true,
+                                        text: 'Product',
+                                        font: {
+                                            size: 29
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                        let productPerMonthChart = new Chart("productPerMonthChart", {
+                            type: 'bar',
+                            data: {
+                                labels: data.listMonth,
+                                datasets: [{
+//                                        label: '',
+                                        data: data.listCountByMonth,
+                                        backgroundColor: "rgba(5,112,230,0.6)",
+                                        borderColor: [
+                                            'rgba(255, 99, 132, 1)',
+                                            'rgba(54, 162, 235, 1)',
+                                            'rgba(54, 162, 235, 1)'
+                                        ]
+                                    }]
+                            },
+                            options: {
+                                plugins: {
+                                    title: {
+                                        display: true,
+                                        text: 'Sản phẩm đăng theo tháng',
+                                        font: {
+                                            size: 29
+                                        }
+                                    },
+                                    legend: {
+                                        display: false
+                                    }
+                                },
+                                scales: {
+                                    x: {
+                                        display: false //this will remove all the x-axis grid lines
+                                    }
+                                }
+                            }
+                        });
+//                      set data to chart
+                        productChart.update();
+                        userChart.update();
+                        productPerMonthChart.update();
+                    })
+        };
+
+        const authenProduct = function () {
+            fetch("MainController?btnAction=admin&adminAction=authenProduct", {
+                method: 'GET'
+            })
+                    .then(rs => rs.json())
+                    .then(data => {
+        <%
+            UserDTO user = (UserDTO) session.getAttribute("user");
+            int userID = 0;
+            if (user != null) {
+                userID = user.getUserID();
+            }
+            session.setAttribute("userId", userID);
+        %>
+                        var userId = '<%= session.getAttribute("userId")%>';
+                        console.log(data);
+                        const table = $('#product_request').DataTable({
+
+                            data: data
+                            ,
+                            'columns': [
+                                {'data': 'shopID'},
+                                {'data': 'productID'},
+                                {'data': 'price'},
+                                {'data': 'categoryID'},
+                                {'data': 'quanity'},
+                                {'data': 'createAt'},
+                                {
+                                    data: null,
+                                    orderable: false,
+                                    render: function (data, type, row) {
+                                        return `<a type = "button" class = " ban_btn btn btn-success" onclick="return confirm('Are you sure you want to accept this product?')"  href="<c:url value="/MainController?btnAction=admin&adminAction=approveProduct&productId=\${row.productID}&userId=\${userId}"></c:url>">Chấp nhận</a>
+                                        <a type = "button" class = " ban_btn btn btn-danger" onclick="return confirm('Are you sure you want to delete this product?')" href="<c:url value="/MainController?btnAction=admin&adminAction=rejectProduct&productId=\${row.productID}&userId=\${userId}"></c:url>">Từ chối</a>`;
+                                    }
+                                }
+                            ],
+                            order: [[0, 'asc']]
+                        });
+                    });
+        };
+
+        const authenShop = function () {
+            fetch("MainController?btnAction=admin&adminAction=authenShop", {
+                method: 'GET'
+            })
+                    .then(rs => rs.json())
+                    .then(data => {
+                        console.log(data)
+
+        <%
+            if (user != null) {
+                userID = user.getUserID();
+            }
+            session.setAttribute("userId", userID);
+        %>
+                        var userId = '<%= session.getAttribute("userId")%>';
+                        console.log(data);
+                        const table = $('#shop_request').DataTable({
+                            data: data
+                            ,
+                            'columns': [
+                                {'data': 'shopID'},
+                                {'data': 'userID'},
+                                {'data': 'shopName'},
+                                {'data': 'createAt'},
+                                {'data': 'status'},
+                                {
+                                    data: null,
+                                    orderable: false,
+                                    render: function (data, type, row) {
+                                        return `<button type="button" class="ban_btn btn btn-info" style="color: white" onclick="addModel('\${row.frontIdentity}')">Xem</button>`;
+                                    }
+                                },
+                                {
+                                    data: null,
+                                    orderable: false,
+                                    render: function (data, type, row) {
+                                        return `<button type="button" class="ban_btn btn btn-info" style="color: white" onclick="addModel('\${row.backIdentity}')">Xem</button>`;
+                                    }
+                                },
+                                {
+                                    data: null,
+                                    orderable: false,
+                                    render: function (data, type, row) {
+                                        return `<a type = "button" class = "image_button ban_btn btn btn-success" onclick="return confirm('Bạn muốn chấp nhận đơn đăng ký của shop này?')"  href="<c:url value="/MainController?btnAction=admin&adminAction=approveShop&shopId=\${row.shopID}&userId=\${userId}"></c:url>">Chấp nhận</a>
+                                        <a type = "button" class = " ban_btn btn btn-danger" onclick="return confirm('Bạn muốn từ chối đơn đăng ký của shop này ?')" href="<c:url value="/MainController?btnAction=admin&adminAction=rejectShop&shopId=\${row.shopID}&userId=\${userId}"></c:url>">Từ chối</a>`;
+                                    }
+                                }
+                            ],
+                            order: [[0, 'asc']]
+                        });
+                    })
+//                    .catch(error => console.log(error));
+        };
+
+        const getShopProductData = function () {
             fetch("MainController?btnAction=admin&adminAction=render", {
                 method: 'GET'
             })
@@ -415,168 +749,12 @@
 
                         });
                     });
+        };
 
-
-//          chart data
-            fetch("MainController?btnAction=admin&adminAction=dashboard", {
-                method: 'GET'
+        function removeActive(list) {
+            list.forEach((item) => {
+                item.classList.remove("btn_active");
             })
-                    .then(rs => rs.json())
-                    .then(data => {
-                        console.log(data);
-
-//                      set produt data
-
-                        const listCount = data.listCount;
-                        const listName = data.listName;
-                        let productData = [];
-                        for (let i = 0; i < listCount.length; i++) {
-                            let obj = {
-                                y: getPercent(listCount, listCount[i]),
-                                label: listName[i]
-                            };
-                            productData[i] = obj;
-                        }
-
-//                      set user data
-
-                        const listUser = data.listUser;
-                        const listNameOfUser = data.listNameOfUser;
-                        let userData = [];
-                        for (let i = 0; i < listUser.length; i++) {
-                            let obj = {
-                                y: getPercent(listUser, listUser[i]),
-                                label: listNameOfUser[i]
-                            };
-                            userData[i] = obj;
-                        }
-
-//                      set column data
-                        const listMonth = data.listMonth;
-                        const listCountByMonth = data.listCountByMonth;
-                        let columnData = [];
-                        for (let i = 0; i < listMonth.length; i++) {
-                            let obj = {
-                                y: listCountByMonth[i],
-                                label: listMonth[i]
-                            };
-                            columnData[i] = obj;
-                        }
-//                      add data to chart   
-//                      product piechart
-                        var productChart = new CanvasJS.Chart("productChart", {
-                            theme: "light2", // "light1", "dark1", "dark2"
-                            animationEnabled: true,
-                            witdh: 1600,
-                            title: {
-                                text: "Product"
-                            },
-                            data: [{
-                                    type: "pie",
-                                    toolTipContent: "<b>{label}</b>: {y}%",
-                                    indexLabelFontSize: 16,
-                                    indexLabel: "{label} - {y}%",
-                                    dataPoints: productData
-                                }]
-                        });
-//                      user piechart
-                        var userChart = new CanvasJS.Chart("userChart", {
-                            theme: "light2", // "light1", "dark1", "dark2"
-                            animationEnabled: true,
-                            title: {
-                                text: "User"
-                            },
-                            data: [{
-                                    type: "pie",
-                                    toolTipContent: "<b>{label}</b>: {y}%",
-                                    indexLabelFontSize: 16,
-                                    indexLabel: "{label} - {y}%",
-                                    dataPoints: userData
-                                }]
-                        });
-//                      column chart
-                        var productPerMonthChart = new CanvasJS.Chart("productPerMonthChart", {
-                            witdh: 1600,
-                            title: {
-                                text: "Product post per month"
-                            },
-                            axisX: {
-                                title: "Month"
-                            },
-                            axisY: {
-                                title: "Amount",
-                                includeZero: true
-                            },
-                            data: [{
-                                    type: "column",
-                                    yValueFormatString: "",
-                                    dataPoints: columnData
-                                }]
-                        });
-                        productChart.render();
-                        userChart.render();
-                        productPerMonthChart.render();
-                    });
-
-            fetch("MainController?btnAction=admin&adminAction=authenProduct", {
-                method: 'GET'
-            })
-                    .then(rs => rs.json())
-                    .then(data => {
-        <%
-            UserDTO user = (UserDTO) session.getAttribute("user");
-            int userID = 0;
-            if (user != null) {
-                userID = user.getUserID();
-            }
-            session.setAttribute("userId", userID);
-        %>
-                        var userId = '<%= session.getAttribute("userId")%>';
-                        console.log(data);
-                        const table = $('#product_request').DataTable({
-
-                            data: data
-                            ,
-                            'columns': [
-                                {'data': 'shopID'},
-                                {'data': 'productID'},
-                                {'data': 'price'},
-                                {'data': 'categoryID'},
-                                {'data': 'quanity'},
-                                {'data': 'createAt'},
-                                {
-                                    data: null,
-                                    orderable: false,
-                                    render: function (data, type, row) {
-                                        return `<a type = "button" class = " ban_btn btn btn-success" onclick="return confirm('Are you sure you want to accept this product?')"  href="<c:url value="/MainController?btnAction=admin&adminAction=approveProduct&productId=\${row.productID}&userId=\${userId}"></c:url>">Accept</a>
-                                        <a type = "button" class = " ban_btn btn btn-danger" onclick="return confirm('Are you sure you want to delete this product?')" href="<c:url value="/MainController?btnAction=admin&adminAction=rejectProduct&productId=\${row.productID}&userId=\${userId}"></c:url>">Deny</a>`;
-                                    }
-                                }
-                            ],
-                            order: [[0, 'asc']]
-                        });
-                    });
-        });
-
-        function format(d) {
-            // `d` is the original data object for the row
-            let data = "";
-            d.listProducts.forEach(element => {
-                data = data + getProduct(element, d.status);
-            });
-            return (
-                    '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
-                    '<tr>' +
-                    '<td>Product ID</td>' +
-                    '<td>Name</td>' +
-                    '<td>Price</td>' +
-                    '<td>Sold count</td>' +
-                    '<td>Status</td>' +
-                    '<td>Action</td>' +
-                    data +
-                    '</tr>' +
-                    '</table>'
-                    );
         }
 
         function getProduct(element, status) {
@@ -606,7 +784,6 @@
                     );
         }
 
-
         function getPercent(list, number) {
             let total = 0;
             for (let i = 0; i < list.length; i++) {
@@ -616,23 +793,41 @@
             return percent.toFixed();
         }
 
-        function removeActive(list) {
-            list.forEach((item) => {
-                item.classList.remove("btn_active")
-            })
+        function format(d) {
+            // `d` is the original data object for the row
+            let data = "";
+            d.listProducts.forEach(element => {
+                data = data + getProduct(element, d.status);
+            });
+            return (
+                    '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
+                    '<tr>' +
+                    '<td>Product ID</td>' +
+                    '<td>Tên sản phẩm</td>' +
+                    '<td>Giá</td>' +
+                    '<td>Đã bán</td>' +
+                    '<td>Trạng thái</td>' +
+                    '<td>cấm</td>' +
+                    data +
+                    '</tr>' +
+                    '</table>'
+                    );
         }
 
-//      css function 
-//        var header = document.querySelector(".admin_page_navbar");
-//        var sticky = header.offsetTop;
-//
-//        function myFunction() {
-//            if (window.pageYOffset > sticky) {
-//                header.classList.add("sticky");
-//            } else {
-//                header.classList.remove("sticky");
-//            }
-//        }
+        const addModel = function (image) {
+            image_modal.hidden = false;
+            image_modal.innerHTML = `
+                <div class="image_modal_content"><div class="image_modal_content_cancle">X</div>
+                    <div class="image_modal_content_image">
+                        <img src="` + image + `" alt="">
+                    </div>
+                </div>
+            `;
+            image_button_cancle = document.querySelector(".image_modal_content_cancle");
+            image_button_cancle.addEventListener("click", function () {
+                image_modal.hidden = true;
+            })
+        }
 
     </script>
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>

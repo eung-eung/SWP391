@@ -60,14 +60,12 @@ public class AdminController extends HttpServlet {
 
                     List<ShopDTO> listShop = new ArrayList<>();
 //                    ArrayList<ProductDTO> listProduct = new ArrayList<>();
-
-                    listShop = shopDao.getAll();
+                    listShop = shopDao.getAllShopHasAccepted();
 
                     for (ShopDTO shop : listShop) {
                         List<ProductDTO> listProduct = proDao.getAllProductByShopId(shop.getShopID());
                         shop.setListProducts((ArrayList<ProductDTO>) listProduct);
                     }
-
                     Gson gson = new Gson();
 
                     response.getWriter().println(gson.toJson(listShop));
@@ -262,6 +260,55 @@ public class AdminController extends HttpServlet {
                 long millis=System.currentTimeMillis(); 
                 java.sql.Date date = new java.sql.Date(millis); 
                 proDao.updateRejectProductAuthen(userId, date, productId);
+                
+                }catch (SQLException ex) {
+                    Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                request.getRequestDispatcher(Constants.ADMIN_PAGE).forward(request, response);
+//chua biet thay link kieu giiiiii
+                break;
+             }
+             case "authenShop" :{
+                 
+                
+                try {
+                    ShopDAO shopDao = new ShopDAO();
+                    ArrayList<ShopDTO> listShop = new ArrayList<>();
+                    listShop = shopDao.getAllShopRegister();
+                    
+                    Gson gson = new Gson();
+
+                    response.getWriter().println(gson.toJson(listShop));
+                    
+                    break;
+                } catch (SQLException ex) {
+                    Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+             }
+
+             case "approveShop":{
+                 try{
+                    int shopId = Integer.parseInt(request.getParameter("shopId"));
+                
+                ShopDAO shopDao = new ShopDAO();
+                
+                shopDao.updateAcceptShopStatus(shopId);
+                
+                }catch (SQLException ex) {
+                    Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                request.getRequestDispatcher(Constants.ADMIN_PAGE).forward(request, response);
+//chua biet thay link kieu giiiiii
+                break;
+             }
+             
+             case "rejectShop":{
+                 try{
+                    int shopId = Integer.parseInt(request.getParameter("shopId"));
+                    
+                ShopDAO shopDao = new ShopDAO();
+                
+                shopDao.updateRejectShopStatus(shopId);
                 
                 }catch (SQLException ex) {
                     Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
