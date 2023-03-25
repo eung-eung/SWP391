@@ -78,13 +78,20 @@
             }
 
             .admin_page_content{
-                width: 85.5%;
+                width: 85.8%;
                 position: absolute;
                 right: 0;
             }
 
             .admin_dashboard{
                 display: none;
+                border-top: 1px solid black;
+                padding-top: 10px;
+            }
+
+            .admin_table{
+                border-top: 1px solid black;
+                padding-top: 10px;
             }
 
             .pieChart{
@@ -106,10 +113,14 @@
 
             .shop_request{
                 display: none;
+                border-top: 1px solid black;
+                padding-top: 10px;
             }
 
             .product_request{
                 display: none;
+                border-top: 1px solid black;
+                padding-top: 10px;
             }
 
             .btn_active{
@@ -203,6 +214,40 @@
                 border-bottom: none;
             }
 
+            .ban_btn{
+                margin: 1px 0;
+            }
+
+            .image_modal{
+                position: fixed;
+                top: 0;
+                bottom: 0;
+                right: 0;
+                left: 0;
+                background-color: rgba(38, 38, 38, 0.3);
+                z-index: 100;
+            }
+
+            .image_modal_content{
+                position: relative;
+                width: 50%;
+                height: fit-content;
+                margin: 10% auto;
+                background-color: white;
+                border-radius: 5px;
+            }
+
+            .image_modal_content_cancle{
+                position: absolute;
+                right : 1%;
+                top : 1%;
+            }
+
+            .image_modal_content_image{
+                display: flex;
+                justify-content: center;
+            }
+
         </style>
 
         <script src="https://kit.fontawesome.com/330a21053c.js" crossorigin="anonymous"></script>
@@ -263,11 +308,11 @@
                             <tr>
                                 <th></th>
                                 <th>Shop ID</th>
-                                <th>Shop name</th>
+                                <th>Tên shop</th>
                                 <th>User ID</th>
-                                <th>Created at</th>
-                                <th>Status</th>
-                                <th>Action</th>
+                                <th>Ngày tạo</th>
+                                <th>Trạng thái</th>
+                                <th>Cấm</th>
                             </tr>
                         </thead>
 
@@ -275,17 +320,44 @@
                             <tr>
                                 <th></th>
                                 <th>Shop ID</th>
-                                <th>Shop name</th>
+                                <th>Tên shop</th>
                                 <th>User ID</th>
-                                <th>Created at</th>
-                                <th>Status</th>
+                                <th>Ngày tạo</th>
+                                <th>Trạng thái</th>
+                                <th>Cấm</th>
                             </tr>
                         </tfoot>
                     </table>
                 </div>
 
                 <div class="shop_request shopRegis">
-                    shop request list
+                    <table id="shop_request" class="display" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Shop ID</th>
+                                <th>User ID</th>
+                                <th>Tên Shop</th>
+                                <th>Ngày Đăng ký</th>
+                                <th>Trạng thái</th>
+                                <th>Mặt trước CCCD</th>
+                                <th>Mặt sau CCCD</th>
+                                <th>Duyệt</th>
+                            </tr>
+                        </thead>
+
+                        <tfoot>
+                            <tr>
+                                <th>Shop ID</th>
+                                <th>User ID</th>
+                                <th>Tên Shop</th>
+                                <th>Ngày Đăng ký</th>
+                                <th>Trạng thái</th>
+                                <th>Mặt trước CCCD</th>
+                                <th>Mặt sau CCCD</th>
+                                <th>Duyệt</th>
+                            </tr>
+                        </tfoot>
+                    </table>
                 </div>
 
                 <div class="product_request productRegis">
@@ -294,11 +366,11 @@
                             <tr>
                                 <th>Shop ID</th>
                                 <th>Product ID</th>
-                                <th>Price</th>
-                                <th>Category ID</th>
-                                <th>quanity</th>
-                                <th>Create at</th>
-                                <th>Option</th>
+                                <th>Giá</th>
+                                <th>Phân loại</th>
+                                <th>Số lượng</th>
+                                <th>ngày tạo</th>
+                                <th>Duyệt</th>
                             </tr>
                         </thead>
 
@@ -306,11 +378,11 @@
                             <tr>
                                 <th>Shop ID</th>
                                 <th>Product ID</th>
-                                <th>Price</th>
-                                <th>Category ID</th>
-                                <th>quanity</th>
-                                <th>Create at</th>
-                                <th>Option</th>
+                                <th>Giá</th>
+                                <th>Phân loại</th>
+                                <th>Số lượng</th>
+                                <th>ngày tạo</th>
+                                <th>Duyệt</th>
                             </tr>
                         </tfoot>
                     </table>
@@ -318,10 +390,15 @@
 
             </div>
         </div>
+
+        <div class="image_modal" hidden>
+
+        </div>
     </body>
     <script>
 
         const btnGroup = document.querySelectorAll(".admin_page_text");
+
         btnGroup.forEach((item) => {
             const table = document.querySelector(".admin_table");
             const dashboard = document.querySelector(".admin_dashboard");
@@ -360,15 +437,23 @@
             });
         });
 
-        document.querySelector(".header-bottom").hidden = true;
+//      setup model
+        let image_modal = document.querySelector(".image_modal");
+        let image_button = document.querySelectorAll(".image_button");
+        let image_button_cancle = document.querySelector(".image_modal_content_cancle");
+        image_button.forEach((item) => {
+            item.addEventListener("click", function () {
+                image_modal.hidden = false;
+            })
+        })
 
+        document.querySelector(".header-bottom").hidden = true;
         $(document).ready(async function () {
             await getShopProductData();
             await setChartData();
             await authenShop();
             await authenProduct();
         });
-
         const setChartData = function () {
             fetch("MainController?btnAction=admin&adminAction=dashboard", {
                 method: 'GET'
@@ -376,10 +461,28 @@
                     .then(rs => rs.json())
                     .then(async data => {
                         console.log(data);
-
                         let productAmount = 0;
                         for (let i = 0; i < data.listCount.length; i++) {
                             productAmount += data.listCount[i];
+                        }
+
+//                      chuyển sang tiếng việt
+                        let listNameOfUser = [];
+                        for (let i = 0; i < data.listNameOfUser.length; i++) {
+                            switch (data.listNameOfUser[i]) {
+                                case 'Buyer' :
+                                    listNameOfUser.push("Người mua")
+                                    break;
+                                case 'Seller' :
+                                    listNameOfUser.push("Người bán")
+                                    break;
+                                case 'Admin' :
+                                    listNameOfUser.push("Quản trị viên")
+                                    break;
+                                default :
+                                    listNameOfUser.push(listNameOfUser[i])
+
+                            }
                         }
 
                         let userAmount = 0;
@@ -391,9 +494,8 @@
 
                         const firstPiechart = document.querySelector(".pieChartFisrtTotal");
                         const secondPiechart = document.querySelector(".pieChartSecondTotal");
-                        firstPiechart.innerHTML = ("Total: " + productAmount);
-                        secondPiechart.innerHTML = ("Total: " + userAmount);
-
+                        firstPiechart.innerHTML = ("Tổng số : " + productAmount);
+                        secondPiechart.innerHTML = ("Tổng số " + userAmount);
 //                      add data to chart   
 //                      product piechart
 
@@ -409,12 +511,12 @@
                             options: {
                                 title: {
                                     display: true,
-                                    text: "Product"
+                                    text: "Sản phẩm"
                                 },
                                 plugins: {
                                     title: {
                                         display: true,
-                                        text: 'Product',
+                                        text: 'Sản phẩm',
                                         font: {
                                             size: 29
                                         }
@@ -422,12 +524,11 @@
                                 }
                             }
                         });
-
 //                      user piechart
                         var userChart = new Chart("userChart", {
                             type: "pie",
                             data: {
-                                labels: data.listNameOfUser,
+                                labels: listNameOfUser,
                                 datasets: [{
 
                                         data: data.listUser
@@ -449,8 +550,6 @@
                                 }
                             }
                         });
-
-
                         let productPerMonthChart = new Chart("productPerMonthChart", {
                             type: 'bar',
                             data: {
@@ -470,7 +569,7 @@
                                 plugins: {
                                     title: {
                                         display: true,
-                                        text: 'Product post per month',
+                                        text: 'Sản phẩm đăng theo tháng',
                                         font: {
                                             size: 29
                                         }
@@ -524,8 +623,8 @@
                                     data: null,
                                     orderable: false,
                                     render: function (data, type, row) {
-                                        return `<a type = "button" class = " ban_btn btn btn-success" onclick="return confirm('Are you sure you want to accept this product?')"  href="<c:url value="/MainController?btnAction=admin&adminAction=approveProduct&productId=\${row.productID}&userId=\${userId}"></c:url>">Accept</a>
-                                        <a type = "button" class = " ban_btn btn btn-danger" onclick="return confirm('Are you sure you want to delete this product?')" href="<c:url value="/MainController?btnAction=admin&adminAction=rejectProduct&productId=\${row.productID}&userId=\${userId}"></c:url>">Deny</a>`;
+                                        return `<a type = "button" class = " ban_btn btn btn-success" onclick="return confirm('Are you sure you want to accept this product?')"  href="<c:url value="/MainController?btnAction=admin&adminAction=approveProduct&productId=\${row.productID}&userId=\${userId}"></c:url>">Chấp nhận</a>
+                                        <a type = "button" class = " ban_btn btn btn-danger" onclick="return confirm('Are you sure you want to delete this product?')" href="<c:url value="/MainController?btnAction=admin&adminAction=rejectProduct&productId=\${row.productID}&userId=\${userId}"></c:url>">Từ chối</a>`;
                                     }
                                 }
                             ],
@@ -533,13 +632,58 @@
                         });
                     });
         };
-        
+
         const authenShop = function () {
             fetch("MainController?btnAction=admin&adminAction=authenShop", {
                 method: 'GET'
             })
-                    .then(rs => console.log(rs))  
-//                    .then(data => console.log(data))
+                    .then(rs => rs.json())
+                    .then(data => {
+                        console.log(data)
+
+        <%
+            if (user != null) {
+                userID = user.getUserID();
+            }
+            session.setAttribute("userId", userID);
+        %>
+                        var userId = '<%= session.getAttribute("userId")%>';
+                        console.log(data);
+                        const table = $('#shop_request').DataTable({
+                            data: data
+                            ,
+                            'columns': [
+                                {'data': 'shopID'},
+                                {'data': 'userID'},
+                                {'data': 'shopName'},
+                                {'data': 'createAt'},
+                                {'data': 'status'},
+                                {
+                                    data: null,
+                                    orderable: false,
+                                    render: function (data, type, row) {
+                                        return `<button type="button" class="ban_btn btn btn-info" style="color: white" onclick="addModel('\${row.frontIdentity}')">Xem</button>`;
+                                    }
+                                },
+                                {
+                                    data: null,
+                                    orderable: false,
+                                    render: function (data, type, row) {
+                                        return `<button type="button" class="ban_btn btn btn-info" style="color: white" onclick="addModel('\${row.backIdentity}')">Xem</button>`;
+                                    }
+                                },
+                                {
+                                    data: null,
+                                    orderable: false,
+                                    render: function (data, type, row) {
+                                        return `<a type = "button" class = "image_button ban_btn btn btn-success" onclick="return confirm('Bạn muốn chấp nhận đơn đăng ký của shop này?')"  href="<c:url value="/MainController?btnAction=admin&adminAction=approveShop&shopId=\${row.shopID}&userId=\${userId}"></c:url>">Chấp nhận</a>
+                                        <a type = "button" class = " ban_btn btn btn-danger" onclick="return confirm('Bạn muốn từ chối đơn đăng ký của shop này ?')" href="<c:url value="/MainController?btnAction=admin&adminAction=rejectShop&shopId=\${row.shopID}&userId=\${userId}"></c:url>">Từ chối</a>`;
+                                    }
+                                }
+                            ],
+                            order: [[0, 'asc']]
+                        });
+                    })
 //                    .catch(error => console.log(error));
         };
 
@@ -659,15 +803,30 @@
                     '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
                     '<tr>' +
                     '<td>Product ID</td>' +
-                    '<td>Name</td>' +
-                    '<td>Price</td>' +
-                    '<td>Sold count</td>' +
-                    '<td>Status</td>' +
-                    '<td>Action</td>' +
+                    '<td>Tên sản phẩm</td>' +
+                    '<td>Giá</td>' +
+                    '<td>Đã bán</td>' +
+                    '<td>Trạng thái</td>' +
+                    '<td>cấm</td>' +
                     data +
                     '</tr>' +
                     '</table>'
                     );
+        }
+
+        const addModel = function (image) {
+            image_modal.hidden = false;
+            image_modal.innerHTML = `
+                <div class="image_modal_content"><div class="image_modal_content_cancle">X</div>
+                    <div class="image_modal_content_image">
+                        <img src="` + image + `" alt="">
+                    </div>
+                </div>
+            `;
+            image_button_cancle = document.querySelector(".image_modal_content_cancle");
+            image_button_cancle.addEventListener("click", function () {
+                image_modal.hidden = true;
+            })
         }
 
     </script>
