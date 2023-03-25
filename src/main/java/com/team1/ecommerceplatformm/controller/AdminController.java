@@ -63,7 +63,7 @@ public class AdminController extends HttpServlet {
                     listShop = shopDao.getAllShopHasAccepted();
 
                     for (ShopDTO shop : listShop) {
-                        List<ProductDTO> listProduct = proDao.getAllProductByShopId(shop.getShopID());
+                        List<ProductDTO> listProduct = proDao.getAllProductByShopIdWithoutImage(shop.getShopID());
                         shop.setListProducts((ArrayList<ProductDTO>) listProduct);
                     }
                     Gson gson = new Gson();
