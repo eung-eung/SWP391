@@ -467,6 +467,7 @@
             await setChartData();
             await authenShop();
             await authenProduct();
+            await getProductReviewData();
         });
 
         const setChartData = function () {
@@ -652,11 +653,6 @@
             fetch("MainController?btnAction=admin&adminAction=authenShop", {
                 method: 'GET'
             })
-<<<<<<< HEAD
-                    .then(rs => rs.json())  
-                    .then(data => console.log(data))
-                    .catch(error => console.log(error));
-=======
                     .then(rs => rs.json())
                     .then(data => {
                         console.log(data)
@@ -668,7 +664,6 @@
             session.setAttribute("userId", userID);
         %>
                         var userId = '<%= session.getAttribute("userId")%>';
-                        console.log(data);
                         const table = $('#shop_request').DataTable({
                             data: data
                             ,
@@ -705,7 +700,6 @@
                         });
                     })
 //                    .catch(error => console.log(error));
->>>>>>> a07a92031d40021e44330a448c599ea0dc970d40
         };
 
         const getShopProductData = function () {
@@ -773,72 +767,71 @@
         };
 
         const getProductReviewData = function () {
-//            fetch("MainController?btnAction=admin&adminAction=render", {
-//                method: 'GET'
-//            })
-//                    .then(rs => rs.json())
-//                    .then(data => {
-//                        console.log(data);
-//                        const table = $('#review_table').DataTable({
-//                            
-//                            <th>ID người dùng</th>
-//                                <th>Tên người dùng</th>
-//                                <th>ID Sản phẩm</th>
-//                                <th>ID đơn hàng</th>
-//                                <th>Đánh giá</th>
-//                                <th>Bình luận</th>
-//                                <th>Trạng thái</th>
-//                                <th>Ngày tạo</th>
-//                                <th>Cấm</th>
-//
-//                            data: data
-//                            ,
-//                            'columns': [
-//                                {'data': 'user_id'},
-//                                {'data': 'shopName'},
-//                                {'data': 'product_id'},
-//                                {'data': 'order_id'},
-//                                {'data': 'rating'},
-//                                {'data': 'comment'},   
-//                                {
-//                                    'data': 'status',
-//                                    render: function (data, type, row, meta) {
-//                                        return data ? "Chưa ẩn" : "Đã ẩn";
-//                                    }
-//
-//                                },
-//                                {'data': 'create_at'},  
-//                                {
-//                                    data: null,
-//                                    orderable: false,
-//                                    render: function (data, type, row) {
-//                                        return row.status ? `<a type = "button" class = " ban_btn btn btn-danger" onclick="return confirm('Bạn muốn ẩn đánh giá này ?')"  
-//                                        href="<c:url value="/MainController?btnAction=admin&adminAction=updateBanShop&shopID=\${row.shopID}"></c:url>">Ẩn</a>` :
-//                                                `<a type = "button" class = " ban_btn btn btn-danger" onclick="return confirm('Bạn muốn bỏ ẩn đánh giá này ?')"  
-//                                        href="<c:url value="/MainController?btnAction=admin&adminAction=updateUnBanShop&shopID=\${row.shopID}"></c:url>">Bỏ Ẩn</a>`;
-//                                    }
-//                                }
-//                            ],
-//                            order: [[0, 'asc']]
-//                        });
-//                        // Add event listener for opening and closing details
-//                        $('#shop_list tbody').on('click', 'td.dt-control', function () {
-//
-//                            let tr = $(this).closest('tr');
-//                            let row = table.row(tr);
-//                            if (row.child.isShown()) {
-//                                // This row is already open - close it
-//                                row.child.hide();
-//                                tr.removeClass('shown');
-//                            } else {
-//                                // Open this row
-//                                row.child(format(row.data())).show();
-//                                tr.addClass('shown');
-//                            }
-//
-//
-//                        });
-//                    });
+            fetch("MainController?btnAction=admin&adminAction=viewReview", {
+                method: 'GET'
+            })
+                    .then(rs => rs.json())
+                    .then(data => {
+                        console.log(data);
+
+                        for (var i = 0; i < data.reviews.length; i++) {
+                            for (var j = 0; j < data.users.length; j++) {
+                                if (data.reviews[i].userId === data.users[j].userID) {
+                                    data.reviews[i].userName = data.users[j].username;
+                                }
+                            }
+                        }
+                        data = data.reviews
+                        console.log(data);
+                        const table = $('#review_table').DataTable({
+                            data: data
+                            ,
+                            'columns': [
+                                {'data': 'userId'},
+                                {'data': 'userName'},
+                                {'data': 'productId'},
+                                {'data': 'orderId'},
+                                {'data': 'rating'},
+                                {'data': 'comment'},
+                                {
+                                    'data': 'status',
+                                    render: function (data, type, row, meta) {
+                                        return data ? "Chưa ẩn" : "Đã ẩn";
+                                    }
+
+                                },
+                                {'data': 'createAt'},
+                                {
+                                    data: null,
+                                    orderable: false,
+                                    render: function (data, type, row) {
+                                        return row.status ? `<a type = "button" class = " ban_btn btn btn-danger" onclick="return confirm('Bạn muốn ẩn đánh giá này ?')"  
+                                        href="<c:url value="/MainController?btnAction=admin&adminAction=hideReview&reviewId=\${row.reviewId}"></c:url>">Ẩn</a>` :
+                                                `<a type = "button" class = " ban_btn btn btn-danger" onclick="return confirm('Bạn muốn bỏ ẩn đánh giá này ?')"  
+                                        href="<c:url value="/MainController?btnAction=admin&adminAction=unHideReview&reviewId=\${row.reviewId}"></c:url>">Bỏ Ẩn</a>`;
+                                    }
+                                }
+                            ],
+                            order: [[0, 'asc']]
+                        });
+                        // Add event listener for opening and closing details
+                        $('#shop_list tbody').on('click', 'td.dt-control', function () {
+
+                            let tr = $(this).closest('tr');
+                            let row = table.row(tr);
+                            if (row.child.isShown()) {
+                                // This row is already open - close it
+                                row.child.hide();
+                                tr.removeClass('shown');
+                            } else {
+                                // Open this row
+                                row.child(format(row.data())).show();
+                                tr.addClass('shown');
+                            }
+
+
+                        });
+                    });
         };
 
         function removeActive(list) {
