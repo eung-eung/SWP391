@@ -19,7 +19,8 @@ import java.util.ArrayList;
 //import com.twilio.Twilio;
 //import com.twilio.rest.api.v2010.
 //import com.twilio.type.p
-        /**
+
+/**
  *
  * @author boyvi
  */
@@ -109,6 +110,10 @@ public class MainController extends HttpServlet {
                     case "dashboard": {
 //                        System.out.println("vào showtable");
                         url = Constants.DASHBOARD_CONTROLLER;
+                        break;
+                    }
+                    case "review": {
+                        url = Constants.REVIEW_CONTROLLER;
                         break;
                     }
 //                    case "renderTable": {

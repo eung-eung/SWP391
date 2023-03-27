@@ -63,9 +63,28 @@ public class OrderDetailsDAO extends AbstractDAO<OrderDetailsDTO> {
 //        conn.close();
         return list;
     }
+
+    public int getLastBoughtOrderIdBaseOnProductId(int productId, int userId) throws SQLException {
+        PreparedStatement stm = conn.prepareStatement("SELECT TOP (1) o.[order_id]\n"
+                + "  FROM [EcommmercePlatform].[dbo].[OrderDetails] od\n"
+                + "  right join [Order] o on od.order_id = o.order_id \n"
+                + "  left join Review r on r.order_id = od.order_id\n"
+                + "  where od.product_id = ? and o.[user_id]= ? and r.rating is null\n"
+                + "  order by od.order_id desc ");
+        stm.setInt(1, productId);
+        stm.setInt(2, userId);
+        ResultSet rs = stm.executeQuery();
+        if (rs.next()) {
+            return rs.getInt("order_id");
+        }
+        return -1;
+    }
+
     public static void main(String[] args) {
         try {
             OrderDetailsDAO dao = new OrderDetailsDAO();
+            int d = dao.getLastBoughtOrderIdBaseOnProductId(149, 143);
+            System.out.println("d" + d);
             ArrayList<OrderDetailsDTO> l = dao.getAllOrderDetailsByOrderId(17);
             for (OrderDetailsDTO orderDetailsDTO : l) {
                 System.out.println(orderDetailsDTO);
@@ -74,6 +93,7 @@ public class OrderDetailsDAO extends AbstractDAO<OrderDetailsDTO> {
             Logger.getLogger(OrderDetailsDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
     @Override
     public void save(OrderDetailsDTO t) throws SQLException {
         PreparedStatement stm = conn.prepareStatement("   insert into [OrderDetails]  "

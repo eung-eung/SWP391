@@ -8,6 +8,8 @@ import com.team1.ecommerceplatformm.common.AbstractDAO;
 import com.team1.ecommerceplatformm.imageProduct.ImageProductDAO;
 import com.team1.ecommerceplatformm.orderDetails.OrderDetailsDAO;
 import com.team1.ecommerceplatformm.orderDetails.OrderDetailsDTO;
+import com.team1.ecommerceplatformm.review.ReviewDAO;
+import com.team1.ecommerceplatformm.review.ReviewDTO;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -38,10 +40,12 @@ public class OrderDAO extends AbstractDAO<OrderDTO> {
         stm.setInt(1, userId);
         OrderDetailsDAO odDao = new OrderDetailsDAO();
         ImageProductDAO iDao = new ImageProductDAO();
+        ReviewDAO rDao = new ReviewDAO();
         ArrayList<OrderDTO> list = new ArrayList<>();
         ResultSet rs = stm.executeQuery();
         while (rs.next()) {
             double total = 0;
+            ReviewDTO review = new ReviewDTO();
             OrderDTO dto = new OrderDTO();
             dto.setOrderId(rs.getString("order_id"));
             dto.setDeliveryId(rs.getInt("delivery_id"));
@@ -56,9 +60,13 @@ public class OrderDAO extends AbstractDAO<OrderDTO> {
             dto.setTransactionFee(rs.getDouble("transaction_fee"));
             dto.setOrderDetails(odDao.getAllOrderDetailsByOrderId(rs.getInt("order_id")));
             for (OrderDetailsDTO orderDetail : dto.getOrderDetails()) {
+                boolean isReviewed = rDao.isReviewed(orderDetail.getOrderId(), orderDetail.getProductId());
+                orderDetail.setIsReviewed(isReviewed);
+            
                 total += orderDetail.getQuantity() * orderDetail.getPrice();
             }
             dto.setTotal(total);
+            
             list.add(dto);
         }
         return list;

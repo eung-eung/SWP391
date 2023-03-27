@@ -63,7 +63,7 @@ public class AdminController extends HttpServlet {
                     listShop = shopDao.getAllShopHasAccepted();
 
                     for (ShopDTO shop : listShop) {
-                        List<ProductDTO> listProduct = proDao.getAllProductByShopId(shop.getShopID());
+                        List<ProductDTO> listProduct = proDao.getAllProductByShopIdWithoutImage(shop.getShopID());
                         shop.setListProducts((ArrayList<ProductDTO>) listProduct);
                     }
                     Gson gson = new Gson();
@@ -270,7 +270,8 @@ public class AdminController extends HttpServlet {
              }
              case "authenShop" :{
                  
-                 try{
+                
+                try {
                     ShopDAO shopDao = new ShopDAO();
                     ArrayList<ShopDTO> listShop = new ArrayList<>();
                     listShop = shopDao.getAllShopRegister();
@@ -278,10 +279,13 @@ public class AdminController extends HttpServlet {
                     Gson gson = new Gson();
 
                     response.getWriter().println(gson.toJson(listShop));
-                 }catch(SQLException ex){
-                     Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
-                 }
+                    
+                    break;
+                } catch (SQLException ex) {
+                    Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+                }
              }
+
              case "approveShop":{
                  try{
                     int shopId = Integer.parseInt(request.getParameter("shopId"));
