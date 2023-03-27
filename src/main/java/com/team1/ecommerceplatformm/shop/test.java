@@ -15,7 +15,7 @@ public class test {
     public static void main(String[] args) throws SQLException {
         ShopDAO shopDao = new ShopDAO();
         ArrayList<ShopDTO> list = new ArrayList<>();
-        list = shopDao.getAllShopHasAccepted();
+        list = shopDao.getAllShopRegister();
         System.out.println(list);
     }
 }
