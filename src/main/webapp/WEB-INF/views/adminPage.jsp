@@ -34,6 +34,8 @@
                 height: 100vh;
                 margin-right:10px;
                 background: #ff5c00;
+                border-top-right-radius: 15px;
+                border-bottom-right-radius: 15px;
             }
 
             .admin_page_navbar div{
@@ -52,6 +54,8 @@
                 letter-spacing: 1.5px;
                 text-align: center;
                 color: #fff !important;
+                pointer-events: none;
+                user-select: none;
             }
 
             .admin_page_navbar_header::before{
@@ -123,8 +127,15 @@
                 padding-top: 10px;
             }
 
+            .review_table{
+                display: none;
+                border-top: 1px solid black;
+                padding-top: 10px;
+            }
+
             .btn_active{
                 background-color: #f1f1f1;
+                position: relative;
                 font-weight: 700;
                 color: black;
             }
@@ -134,70 +145,13 @@
                 opacity: 0.5;
             }
 
-            /*card*/
             .shop_request_list{
                 width: 100%;
             }
 
-            .request_card{
-                width: 90%;
-                height: 31vh;
-                margin: 10px auto;
-                display: flex;
-                border: 1px solid black;
-                border-radius: 15px;
-                overflow: hidden;
-            }
-
-            .card_image{
-                width: 20.9%;
-                height: 100%
-            }
-
-            .card_image img{
-                max-width: 100%;
-                max-height: 100%;
-            }
-
-            .card_content{
-                width: 70.1%;
-                height: 100%;
-                background-color: #abf1ff;
-            }
-
-            .card_button{
-                width: 10%;
-                height: 100%;
-                border-left: 1px solid black;
-            }
-
-            .card_button_item{
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                width: 100%;
-                height: 50%;
-                font-size: 20px;
-                color: white;
-            }
-
-            .card_button_accept{
-                background-color: #198754;
-            }
-
-            .card_button_deny{
-                background-color: #dc3545;
-                border-top: 1px solid black;
-            }
-
-            .card_content_detail{
-                display: flex;
-            }
-            .card_content_detail div{
-                width: 50%;
-                margin: 10px 10px;
-                font-size: 20px;
-                border-bottom: 1px solid black;
+            .child-row{
+                padding-left:50px;
+                margin: 0 auto;
             }
 
             .shop_detail{
@@ -235,6 +189,8 @@
                 margin: 10% auto;
                 background-color: white;
                 border-radius: 5px;
+                max-height: 50%;
+                max-width: 70%;
             }
 
             .image_modal_content_cancle{
@@ -246,8 +202,17 @@
             .image_modal_content_image{
                 display: flex;
                 justify-content: center;
+                height: fit-content;
+                background-color: white;
+                border-radius: 5px;
+                padding: 30px;
             }
 
+            .image_modal_content_image img{
+                max-width:100%;
+                max-height:100%;
+                height:fit-content;
+            }
         </style>
 
         <script src="https://kit.fontawesome.com/330a21053c.js" crossorigin="anonymous"></script>
@@ -265,7 +230,7 @@
 
     <body>
         <div class="admin_page">
-            <div class="admin_page_navbar rounded shadow">
+            <div class="admin_page_navbar shadow">
                 <div class="admin_page_navbar_header" >
                     Admin Option
                 </div>
@@ -281,6 +246,9 @@
                 </div>
                 <div class="admin_page_text productRegis btn">
                     Product register
+                </div>
+                <div class="admin_page_text review-list btn">
+                    Review list
                 </div>
             </div>
 
@@ -307,9 +275,9 @@
                         <thead>
                             <tr>
                                 <th></th>
-                                <th>Shop ID</th>
-                                <th>Tên shop</th>
-                                <th>User ID</th>
+                                <th>ID cửa hàng</th>
+                                <th>Tên cửa hàng</th>
+                                <th>ID người dùng</th>
                                 <th>Ngày tạo</th>
                                 <th>Trạng thái</th>
                                 <th>Cấm</th>
@@ -319,9 +287,9 @@
                         <tfoot>
                             <tr>
                                 <th></th>
-                                <th>Shop ID</th>
-                                <th>Tên shop</th>
-                                <th>User ID</th>
+                                <th>ID cửa hàng</th>
+                                <th>Tên cửa hàng</th>
+                                <th>ID người dùng</th>
                                 <th>Ngày tạo</th>
                                 <th>Trạng thái</th>
                                 <th>Cấm</th>
@@ -334,8 +302,8 @@
                     <table id="shop_request" class="display" style="width:100%">
                         <thead>
                             <tr>
-                                <th>Shop ID</th>
-                                <th>User ID</th>
+                                <th>ID cửa hàng</th>
+                                <th>ID người dùng</th>
                                 <th>Tên Shop</th>
                                 <th>Ngày Đăng ký</th>
                                 <th>Trạng thái</th>
@@ -347,8 +315,8 @@
 
                         <tfoot>
                             <tr>
-                                <th>Shop ID</th>
-                                <th>User ID</th>
+                                <th>ID cửa hàng</th>
+                                <th>ID người dùng</th>
                                 <th>Tên Shop</th>
                                 <th>Ngày Đăng ký</th>
                                 <th>Trạng thái</th>
@@ -364,8 +332,8 @@
                     <table id="product_request" class="display" style="width:100%">
                         <thead>
                             <tr>
-                                <th>Shop ID</th>
-                                <th>Product ID</th>
+                                <th>ID cửa hàng</th>
+                                <th>ID sản phẩm</th>
                                 <th>Giá</th>
                                 <th>Phân loại</th>
                                 <th>Số lượng</th>
@@ -376,13 +344,45 @@
 
                         <tfoot>
                             <tr>
-                                <th>Shop ID</th>
-                                <th>Product ID</th>
+                                <th>ID cửa hàng</th>
+                                <th>ID sản phẩm</th>
                                 <th>Giá</th>
                                 <th>Phân loại</th>
                                 <th>Số lượng</th>
                                 <th>ngày tạo</th>
                                 <th>Duyệt</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <div class="review_table">
+                    <table id="review_table" class="display" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>ID người dùng</th>
+                                <th>Tên người dùng</th>
+                                <th>ID Sản phẩm</th>
+                                <th>ID đơn hàng</th>
+                                <th>Đánh giá</th>
+                                <th>Bình luận</th>
+                                <th>Trạng thái</th>
+                                <th>Ngày tạo</th>
+                                <th>Cấm</th>
+                            </tr>
+                        </thead>
+
+                        <tfoot>
+                            <tr>
+                                <th>ID người dùng</th>
+                                <th>Tên người dùng</th>
+                                <th>ID Sản phẩm</th>
+                                <th>ID đơn hàng</th>
+                                <th>Đánh giá</th>
+                                <th>Bình luận</th>
+                                <th>Trạng thái</th>
+                                <th>Ngày tạo</th>
+                                <th>Cấm</th>
                             </tr>
                         </tfoot>
                     </table>
@@ -404,6 +404,7 @@
             const dashboard = document.querySelector(".admin_dashboard");
             const shopRegis = document.querySelector(".shop_request");
             const productRegis = document.querySelector(".product_request");
+            const reviewList = document.querySelector(".review_table");
             item.addEventListener("click", (event) => {
                 if (event.target.classList.contains("shop_list")) {
                     removeActive(btnGroup);
@@ -412,6 +413,7 @@
                     dashboard.style.display = "none";
                     shopRegis.style.display = "none";
                     productRegis.style.display = "none";
+                    reviewList.style.display = "none";
                 } else if (event.target.classList.contains("dashboard")) {
                     removeActive(btnGroup);
                     event.target.classList.add("btn_active");
@@ -419,6 +421,7 @@
                     dashboard.style.display = "block";
                     shopRegis.style.display = "none";
                     productRegis.style.display = "none";
+                    reviewList.style.display = "none";
                 } else if (event.target.classList.contains("shopRegis")) {
                     removeActive(btnGroup);
                     event.target.classList.add("btn_active");
@@ -426,13 +429,23 @@
                     dashboard.style.display = "none";
                     shopRegis.style.display = "block";
                     productRegis.style.display = "none";
-                } else {
+                    reviewList.style.display = "none";
+                } else if (event.target.classList.contains("productRegis")) {
                     removeActive(btnGroup);
                     event.target.classList.add("btn_active");
                     table.style.display = "none";
                     dashboard.style.display = "none";
                     shopRegis.style.display = "none";
                     productRegis.style.display = "block";
+                    reviewList.style.display = "none";
+                } else {
+                    removeActive(btnGroup);
+                    event.target.classList.add("btn_active");
+                    table.style.display = "none";
+                    dashboard.style.display = "none";
+                    shopRegis.style.display = "none";
+                    productRegis.style.display = "none";
+                    reviewList.style.display = "block";
                 }
             });
         });
@@ -448,12 +461,14 @@
         })
 
         document.querySelector(".header-bottom").hidden = true;
+
         $(document).ready(async function () {
             await getShopProductData();
             await setChartData();
             await authenShop();
             await authenProduct();
         });
+
         const setChartData = function () {
             fetch("MainController?btnAction=admin&adminAction=dashboard", {
                 method: 'GET'
@@ -537,12 +552,12 @@
                             options: {
                                 title: {
                                     display: true,
-                                    text: "Product"
+                                    text: "Người dùng"
                                 },
                                 plugins: {
                                     title: {
                                         display: true,
-                                        text: 'Product',
+                                        text: 'Người dùng',
                                         font: {
                                             size: 29
                                         }
@@ -623,8 +638,8 @@
                                     data: null,
                                     orderable: false,
                                     render: function (data, type, row) {
-                                        return `<a type = "button" class = " ban_btn btn btn-success" onclick="return confirm('Are you sure you want to accept this product?')"  href="<c:url value="/MainController?btnAction=admin&adminAction=approveProduct&productId=\${row.productID}&userId=\${userId}"></c:url>">Chấp nhận</a>
-                                        <a type = "button" class = " ban_btn btn btn-danger" onclick="return confirm('Are you sure you want to delete this product?')" href="<c:url value="/MainController?btnAction=admin&adminAction=rejectProduct&productId=\${row.productID}&userId=\${userId}"></c:url>">Từ chối</a>`;
+                                        return `<a type = "button" class = " ban_btn btn btn-success" onclick="return confirm('Bản muốn chấp nhận đơn đăng ký sản phẩm này ?')"  href="<c:url value="/MainController?btnAction=admin&adminAction=approveProduct&productId=\${row.productID}&userId=\${userId}"></c:url>">Chấp nhận</a>
+                                        <a type = "button" class = " ban_btn btn btn-danger" onclick="return confirm('Bản muốn từ chối đơn đăng ký sản phẩm này?')" href="<c:url value="/MainController?btnAction=admin&adminAction=rejectProduct&productId=\${row.productID}&userId=\${userId}"></c:url>">Từ chối</a>`;
                                     }
                                 }
                             ],
@@ -722,9 +737,9 @@
                                     data: null,
                                     orderable: false,
                                     render: function (data, type, row) {
-                                        return row.status ? `<a type = "button" class = " ban_btn btn btn-danger" onclick="return confirm('Are you sure you want to delete this item?')"  
+                                        return row.status ? `<a type = "button" class = " ban_btn btn btn-danger" onclick="return confirm('Bạn muốn cấm cửa hàng này ?')"  
                                         href="<c:url value="/MainController?btnAction=admin&adminAction=updateBanShop&shopID=\${row.shopID}"></c:url>">Ban</a>` :
-                                                `<a type = "button" class = " ban_btn btn btn-danger" onclick="return confirm('Are you sure you want to delete this item?')"  
+                                                `<a type = "button" class = " ban_btn btn btn-danger" onclick="return confirm('Bạn muốn bỏ cấm cửa hàng này ?')"  
                                         href="<c:url value="/MainController?btnAction=admin&adminAction=updateUnBanShop&shopID=\${row.shopID}"></c:url>">Unban</a>`;
                                     }
                                 }
@@ -749,6 +764,75 @@
 
                         });
                     });
+        };
+
+        const getProductReviewData = function () {
+//            fetch("MainController?btnAction=admin&adminAction=render", {
+//                method: 'GET'
+//            })
+//                    .then(rs => rs.json())
+//                    .then(data => {
+//                        console.log(data);
+//                        const table = $('#review_table').DataTable({
+//                            
+//                            <th>ID người dùng</th>
+//                                <th>Tên người dùng</th>
+//                                <th>ID Sản phẩm</th>
+//                                <th>ID đơn hàng</th>
+//                                <th>Đánh giá</th>
+//                                <th>Bình luận</th>
+//                                <th>Trạng thái</th>
+//                                <th>Ngày tạo</th>
+//                                <th>Cấm</th>
+//
+//                            data: data
+//                            ,
+//                            'columns': [
+//                                {'data': 'user_id'},
+//                                {'data': 'shopName'},
+//                                {'data': 'product_id'},
+//                                {'data': 'order_id'},
+//                                {'data': 'rating'},
+//                                {'data': 'comment'},   
+//                                {
+//                                    'data': 'status',
+//                                    render: function (data, type, row, meta) {
+//                                        return data ? "Chưa ẩn" : "Đã ẩn";
+//                                    }
+//
+//                                },
+//                                {'data': 'create_at'},  
+//                                {
+//                                    data: null,
+//                                    orderable: false,
+//                                    render: function (data, type, row) {
+//                                        return row.status ? `<a type = "button" class = " ban_btn btn btn-danger" onclick="return confirm('Bạn muốn ẩn đánh giá này ?')"  
+//                                        href="<c:url value="/MainController?btnAction=admin&adminAction=updateBanShop&shopID=\${row.shopID}"></c:url>">Ẩn</a>` :
+//                                                `<a type = "button" class = " ban_btn btn btn-danger" onclick="return confirm('Bạn muốn bỏ ẩn đánh giá này ?')"  
+//                                        href="<c:url value="/MainController?btnAction=admin&adminAction=updateUnBanShop&shopID=\${row.shopID}"></c:url>">Bỏ Ẩn</a>`;
+//                                    }
+//                                }
+//                            ],
+//                            order: [[0, 'asc']]
+//                        });
+//                        // Add event listener for opening and closing details
+//                        $('#shop_list tbody').on('click', 'td.dt-control', function () {
+//
+//                            let tr = $(this).closest('tr');
+//                            let row = table.row(tr);
+//                            if (row.child.isShown()) {
+//                                // This row is already open - close it
+//                                row.child.hide();
+//                                tr.removeClass('shown');
+//                            } else {
+//                                // Open this row
+//                                row.child(format(row.data())).show();
+//                                tr.addClass('shown');
+//                            }
+//
+//
+//                        });
+//                    });
         };
 
         function removeActive(list) {
@@ -776,8 +860,8 @@
                     (element.status ? "Đang hoạt động" : "Ngưng hoạt động") +
                     '</td>' +
                     '<td>' +
-                    (element.status ? '<a type = "button" class = " ban_btn btn btn-danger ' + (!status ? "prevent_click" : "") + '" onclick="return confirm(`Are you sure you want to ban this item?`)"  href="/EcommercePlatformm/MainController?btnAction=admin&adminAction=updateBanProduct&productId=' + (element.productID) + '" >Ban</a>' :
-                            '<a type = "button" class = " ban_btn btn btn-danger ' + (!status ? "prevent_click" : "") + '" onclick="return confirm(`Are you sure you want to unban this item?`)"  href="/EcommercePlatformm/MainController?btnAction=admin&adminAction=updateUnBanProduct&productId=' + (element.productID) + '" >Unban</a>')
+                    (element.status ? '<a type = "button" class = " ban_btn btn btn-danger ' + (!status ? "prevent_click" : "") + '" onclick="return confirm(`Bạn muốn cấm sản phẩm này ?`)"  href="/EcommercePlatformm/MainController?btnAction=admin&adminAction=updateBanProduct&productId=' + (element.productID) + '" >Ban</a>' :
+                            '<a type = "button" class = " ban_btn btn btn-danger ' + (!status ? "prevent_click" : "") + '" onclick="return confirm(`Bạn muốn bỏ cấm sản phẩm này ?`)"  href="/EcommercePlatformm/MainController?btnAction=admin&adminAction=updateUnBanProduct&productId=' + (element.productID) + '" >Unban</a>')
                     +
                     '</td>' +
                     '<tr>'
@@ -800,7 +884,7 @@
                 data = data + getProduct(element, d.status);
             });
             return (
-                    '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
+                    '<table class="child-row" cellpadding="5" cellspacing="0" border="0">' +
                     '<tr>' +
                     '<td>Product ID</td>' +
                     '<td>Tên sản phẩm</td>' +
