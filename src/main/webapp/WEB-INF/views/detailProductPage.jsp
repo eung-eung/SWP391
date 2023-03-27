@@ -143,9 +143,9 @@
                                     <span class="icon fa-solid fa-star rating-star-full"></span>
                                     <span class="icon fa-solid fa-star rating-star-full"></span>
                                     <span class="icon fa-solid fa-star rating-star-full"></span>
-                                    <span class="product-view-reviewLink">
+<!--                                    <span class="product-view-reviewLink">
                                         <a href="#" class="modal-review">Review</a>
-                                    </span>
+                                    </span>-->
                                     <!-- form review -->
                                     <div id="modal-review-form">
 
@@ -191,7 +191,7 @@
                                         <div id="decrease" onclick="decreaseValue()"><i
                                                 class="fa-solid fa-angle-down"></i></div>
                                     </div>
-                                 
+
                                     <c:choose>
                                         <c:when test="${productDetail.status == 1}">
                                             <div class="form-action">
@@ -201,7 +201,7 @@
                                                 <input type="hidden" id="shopID"value="${productDetail.shopID}">
                                             </div>
                                         </c:when>
-                                      
+
                                         <c:when test="${productDetail.status == 0 || productDetail.status == 2}">
                                             <div class="form-action">
                                                 <!--                                                <input type="submit" id="form-action-addToCart" class="addToCart-button"
@@ -234,53 +234,7 @@
                                     <h4 class="tab-review-title">2 reviews</h4>
                                     <div class="tab-review-content" id="review-content">
                                         <ul class="review-list">
-                                            <li class="product-review">
-                                                <div class="review-container">
-                                                    <header class="review-header">
-                                                        <span class="product-ratings">
-                                                            <span
-                                                                class="fa-solid fa-star rating-star rating-star-full"></span>
-                                                            <span
-                                                                class="fa-solid fa-star rating-star rating-star-full"></span>
-                                                            <span
-                                                                class="fa-solid fa-star rating-star rating-star-full"></span>
-                                                            <span
-                                                                class="fa-solid fa-star rating-star rating-star-full"></span>
-                                                            <span
-                                                                class="fa-solid fa-star rating-star rating-star-full"></span>
-
-                                                            <span class="rating-number">5</span>
-                                                        </span>
-                                                        <h5 class="product-review-title">Cực kì hài lòng</h5>
-                                                        <p class="product-review-author">Thái Thanh Trần đã đánh giá vào
-                                                            8/1/2023</p>
-                                                    </header>
-                                                    <p class="product-review-body">
-                                                        Hàng sang xịn mịn ^^
-                                                    </p>
-                                                </div>
-                                            </li>
-                                            <!-- cmt 2 -->
-                                            <li class="product-review">
-                                                <div class="review-container">
-                                                    <header class="review-header">
-                                                        <span class="product-ratings">
-                                                            <span class="fa-solid fa-star rating-star-full"></span>
-                                                            <span class="fa-solid fa-star rating-star-full"></span>
-                                                            <span class="fa-solid fa-star rating-star-full"></span>
-                                                            <span class="fa-solid fa-star rating-star-full"></span>
-                                                            <span class="fa-solid fa-star"></span>
-                                                            <span class="rating-number">4</span>
-                                                        </span>
-                                                        <h5 class="product-review-title">Hài lòng</h5>
-                                                        <p class="product-review-author">Thiện đã đánh giá vào
-                                                            8/1/2023</p>
-                                                    </header>
-                                                    <p class="product-review-body">
-                                                        Hàng sang xịn mịn ^^
-                                                    </p>
-                                                </div>
-                                            </li>
+                                            
                                             <!--  -->
                                         </ul>
                                     </div>
@@ -310,60 +264,60 @@
                 </div>
             </div>
         </div>
-        <div class="modal-review-form-background"></div>
-        <div class="modal-review-form modal-review-form-open">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <div class="modal-header">
-                        <h3 class="modal-header-title">Write a review</h3>
-                    </div>
-                    <div class="modal-close">
-                        <a href="#" class="modal-close-button fa-solid fa-x">
-                        </a>
-                    </div>
-                </div>
-                <div class="modal-body">
-                    <div class="product-detail-review-container">
-                        <!-- image -->
-                        <div class="product-detail-review-image">
-                            <img src="assets/images/bag-thumbnail1.jpg">
-                        </div>
-                        <!-- product name -->
-                        <h3 class="product-detail-review-name">ABVBDU</h3>
-                    </div>
-                    <div class="form-review-container">
-                        <div class="form-field-review">
-                            <!-- review rating -->
-                            <div class="form-field-rating">
-                                <label>Rating</label>
-                                <span class="rating-title"></span>
-                                <span class="icon fa-solid fa-star star-review"></span>
-                                <span class="icon fa-solid fa-star star-review"></span>
-                                <span class="icon fa-solid fa-star star-review"></span>
-                                <span class="icon fa-solid fa-star star-review"></span>
-                                <span class="icon fa-solid fa-star star-review"></span>
+        <!--        <div class="modal-review-form-background"></div>
+                <div class="modal-review-form modal-review-form-open">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div class="modal-header">
+                                <h3 class="modal-header-title">Write a review</h3>
                             </div>
-                            <!-- name user for review -->
-                            <div class="form-field-review form-field-input">
-                                <label for="name">Name</label>
-                                <input type="text" id="name" class="form-input">
-                            </div>
-                            <div class="form-field-review form-field-input">
-                                <label>Review title</label>
-                                <div class="form-input" id="title"></div>
-                            </div>
-                            <div class="form-field-review form-field-input">
-                                <label for="field-text">Comments</label>
-                                <textarea id="field-text"></textarea>
-                            </div>
-                            <div class="form-field-review form-field-submit">
-                                <input type="submit" class="submit-review-button" value="post review">
+                            <div class="modal-close">
+                                <a href="#" class="modal-close-button fa-solid fa-x">
+                                </a>
                             </div>
                         </div>
+                        <div class="modal-body">
+                            <div class="product-detail-review-container">
+                                 image 
+                                <div class="product-detail-review-image">
+                                    <img src="assets/images/bag-thumbnail1.jpg">
+                                </div>
+                                 product name 
+                                <h3 class="product-detail-review-name">ABVBDU</h3>
+                            </div>
+                            <div class="form-review-container">
+                                <div class="form-field-review">
+                                     review rating 
+                                    <div class="form-field-rating">
+                                        <label>Rating</label>
+                                        <span class="rating-title"></span>
+                                        <span class="icon fa-solid fa-star star-review"></span>
+                                        <span class="icon fa-solid fa-star star-review"></span>
+                                        <span class="icon fa-solid fa-star star-review"></span>
+                                        <span class="icon fa-solid fa-star star-review"></span>
+                                        <span class="icon fa-solid fa-star star-review"></span>
+                                    </div>
+                                     name user for review 
+                                    <div class="form-field-review form-field-input">
+                                        <label for="name">Name</label>
+                                        <input type="text" id="name" class="form-input">
+                                    </div>
+                                    <div class="form-field-review form-field-input">
+                                        <label>Review title</label>
+                                        <div class="form-input" id="title"></div>
+                                    </div>
+                                    <div class="form-field-review form-field-input">
+                                        <label for="field-text">Comments</label>
+                                        <textarea id="field-text"></textarea>
+                                    </div>
+                                    <div class="form-field-review form-field-submit">
+                                        <input type="submit" class="submit-review-button" value="post review">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </div>
+                </div>-->
 
         <script>
             var swiper = new Swiper(" .mySwiper2", {slidesPerView: 6, spaceBetween: 5, });</script>
@@ -489,5 +443,82 @@
                     swal("", "Thêm vào giỏ hàng thành công!", "success");
                 }
             })
+        </script>
+
+        <script>
+            const reviewList = document.querySelector(".review-list");
+            let reviewCount = reviewList.querySelectorAll(".product-review").length
+
+            const reviewTitle = ["Rất không hài lòng", "Không hài lòng", "Bình Thường", "Hài Lòng", "Rất Hài Lòng"]
+//            const params = new Proxy(new URLSearchParams(window.location.search), {
+//                get: (searchParams, prop) => searchParams.get(prop),
+//            });
+//            const data = {
+//                reviewId: -1,
+//                userId: ${empty sessionScope.user ? 68 : sessionScope.user.userID},
+//                rating: 5,
+//                comment: "dc",
+//                orderId: 2
+//            }
+//            // nếu orderId == -1 thì nó sẽ tìm thằng product được mua gần đây nhất
+//            // để nó comment
+//            const a = "<c:url value="/review"/>"
+//            const ws = new WebSocket('ws://' + 'localhost:8080/EcommercePlatformm' + '/review/' + params.productID)
+//            console.log(ws)
+//            document.querySelector(".submit-review-button").onclick = () => {
+//                ws.send(JSON.stringify(data))
+//            }
+            function renderComment(data) {
+
+                fetch("<c:url value="MainController?btnAction=user&userAction=getUser&userId=" />" + data.userId)
+                        .then(res => res.json())
+                        .then(user => {
+                            console.log(data)
+                            let ratingHtml = "";
+                            for (var i = 0; i < data.rating; i++) {
+                                ratingHtml += '<span class="fa-solid fa-star rating-star rating-star-full"></span>'
+                            }
+                            for (var i = 0; i < 5 - data.rating; i++) {
+                                ratingHtml += '<span class="fa-solid fa-star rating-star "></span>'
+                            }
+                            document.querySelector(".tab-review-title").innerHTML = ++reviewCount == 1 ? reviewCount + " review" : reviewCount + " reviews"
+                            reviewList.innerHTML = `<li class="product-review">
+                    <div class="review-container">
+                        <header class="review-header">
+                            <span class="product-ratings">
+                                \${ratingHtml}
+                                <span class="rating-number">\${data.rating}</span>
+                            </span>
+    <h5 class="product-review-title">\${reviewTitle[data.rating - 1]}</h5>
+                            <p class="product-review-author">\${user.username} đã đánh giá vào
+                                \${new Date(data.createAt).toLocaleDateString("vi-VN")}</p>
+                        </header>
+                        <p class="product-review-body">
+                            \${data.comment}
+                        </p>
+                    </div>
+                </li>` + reviewList.innerHTML;
+                        })
+
+            }
+            const params = new Proxy(new URLSearchParams(window.location.search), {
+                get: (searchParams, prop) => searchParams.get(prop),
+            });
+            const ws = new WebSocket('ws://' + 'localhost:8080/EcommercePlatformm' + '/review/' + params.productID)
+            ws.onopen = (event) => {
+                fetch('<c:url value="/MainController?btnAction=review&reviewAction=reviews&productId="/>' + params.productID)
+                        .then(res => res.json())
+                        .then(data => {
+                            data.forEach(comment => {
+                                renderComment(comment);
+                            })
+                        })
+            }
+            ws.onmessage = (event) => {
+                renderComment(JSON.parse(event.data))
+            }
+
+
+            //        data
     </script>
 </html>

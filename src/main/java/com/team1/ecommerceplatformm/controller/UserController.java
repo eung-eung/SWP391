@@ -7,6 +7,7 @@ package com.team1.ecommerceplatformm.controller;
 import com.google.gson.Gson;
 import com.team1.ecommerceplatformm.order.OrderDAO;
 import com.team1.ecommerceplatformm.order.OrderDTO;
+import com.team1.ecommerceplatformm.orderDetails.OrderDetailsDTO;
 import com.team1.ecommerceplatformm.shop.ShopDAO;
 import com.team1.ecommerceplatformm.user.UserDAO;
 import com.team1.ecommerceplatformm.user.UserDTO;
@@ -111,11 +112,23 @@ public class UserController extends HttpServlet {
                     OrderDAO dao = new OrderDAO();
                     ArrayList<OrderDTO> list = dao.getAllOrdersByUserId(u.getUserID());
                     request.setAttribute("histories", list);
+                    for (OrderDTO orderDTO : list) {
+                        for (OrderDetailsDTO orderDetail : orderDTO.getOrderDetails()) {
+                            System.out.println("orderDetail: " + orderDetail.getOrderId() + orderDetail.getProductId() + orderDetail.isIsReviewed());
+                        }
 
+                    }
+//                   list.forEach(a -> {System.out.println(a.);});
                     request.getRequestDispatcher(Constants.SHOW_TRANSACTION_HISTORY_PAGE).forward(request, response);
                     break;
                 }
-             
+                case "getUser": {
+                    int userId = Integer.parseInt(request.getParameter("userId"));
+                    UserDAO dao = new UserDAO();
+                    UserDTO uDto = dao.get(userId);
+                    response.getWriter().println(gson.toJson(uDto));
+                    break;
+                }
 
             }
 

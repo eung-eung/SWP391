@@ -4,18 +4,22 @@
  */
 package com.team1.ecommerceplatformm.orderDetails;
 
+import com.team1.ecommerceplatformm.review.ReviewDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+
+
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+
 import lombok.ToString;
 
 /**
  *
  * @author boyvi
  */
-@Getter
-@Setter
+@Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
@@ -30,10 +34,23 @@ public class OrderDetailsDTO {
     private String shopName;
     private String productName;
     private String mainImageUrl;
+    private boolean isReviewed;
 
     public OrderDetailsDTO(int productId, int quantity) {
         this.productId = productId;
         this.quantity = quantity;
     }
+
+    public boolean isIsReviewed() {
+        return isReviewed;
+    }
+
+    public void setIsReviewed(boolean isReviewed) {
+        this.isReviewed = isReviewed;
+    }
+
+    
+
+    
 
 }

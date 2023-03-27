@@ -71,12 +71,13 @@ function hoverToShowImage(img) {
 
 (function handleFormBackground() {
     let background = document.querySelector(".modal-review-form-background");
-    let linkOpenModalReview = document.querySelector(".modal-review");
+    let linkOpenModalReview = document.querySelector(".rating-button");
     let modalReviewForm = document.querySelector(".modal-review-form");
     let closeModalButton = document.querySelector(".modal-close-button");
 
 
     linkOpenModalReview.addEventListener("click", () => {
+        console.log("aa")
         background.style.display = "block";
         modalReviewForm.classList.add("open");
         if (modalReviewForm.classList.contains("open")) {

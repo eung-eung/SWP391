@@ -65,7 +65,7 @@ public class ProductController extends HttpServlet {
                     request.setAttribute("productListByCateID", productListByCateID);
                     isForward = true;
                     url = Constants.SHOW_PRODUCT_PAGE;
-
+                    
                     switch (sort) {
                         case "asc":
                             Collections.sort(productListByCateID, Comparator.comparing(ProductDTO::getPrice));
@@ -107,10 +107,10 @@ public class ProductController extends HttpServlet {
                     ArrayList<ProductDTO> list20 = productDao.getTOP20BestSellingProductsByCategoryID(categoryId);
                     response.getWriter().println(gson.toJson(list20));
                     break;
-
+                    
                 }
                 case "getQuantity": {
-
+                    
                     try {
                         int shopId = Integer.parseInt(request.getParameter("shopId"));
                         CategoryDAO cDao = new CategoryDAO();
@@ -124,17 +124,25 @@ public class ProductController extends HttpServlet {
                     } catch (SQLException ex) {
                         Logger.getLogger(ShopController.class.getName()).log(Level.SEVERE, null, ex);
                     }
-
+                    
+                }
+                case "ratingProduct": {
+                    int productID = Integer.parseInt(request.getParameter("productID"));
+                    ArrayList<ImageProductDTO> listImgs = imageDao.getAllMainImages();
+                    ArrayList<ImageProductDTO> listNotMainImg = imageDao.getAllImagesIsNotMain(productID);
+                    ProductDTO pro = productDao.get(productID);
+                    response.getWriter().println(gson.toJson(pro));
+                    break;
                 }
             }
-
+            
         } catch (Exception ex) {
             ex.printStackTrace();
         }
         if (isForward) {
             request.getRequestDispatcher(url).forward(request, response);
         }
-
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
