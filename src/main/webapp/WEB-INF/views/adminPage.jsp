@@ -738,9 +738,9 @@
                                     orderable: false,
                                     render: function (data, type, row) {
                                         return row.status ? `<a type = "button" class = " ban_btn btn btn-danger" onclick="return confirm('Bạn muốn cấm cửa hàng này ?')"  
-                                        href="<c:url value="/MainController?btnAction=admin&adminAction=updateBanShop&shopID=\${row.shopID}"></c:url>">Ban</a>` :
+                                        href="<c:url value="/MainController?btnAction=admin&adminAction=updateBanShop&shopID=\${row.shopID}"></c:url>">Cấm</a>` :
                                                 `<a type = "button" class = " ban_btn btn btn-danger" onclick="return confirm('Bạn muốn bỏ cấm cửa hàng này ?')"  
-                                        href="<c:url value="/MainController?btnAction=admin&adminAction=updateUnBanShop&shopID=\${row.shopID}"></c:url>">Unban</a>`;
+                                        href="<c:url value="/MainController?btnAction=admin&adminAction=updateUnBanShop&shopID=\${row.shopID}"></c:url>">Bỏ cấm</a>`;
                                     }
                                 }
                             ],
@@ -859,8 +859,8 @@
                     (element.status ? "Đang hoạt động" : "Ngưng hoạt động") +
                     '</td>' +
                     '<td>' +
-                    (element.status ? '<a type = "button" class = " ban_btn btn btn-danger ' + (!status ? "prevent_click" : "") + '" onclick="return confirm(`Bạn muốn cấm sản phẩm này ?`)"  href="/EcommercePlatformm/MainController?btnAction=admin&adminAction=updateBanProduct&productId=' + (element.productID) + '" >Ban</a>' :
-                            '<a type = "button" class = " ban_btn btn btn-danger ' + (!status ? "prevent_click" : "") + '" onclick="return confirm(`Bạn muốn bỏ cấm sản phẩm này ?`)"  href="/EcommercePlatformm/MainController?btnAction=admin&adminAction=updateUnBanProduct&productId=' + (element.productID) + '" >Unban</a>')
+                    (element.status ? '<a type = "button" class = " ban_btn btn btn-danger ' + (!status ? "prevent_click" : "") + '" onclick="return confirm(`Bạn muốn cấm sản phẩm này ?`)"  href="/EcommercePlatformm/MainController?btnAction=admin&adminAction=updateBanProduct&productId=' + (element.productID) + '" >Cấm</a>' :
+                            '<a type = "button" class = " ban_btn btn btn-danger ' + (!status ? "prevent_click" : "") + '" onclick="return confirm(`Bạn muốn bỏ cấm sản phẩm này ?`)"  href="/EcommercePlatformm/MainController?btnAction=admin&adminAction=updateUnBanProduct&productId=' + (element.productID) + '" >Bỏ cấm</a>')
                     +
                     '</td>' +
                     '<tr>'
