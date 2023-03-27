@@ -33,13 +33,65 @@ public class ShopDAO extends AbstractDAO<ShopDTO> {
             dto.setUserID(rs.getInt(2));
             dto.setCreateAt(rs.getDate(3));
             dto.setShopName(rs.getString(4));
-            dto.setStatus(rs.getBoolean(5));
+            dto.setStatus(rs.getInt(5));
             list.add(dto);
 //            System.err.println(dto.toString());
         }
         return list;
     }
+    
+    
+       public ArrayList<ShopDTO> getAllShopHasAccepted() throws SQLException{
+        PreparedStatement stm = conn.prepareStatement("SELECT [shop_id], [user_id],"
+                + " [created_at], [shop_name], [status], [approve], [front_identity], [back_identity]"
+                + " FROM Shop WHERE [status] <> 2 AND [approve] = 1");
+        
+        ResultSet rs = stm.executeQuery();
+        ArrayList<ShopDTO> list = new ArrayList<>();
+        while (rs.next()) {
+            ShopDTO dto = new ShopDTO();
+            dto.setShopID(rs.getInt("shop_id"));
+            dto.setUserID(rs.getInt("user_id"));
+            dto.setCreateAt(rs.getDate("created_at"));
+            dto.setShopName(rs.getString("shop_name"));
+            dto.setStatus(rs.getInt("status"));
+            dto.setApprove(rs.getInt("approve"));
+            dto.setFrontIdentity(rs.getString("front_identity"));
+            dto.setBackIdentity(rs.getString("back_identity"));
+            list.add(dto);
+        }
+        rs.close();
+        stm.close();
+        return list;
 
+    }
+    
+    public ArrayList<ShopDTO> getAllShopRegister() throws SQLException{
+        PreparedStatement stm = conn.prepareStatement("SELECT [shop_id], [user_id],"
+                + " [created_at], [shop_name], [status], [approve], [front_identity], [back_identity]"
+                + " FROM Shop WHERE [approve] = 0");
+        
+        ResultSet rs = stm.executeQuery();
+        ArrayList<ShopDTO> list = new ArrayList<>();
+        while (rs.next()) {
+            ShopDTO dto = new ShopDTO();
+            dto.setShopID(rs.getInt("shop_id"));
+            dto.setUserID(rs.getInt("user_id"));
+            dto.setCreateAt(rs.getDate("created_at"));
+            dto.setShopName(rs.getString("shop_name"));
+            dto.setStatus(rs.getInt("status"));
+            dto.setApprove(rs.getInt("approve"));
+            dto.setFrontIdentity(rs.getString("front_identity"));
+            dto.setBackIdentity(rs.getString("back_identity"));
+            list.add(dto);
+        }
+        rs.close();
+        stm.close();
+        return list;
+
+    }
+    
+       
     @Override
     public ShopDTO get(int id) throws SQLException {
         PreparedStatement stm = conn.prepareStatement("SELECT  [shop_id]\n"
@@ -105,30 +157,6 @@ public class ShopDAO extends AbstractDAO<ShopDTO> {
         return dto;
     }
 
-    public ShopDTO getShopByShopId(int shopId) throws SQLException {
-        PreparedStatement stm = conn.prepareStatement("SELECT [shop_id]\n"
-                + "      ,[user_id]\n"
-                + "      ,[created_at]\n"
-                + "      ,[shop_name]\n"
-                + "      ,[status]\n"
-                + "      ,[paypal_account]\n"
-                + "  FROM [EcommmercePlatform].[dbo].[Shop] WHERE [shop_id] = ?");
-        stm.setInt(1, shopId);
-        ShopDTO dto = new ShopDTO();
-        ResultSet rs = stm.executeQuery();
-        if (rs.next()) {
-            dto.setShopID(rs.getInt("shop_id"));
-            dto.setUserID(rs.getInt("user_id"));
-            dto.setCreateAt(rs.getDate("created_at"));
-            dto.setShopName(rs.getString("shop_name"));
-            dto.setStatus(rs.getBoolean("status"));
-            dto.setPaypalAccount(rs.getString("paypal_account"));
-        }
-        stm.close();
-        conn.close();
-        return dto;
-
-    }
 
     public double getTotalRevenue(int shopId) throws SQLException {
         PreparedStatement stm = conn.prepareStatement("  select sum(o.quantity * o.price) as total from OrderDetails o inner join Product p\n"
@@ -141,16 +169,6 @@ public class ShopDAO extends AbstractDAO<ShopDTO> {
         return 0;
     }
 
-    public static void main(String[] args) {
-        try {
-            ShopDAO dao = new ShopDAO();
-            ShopDTO dto = dao.getShopByShopId(1);
-            System.out.println(dto);
-            System.out.println(dto.getShopName());
-        } catch (SQLException ex) {
-            Logger.getLogger(ShopDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 
     public void updateBanShopStatus(int shopId) throws SQLException {
         try {
@@ -176,6 +194,29 @@ public class ShopDAO extends AbstractDAO<ShopDTO> {
         }
     }
 
+    public void updateAcceptShopStatus(int shopId) throws SQLException{
+        try {
+            PreparedStatement stm = conn.prepareStatement("UPDATE Shop SET [status] = 1, [approve] = 1 WHERE shop_id = ? ");
+            stm.setInt(1, shopId);
+            stm.executeUpdate();
+            stm.close();
+            conn.close();
+        } catch (Exception e) {
+            System.err.println("LOI NAY O Update:" + e);
+        }
+    }
+    
+    public void updateRejectShopStatus(int shopId) throws SQLException{
+        try {
+            PreparedStatement stm = conn.prepareStatement("UPDATE Shop SET [status] = 2, [approve] = 1 WHERE shop_id = ? ");
+            stm.setInt(1, shopId);
+            stm.executeUpdate();
+            stm.close();
+            conn.close();
+        } catch (Exception e) {
+            System.err.println("LOI NAY O Update:" + e);
+        }
+    }
     @Override
     public void save(ShopDTO t) throws SQLException {
         try {
@@ -210,7 +251,7 @@ public class ShopDAO extends AbstractDAO<ShopDTO> {
 
             stm.setInt(1, shopDTO.getUserID());
             stm.setString(2, shopDTO.getShopName());
-            stm.setBoolean(3, shopDTO.isStatus());
+            stm.setInt(3, shopDTO.getStatus());
             stm.setString(4, shopDTO.getFrontIdentity());
             stm.setString(5, shopDTO.getBackIdentity());
             stm.setInt(6, shopDTO.getShopID());
@@ -239,24 +280,6 @@ public class ShopDAO extends AbstractDAO<ShopDTO> {
         }
     }
 
-    public List<ShopDTO> getAllShopRegiter() throws SQLException {
-        ArrayList<ShopDTO> list = new ArrayList<>();
-        PreparedStatement stm = conn.prepareStatement("select * from Shop   WHERE status = 0 AND approve = 0");
-        ResultSet rs = stm.executeQuery();
-
-        while (rs.next()) {
-            ShopDTO dto = new ShopDTO();
-            dto.setShopID(rs.getInt(1));
-            dto.setUserID(rs.getInt(2));
-            dto.setCreateAt(rs.getDate(3));
-            dto.setShopName(rs.getString(4));
-            dto.setFrontIdentity(rs.getString("front_identity"));
-            dto.setBackIdentity(rs.getString("back_identity"));
-            list.add(dto);
-//            System.err.println(dto.toString());
-        }
-        return list;
-    }
 
     @Override
     public void delete(ShopDTO t) throws SQLException {
