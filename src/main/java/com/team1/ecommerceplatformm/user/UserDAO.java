@@ -94,6 +94,20 @@ public class UserDAO extends AbstractDAO<UserDTO> {
         stm.close();
     }
 
+    public ArrayList<UserDTO> getListUsername() throws SQLException{
+        PreparedStatement stm = conn.prepareStatement("SELECT [user_id], [username] FROM [dbo].[User]");
+        ResultSet rs = stm.executeQuery();
+        ArrayList<UserDTO> list = new ArrayList<>();
+        while (rs.next()) {
+            UserDTO user = new UserDTO();
+            user.setUserID(rs.getInt("user_id"));
+            user.setUsername(rs.getString("username"));
+            list.add(user);
+        }
+        rs.close();
+        stm.close();
+        return list;
+    }
     public void updateWardAndAddress(String email, String wardID, String address) throws SQLException {
         PreparedStatement stm = conn.prepareStatement("update [User]\n"
                 + "  set ward_id = ?,address=? where email = ?");
