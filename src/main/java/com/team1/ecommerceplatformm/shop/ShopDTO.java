@@ -33,6 +33,6 @@ public class ShopDTO {
     private int total;
     private String avatar;
     private ArrayList<ProductDTO> listProducts;
-     private String frontIdentity;
+    private String frontIdentity;
     private String backIdentity;
 }
