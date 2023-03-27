@@ -44,8 +44,7 @@ public class Constants {
     //local host
     public final static String URL_LOCALHOST = "http://localhost:8080/";
 
-                
-    public final static String URLFIREBASE = "C:\\Blue\\Data\\School\\Sem_7\\SWP\\src\\SWP391\\src\\main\\webapp\\assets\\thucaixemsao.json";
+    public final static String URLFIREBASE = "D:\\Tailieu\\ky7\\SWP391\\handon1\\SWP391\\thucaixemsao.json";
     public final static String URLFIREBASE_URL = "https://tesst-8ebfb-default-rtdb.firebaseio.com/";
     
     public final static String REVIEW_WEBSOCKET_URL = "/review";

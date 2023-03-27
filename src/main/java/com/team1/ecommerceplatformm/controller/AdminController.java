@@ -11,9 +11,12 @@ import com.google.gson.JsonPrimitive;
 import com.team1.ecommerceplatformm.category.CategoryDAO;
 import com.team1.ecommerceplatformm.product.ProductDAO;
 import com.team1.ecommerceplatformm.product.ProductDTO;
+import com.team1.ecommerceplatformm.review.ReviewDAO;
+import com.team1.ecommerceplatformm.review.ReviewDTO;
 import com.team1.ecommerceplatformm.shop.ShopDAO;
 import com.team1.ecommerceplatformm.shop.ShopDTO;
 import com.team1.ecommerceplatformm.user.UserDAO;
+import com.team1.ecommerceplatformm.user.UserDTO;
 import com.team1.ecommerceplatformm.utils.Constants;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -317,7 +320,51 @@ public class AdminController extends HttpServlet {
 //chua biet thay link kieu giiiiii
                 break;
              }
-             
+             case "viewReview":{
+                  try {
+                    ReviewDAO reviewDao = new ReviewDAO();
+                    ArrayList<ReviewDTO> listReview = new ArrayList<>();
+                    listReview = reviewDao.getAll();
+                    UserDAO userDao = new UserDAO();
+                    ArrayList<UserDTO> listUser = new ArrayList<>();
+                    listUser = userDao.getListUsername();
+                    
+                    
+                    break;
+                } catch (SQLException ex) {
+                    Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+             }
+             case "hideReview":{
+                 try{
+                    int reviewId = Integer.parseInt(request.getParameter("reviewId"));
+                    
+                ReviewDAO reviewDao = new ReviewDAO();
+                
+                reviewDao.updateHideReview(reviewId);
+                
+                }catch (SQLException ex) {
+                    Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                request.getRequestDispatcher(Constants.ADMIN_PAGE).forward(request, response);
+//chua biet thay link kieu giiiiii
+                break;
+             }
+             case "unHideReview":{
+                 try{
+                    int reviewId = Integer.parseInt(request.getParameter("reviewId"));
+                    
+                ReviewDAO reviewDao = new ReviewDAO();
+                
+                reviewDao.updateUnhideReview(reviewId);
+                
+                }catch (SQLException ex) {
+                    Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                request.getRequestDispatcher(Constants.ADMIN_PAGE).forward(request, response);
+//chua biet thay link kieu giiiiii
+                break;
+             }
             
             
             default:

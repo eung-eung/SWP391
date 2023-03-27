@@ -652,6 +652,11 @@
             fetch("MainController?btnAction=admin&adminAction=authenShop", {
                 method: 'GET'
             })
+<<<<<<< HEAD
+                    .then(rs => rs.json())  
+                    .then(data => console.log(data))
+                    .catch(error => console.log(error));
+=======
                     .then(rs => rs.json())
                     .then(data => {
                         console.log(data)
@@ -700,6 +705,7 @@
                         });
                     })
 //                    .catch(error => console.log(error));
+>>>>>>> a07a92031d40021e44330a448c599ea0dc970d40
         };
 
         const getShopProductData = function () {
