@@ -537,12 +537,12 @@
                             options: {
                                 title: {
                                     display: true,
-                                    text: "Product"
+                                    text: "Người dùng"
                                 },
                                 plugins: {
                                     title: {
                                         display: true,
-                                        text: 'Product',
+                                        text: 'Người dùng',
                                         font: {
                                             size: 29
                                         }

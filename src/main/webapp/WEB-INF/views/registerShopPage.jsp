@@ -38,7 +38,7 @@
                                 <label for="gmail1">Gmail cửa hàng<i class="fa-solid fa-store"></i></label>
                             </div>
                             <div class="register-item">
-                                <input required name="gmail" id="gmail1" type="text"/>
+                                <input required name="gmail" id="gmail1" type="email"/>
                             </div>
                         </div>
                         <div class="register-items">

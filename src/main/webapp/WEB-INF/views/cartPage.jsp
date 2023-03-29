@@ -509,6 +509,9 @@
                                             cartList.innerHTML = ""
                                             document.querySelector(".checkout-button").style.display = "none"
                                             document.querySelector(".total").innerHTML = ""
+
+                                        })
+                                        .then(() => {
                                             window.location.href = "MainController?btnAction=user&userAction=transaction"
                                         })
                             }

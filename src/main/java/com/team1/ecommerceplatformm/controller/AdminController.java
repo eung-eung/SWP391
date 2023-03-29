@@ -265,7 +265,7 @@ public class AdminController extends HttpServlet {
                     Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 request.getRequestDispatcher(Constants.ADMIN_PAGE).forward(request, response);
-//chua biet thay link kieu giiiiii
+
                 break;
              }
              case "authenShop" :{

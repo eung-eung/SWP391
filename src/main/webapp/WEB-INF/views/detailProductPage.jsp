@@ -143,9 +143,9 @@
                                     <span class="icon fa-solid fa-star rating-star-full"></span>
                                     <span class="icon fa-solid fa-star rating-star-full"></span>
                                     <span class="icon fa-solid fa-star rating-star-full"></span>
-<!--                                    <span class="product-view-reviewLink">
-                                        <a href="#" class="modal-review">Review</a>
-                                    </span>-->
+                                    <!--                                    <span class="product-view-reviewLink">
+                                                                            <a href="#" class="modal-review">Review</a>
+                                                                        </span>-->
                                     <!-- form review -->
                                     <div id="modal-review-form">
 
@@ -185,8 +185,8 @@
                                 <div class="form-field">
                                     <label for="quantity" class="form-label">Số lượng:</label>
                                     <div class="form-in-de-crement">
-                                        <input class="form-input" type="number" id="quantity" onchange="handleOnChange(this)" value="1" min="1">
-                                        <div id="increase" onclick="increaseValue()"><i
+                                        <input class="form-input" type="number" id="quantity" onchange="handleOnChangeQuantity(this,${productDetail.productID})" value="1" min="1">
+                                        <div id="increase" onclick="increaseValue(this,${productDetail.productID})"><i
                                                 class="fa-solid fa-angle-up"></i></div>
                                         <div id="decrease" onclick="decreaseValue()"><i
                                                 class="fa-solid fa-angle-down"></i></div>
@@ -231,10 +231,10 @@
 
                                 </div>
                                 <div class="tab-content" id="tab-review">
-                                    <h4 class="tab-review-title">2 reviews</h4>
+                                    <h4 class="tab-review-title"></h4>
                                     <div class="tab-review-content" id="review-content">
                                         <ul class="review-list">
-                                            
+
                                             <!--  -->
                                         </ul>
                                     </div>
@@ -328,6 +328,57 @@
     <script src="<c:url value="/assets/Javascript/handleDetailProductPage.js" />"></script>
 
     <script>
+      
+            function increaseValue(btn, productID) {
+                console.log(btn.previousElementSibling)
+                let value = btn.previousElementSibling.value
+                value++
+
+                value = isNaN(value) ? 1 : value;
+                fetch("MainController?btnAction=product&productAction=showQuantity&productID=" + productID, {
+                    method: 'GET'
+                })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data < value) {
+                                swal("", "Sản phẩm này chỉ còn " + data, "error");
+                                value = value - 1
+
+                            }
+
+                            btn.previousElementSibling.value = value
+//                        calculateTotal()
+                        })
+
+//            setQuantityWithDeIncrease(value, productID)
+            }
+            function handleOnChangeQuantity(btn, productID) {
+
+                fetch("MainController?btnAction=product&productAction=showQuantity&productID=" + productID, {
+                    method: 'GET'
+                })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data < btn.value) {
+                                swal("", "Sản phẩm này chỉ còn " + data, "error");
+                                btn.value = data
+                            }
+                            if (btn.value < 0) {
+                                btn.value = Math.abs(btn.value)
+                            } else if (btn.value == 0) {
+                                btn.value = 1
+                            }
+//                        handleTotalItem(btn, btn.value)
+//                        setQuantityWithDeIncrease(btn.value, productID)
+//                        total = calculateTotal()
+//                        document.querySelector(".total").innerHTML = `<span>` + formatter.format(total) + `</span>`
+                        })
+
+//                    calculateTotal()
+
+
+
+            }
             var user = ${empty sessionScope.user ? 1 : 2};
             function  stopAddCart(e) {
                 if (${sessionScope.user.roleID ==3} || ${sessionScope.user.roleID ==4}) {

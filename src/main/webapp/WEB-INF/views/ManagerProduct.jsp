@@ -19,7 +19,8 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <link type="text/css" rel="stylesheet" href="<c:url value="/assets/css/ManagerProduct.css" />" />
-
+        <link rel="stylesheet" href="<c:url value="assets/css/richtext.min.css"/>">
+        <script src="<c:url value="assets/Javascript/jquery.richtext.min.js"/>"></script>
         <style>
             /*            img{
                             width: 200px;
@@ -142,7 +143,7 @@
                 <div class="modal-content">
                     <form id="addProductForm" action="./ProductManagerController?userId=${userId}" method="POST" enctype="multipart/form-data">
                         <div class="modal-header">						
-                            <h4 class="modal-title">Add Product</h4>
+                            <h4 class="modal-title">Thêm sản phẩm</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         </div>
                         <div class="modal-body">	
@@ -152,7 +153,7 @@
                                 <label for="shop_id">Shop: ${shop.getShopName()}</label>
                             </div>
                             <div class="form-group">
-                                <label for="category_id">Category :</label>
+                                <label for="category_id">Loại sản phẩm</label>
                                 <select name="category_id" id="category_id" class="form-select">
                                     <c:forEach items="${listcate}" var="category">
                                         <option value="${category.getCategoryID()}" >${category.getName()}</option>
@@ -160,28 +161,28 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="price">Price:</label>
+                                <label for="price">Giá tiền</label>
                                 <input type="number" id="price" name="price"  class="form-control" required oninput="this.value = this.value.replace(/e/gi, '')">
                             </div>
                             <div class="form-group">
-                                <label for="name">Name:</label>
+                                <label for="name">Tên sản phẩm</label>
                                 <textarea id="name" name="name" class="form-control" required></textarea>
                             </div>
                             <div class="form-group">
-                                <label for="description">Description:</label>
+                                <label for="description">Mô tả sản phẩm</label>
                                 <textarea id="description" name="description" class="form-control" required></textarea>
                             </div>
                             <div class="form-group">
-                                <label for="quantity">Quantity:</label>
+                                <label for="quantity">Số lượng</label>
                                 <input type="number" id="quantity" name="quantity"  class="form-control" required>
                             </div> 
                             <div class="form-group">
-                                <label for="mainImage">Main Image:</label>
+                                <label for="mainImage">Ảnh chính</label>
                                 <input type="file" required accept="image/*" name="main_img_item" id="file"  onchange="loadFile(event, 1)" style="display: block;">
                                 <div class="output" id="output1"></div>
                             </div>   
                             <div class="form-group">
-                                <label for="mainImage">Image:</label>
+                                <label for="mainImage">Ảnh</label>
                                 <input type="file" required accept="image/*" name="img_item" id="file" onchange="loadFile2(event)" multiple style="display: block;">
                                 <div class="output" id="output2"></div>
                             </div>
@@ -686,7 +687,150 @@
                 form.submit();
             }
         </script>
+        <script>
+            console.log($('#description'))
+            $('#description').richText({
 
+                // text formatting
+                bold: true,
+                italic: true,
+                underline: true,
+
+                // text alignment
+                leftAlign: true,
+                centerAlign: true,
+                rightAlign: true,
+                justify: true,
+
+                // lists
+                ol: true,
+                ul: true,
+
+                // title
+                heading: true,
+
+                // fonts
+                fonts: true,
+                fontList: ["Arial",
+                    "Arial Black",
+                    "Comic Sans MS",
+                    "Courier New",
+                    "Geneva",
+                    "Georgia",
+                    "Helvetica",
+                    "Impact",
+                    "Lucida Console",
+                    "Tahoma",
+                    "Times New Roman",
+                    "Verdana"
+                ],
+                fontColor: true,
+                fontSize: true,
+
+
+                // link
+                urls: true,
+
+                // tables
+                table: true,
+
+                // code
+                removeStyles: true,
+                code: true,
+
+                // colors
+                colors: [],
+
+                // translations
+                translations: {
+                    'title': 'Title',
+                    'white': 'White',
+                    'black': 'Black',
+                    'brown': 'Brown',
+                    'beige': 'Beige',
+                    'darkBlue': 'Dark Blue',
+                    'blue': 'Blue',
+                    'lightBlue': 'Light Blue',
+                    'darkRed': 'Dark Red',
+                    'red': 'Red',
+                    'darkGreen': 'Dark Green',
+                    'green': 'Green',
+                    'purple': 'Purple',
+                    'darkTurquois': 'Dark Turquois',
+                    'turquois': 'Turquois',
+                    'darkOrange': 'Dark Orange',
+                    'orange': 'Orange',
+                    'yellow': 'Yellow',
+                    'imageURL': 'Image URL',
+                    'fileURL': 'File URL',
+                    'linkText': 'Link text',
+                    'url': 'URL',
+                    'size': 'Size',
+                    'responsive': '<a href="https://www.jqueryscript.net/tags.php?/Responsive/">Responsive</a>',
+                    'text': 'Text',
+                    'openIn': 'Open in',
+                    'sameTab': 'Same tab',
+                    'newTab': 'New tab',
+                    'align': 'Align',
+                    'left': 'Left',
+                    'justify': 'Justify',
+                    'center': 'Center',
+                    'right': 'Right',
+                    'rows': 'Rows',
+                    'columns': 'Columns',
+                    'add': 'Add',
+                    'pleaseEnterURL': 'Please enter an URL',
+                    'videoURLnotSupported': 'Video URL not supported',
+                    'pleaseSelectImage': 'Please select an image',
+                    'pleaseSelectFile': 'Please select a file',
+                    'bold': 'Bold',
+                    'italic': 'Italic',
+                    'underline': 'Underline',
+                    'alignLeft': 'Align left',
+                    'alignCenter': 'Align centered',
+                    'alignRight': 'Align right',
+                    'addOrderedList': 'Add ordered list',
+                    'addUnorderedList': 'Add unordered list',
+                    'addHeading': 'Add Heading/title',
+                    'addFont': 'Add font',
+                    'addFontColor': 'Add font color',
+                    'addFontSize': 'Add font size',
+                    'addImage': 'Add image',
+                    'addVideo': 'Add video',
+                    'addFile': 'Add file',
+                    'addURL': 'Add URL',
+                    'addTable': 'Add table',
+                    'removeStyles': 'Remove styles',
+                    'code': 'Show HTML code',
+                    'undo': 'Undo',
+                    'redo': 'Redo',
+                    'close': 'Close'
+                },
+
+                // privacy
+                youtubeCookies: false,
+
+                // preview
+                preview: false,
+
+                // placeholder
+                placeholder: '',
+
+                // dev settings
+                useSingleQuotes: false,
+                height: 0,
+                heightPercentage: 0,
+                id: "",
+                class: "",
+                useParagraph: false,
+                maxlength: 0,
+                useTabForNext: false,
+
+                // callback function after init
+                callback: undefined,
+
+            });
+        </script>
     </body>
 </html>
 

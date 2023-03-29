@@ -27,7 +27,7 @@ public class UpdateProduct extends HttpServlet {
             temp.setName(req.getParameter("pName"));
             temp.setDescription(req.getParameter("description"));
             temp.setQuanity(Integer.parseInt(req.getParameter("quantity")));
-            temp.setDiscount(Float.parseFloat(req.getParameter("discount")));
+//            temp.setDiscount(Float.parseFloat(req.getParameter("discount")));
             se.update(temp);
         } catch (SQLException ex) {
             Logger.getLogger(UpdateProduct.class.getName()).log(Level.SEVERE, null, ex);

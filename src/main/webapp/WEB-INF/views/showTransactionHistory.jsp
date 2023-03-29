@@ -27,7 +27,7 @@
                     <!--order-->
 
                     <c:forEach items="${histories}" var="history">
-             
+
                         <div class="order-item">
                             <div class="order-item-header">
                                 <span class="status"><i class="fa-solid fa-money-bills"></i>Thanh toán thành công</span>
@@ -51,11 +51,11 @@
                                                     </div>
                                                     <div class="product-review">
                                                         <!--<span>Chat với cửa hàng</span>-->
-                                                       
-                                        <c:if test="${!item.isIsReviewed()}">
+
+                                                        <c:if test="${!item.isIsReviewed()}">
                                                             <span class="rating-button" data-orderId="${item.orderId}" data-productId="${item.productId}">Đánh giá sản phẩm</span>
                                                         </c:if>
-                                                            <c:if test="${item.isIsReviewed()}">
+                                                        <c:if test="${item.isIsReviewed()}">
                                                             <span class="rating-button rated">Đã đánh giá</span>
                                                         </c:if>
 
@@ -161,7 +161,7 @@
     </div>
 <div class="form-field-review form-field-input">
 <label for="field-text">Comments</label>
-    <textarea id="field-text"></textarea>
+    <textarea id="field-text" required></textarea>
          </div>
          <div class="form-field-review form-field-submit">
          <input type="submit" class="submit-review-button" value="post review">
@@ -244,20 +244,32 @@
                             console.log(ws)
                             document.querySelector(".submit-review-button").onclick = () => {
                                 let review = document.querySelector("#field-text").value
-
-                                console.log(orderId)
                                 let starReview = document.querySelectorAll(".rating-star-full")
-                                console.log(starReview.length)
-                                const data = {
-                                    userId: ${sessionScope.user.userID},
-                                    rating: starReview.length,
-                                    comment: review,
-                                    orderId: orderId
+                                if (review == "" || starReview.length == 0) {
+                                    swal("Vui lòng điền đầy đủ");
+                                    modalReviewForm.classList.remove("open");
+                                    modalBody.innerHTML = ""
+                                    background.style.display = "none";
+                                    if (!modalReviewForm.classList.contains("open")) {
+                                        modalReviewForm.style.cssText = ``;
+                                    }
+                                } else {
+                                    console.log(orderId)
+
+                                    console.log(starReview.length)
+                                    const data = {
+                                        userId: ${sessionScope.user.userID},
+                                        rating: starReview.length,
+                                        comment: review,
+                                        orderId: orderId
+                                    }
+                                    ws.send(JSON.stringify(data))
+                                    window.location.href = "<c:url value="/MainController?btnAction=user&userAction=transaction" />"
                                 }
-                                ws.send(JSON.stringify(data))
-                                window.location.href = "<c:url value="/MainController?btnAction=user&userAction=transaction" />"
+
+
                             }
-                                
+
 
                         }
 
@@ -265,8 +277,8 @@
 
 
                         )
-                      
-                       
+
+
 
 
             }
