@@ -18,8 +18,26 @@ import java.util.List;
 public class ReviewDAO extends AbstractDAO<ReviewDTO> {
 
     @Override
-    public List<ReviewDTO> getAll() throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public ArrayList<ReviewDTO> getAll() throws SQLException {
+         PreparedStatement stm = conn.prepareStatement("SELECT [review_id],[rating],[comment],[user_id],[order_id],[product_id],[status],[create_at] FROM Review");
+        ResultSet rs = stm.executeQuery();
+        ArrayList<ReviewDTO> reviewList = new ArrayList<>();
+
+        while (rs.next()) {
+            ReviewDTO review = new ReviewDTO();
+            int reviewId = rs.getInt("review_id");
+            review.setReviewId(reviewId);
+            review.setRating(rs.getInt("rating"));
+            review.setComment(rs.getString("comment"));
+            review.setUserId(rs.getInt("user_id"));
+            review.setOrderId(rs.getInt("order_id"));
+            review.setCreateAt(rs.getDate("create_at"));
+            review.setProductId(rs.getInt("product_id"));
+            review.setStatus(rs.getBoolean("status"));
+
+            reviewList.add(review);
+        }
+        return reviewList;
     }
 
     @Override
@@ -27,7 +45,7 @@ public class ReviewDAO extends AbstractDAO<ReviewDTO> {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
-    public List<ReviewDTO> getAll(int productId) throws SQLException {
+    public ArrayList<ReviewDTO> getAll(int productId) throws SQLException {
         PreparedStatement stm = conn.prepareStatement("SELECT [review_id]\n"
                 + "      ,[rating]\n"
                 + "      ,[comment]\n"
@@ -35,10 +53,10 @@ public class ReviewDAO extends AbstractDAO<ReviewDTO> {
                 + "      ,[order_id]\n"
                 + "      ,[create_at]\n"
                 + "  FROM [EcommmercePlatform].[dbo].[Review]\n"
-                + "  where product_id = ?\n");
+                + "  where product_id = ? and status = 1");
         stm.setInt(1, productId);
         ResultSet rs = stm.executeQuery();
-        List<ReviewDTO> reviewList = new ArrayList<>();
+        ArrayList<ReviewDTO> reviewList = new ArrayList<>();
 
         while (rs.next()) {
             ReviewDTO review = new ReviewDTO();
@@ -82,6 +100,30 @@ public class ReviewDAO extends AbstractDAO<ReviewDTO> {
 
     }
 
+    public void updateHideReview(int review_id) throws SQLException{
+        try {
+            PreparedStatement stm = conn.prepareStatement("UPDATE Review SET [status] = 0 WHERE [review_id] = ? ");
+            stm.setInt(1, review_id);
+            stm.executeUpdate();
+            stm.close();
+            conn.close();
+        } catch (Exception e) {
+            System.err.println("LOI NAY O Update:" + e);
+        }
+    }
+    
+    public void updateUnhideReview(int review_id) throws SQLException{
+        try {
+            PreparedStatement stm = conn.prepareStatement("UPDATE Review SET [status] = 1 WHERE [review_id] = ? ");
+            stm.setInt(1, review_id);
+            stm.executeUpdate();
+            stm.close();
+            conn.close();
+        } catch (Exception e) {
+            System.err.println("LOI NAY O Update:" + e);
+        }
+    }
+    
     @Override
     public void update(ReviewDTO t) throws SQLException {
         PreparedStatement stm = conn.prepareStatement(

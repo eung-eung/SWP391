@@ -33,14 +33,14 @@
                                 <input required name="shopName" id="shopName1" type="text"/>
                             </div>
                         </div>
-                        <div class="register-items">
+<!--                        <div class="register-items">
                             <div class="register-item">
                                 <label for="gmail1">Gmail cửa hàng<i class="fa-solid fa-store"></i></label>
                             </div>
                             <div class="register-item">
                                 <input required name="gmail" id="gmail1" type="email"/>
                             </div>
-                        </div>
+                        </div>-->
                         <div class="register-items">
                             <div class="form-group">
                                 <label  for="mainImage">Chứng minh nhân dân mặt trước</label>

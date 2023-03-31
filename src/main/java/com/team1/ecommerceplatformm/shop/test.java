@@ -4,6 +4,10 @@
  */
 package com.team1.ecommerceplatformm.shop;
 
+import com.team1.ecommerceplatformm.review.ReviewDAO;
+import com.team1.ecommerceplatformm.review.ReviewDTO;
+import com.team1.ecommerceplatformm.user.UserDAO;
+import com.team1.ecommerceplatformm.user.UserDTO;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -13,9 +17,9 @@ import java.util.ArrayList;
  */
 public class test {
     public static void main(String[] args) throws SQLException {
-        ShopDAO shopDao = new ShopDAO();
-        ArrayList<ShopDTO> list = new ArrayList<>();
-        list = shopDao.getAllShopHasAccepted();
+        ReviewDAO reviewDao = new ReviewDAO();
+        ArrayList<ReviewDTO> list = new ArrayList<>();
+        list = reviewDao.getAll();
         System.out.println(list);
     }
 }
