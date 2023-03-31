@@ -31,6 +31,7 @@ public class Constants {
     public final static String SHOW_CART_PAGE = "WEB-INF/views/cartPage.jsp";
     public final static String SHOW_STORE_PAGE = "WEB-INF/views/storePage.jsp";
     public final static String HOME_PAGE = "WEB-INF/views/homePage.jsp";
+    public final static String THANKS = "WEB-INF/views/thankForBuying.jsp";
     public final static String SHOW_PRODUCT_DETAIL_PAGE = "WEB-INF/views/detailProductPage.jsp";
     public final static String ADMIN_PAGE = "WEB-INF/views/adminPage.jsp";
     public final static String MANAGE_PRODUCT = "WEB-INF/views/ManagerProduct.jsp";
@@ -46,6 +47,6 @@ public class Constants {
 
     public final static String URLFIREBASE = "D:\\FPT SPRING 2023\\SWP391\\Ecom\\SWP391\\src\\main\\webapp\\assets\\thucaixemsao.json";
     public final static String URLFIREBASE_URL = "https://tesst-8ebfb-default-rtdb.firebaseio.com/";
-    
+
     public final static String REVIEW_WEBSOCKET_URL = "/review";
 }

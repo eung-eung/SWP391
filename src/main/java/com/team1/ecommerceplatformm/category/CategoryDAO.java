@@ -76,12 +76,13 @@ public class CategoryDAO extends AbstractDAO<CategoryDTO> {
         return list;
     }
 
-    public ArrayList<CategoryDTO> getQuantityProductEachCategoryByShopId(int shopId) throws SQLException {
+    public ArrayList<CategoryDTO> getQuantityProductEachCategoryByShopId(int userId) throws SQLException {
         PreparedStatement stm = conn.prepareStatement("  select count(product_id),c.category_id,c.name \n"
                 + "  from Product p inner join Category c on p.category_id = c.category_id\n"
-                + "  where shop_id =?\n"
+                + "right join Shop s on s.shop_id = p.shop_id"
+                + "  where s.user_id =?\n"
                 + "group by c.category_id ,c.name  ");
-        stm.setInt(1, shopId);
+        stm.setInt(1, userId);
         ResultSet rs = stm.executeQuery();
         ArrayList<CategoryDTO> list = new ArrayList<>();
         while (rs.next()) {
@@ -115,7 +116,7 @@ public class CategoryDAO extends AbstractDAO<CategoryDTO> {
         try {
             CategoryDAO dao = new CategoryDAO();
             ArrayList<CategoryDTO> list = new ArrayList<>();
-            list = dao.getQuantityProductEachCategoryByShopId(1);
+            list = dao.getQuantityProductEachCategoryByShopId(69);
             System.out.println(list);
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);

@@ -512,7 +512,7 @@
 
                                         })
                                         .then(() => {
-                                            window.location.href = "MainController?btnAction=user&userAction=transaction"
+                                            window.location.href = "MainController?btnAction=thanks"
                                         })
                             }
                         }).render('#paypal-button-container');

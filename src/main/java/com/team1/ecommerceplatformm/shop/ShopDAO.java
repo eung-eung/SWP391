@@ -39,13 +39,12 @@ public class ShopDAO extends AbstractDAO<ShopDTO> {
         }
         return list;
     }
-    
-    
-       public ArrayList<ShopDTO> getAllShopHasAccepted() throws SQLException{
+
+    public ArrayList<ShopDTO> getAllShopHasAccepted() throws SQLException {
         PreparedStatement stm = conn.prepareStatement("SELECT [shop_id], [user_id],"
                 + " [created_at], [shop_name], [status], [approve], [front_identity], [back_identity]"
                 + " FROM Shop WHERE [status] <> 2 AND [approve] = 1");
-        
+
         ResultSet rs = stm.executeQuery();
         ArrayList<ShopDTO> list = new ArrayList<>();
         while (rs.next()) {
@@ -65,12 +64,12 @@ public class ShopDAO extends AbstractDAO<ShopDTO> {
         return list;
 
     }
-    
-    public ArrayList<ShopDTO> getAllShopRegister() throws SQLException{
+
+    public ArrayList<ShopDTO> getAllShopRegister() throws SQLException {
         PreparedStatement stm = conn.prepareStatement("SELECT [shop_id], [user_id],"
                 + " [created_at], [shop_name], [status], [approve], [front_identity], [back_identity]"
                 + " FROM Shop WHERE [approve] = 0");
-        
+
         ResultSet rs = stm.executeQuery();
         ArrayList<ShopDTO> list = new ArrayList<>();
         while (rs.next()) {
@@ -90,8 +89,7 @@ public class ShopDAO extends AbstractDAO<ShopDTO> {
         return list;
 
     }
-    
-       
+
     @Override
     public ShopDTO get(int id) throws SQLException {
         PreparedStatement stm = conn.prepareStatement("SELECT  [shop_id]\n"
@@ -157,7 +155,6 @@ public class ShopDAO extends AbstractDAO<ShopDTO> {
         return dto;
     }
 
-
     public double getTotalRevenue(int shopId) throws SQLException {
         PreparedStatement stm = conn.prepareStatement("  select sum(o.quantity * o.price) as total from OrderDetails o inner join Product p\n"
                 + "  on o.product_id = p.product_id  where shop_id = ?");
@@ -168,7 +165,6 @@ public class ShopDAO extends AbstractDAO<ShopDTO> {
         }
         return 0;
     }
-
 
     public void updateBanShopStatus(int shopId) throws SQLException {
         try {
@@ -194,19 +190,24 @@ public class ShopDAO extends AbstractDAO<ShopDTO> {
         }
     }
 
-    public void updateAcceptShopStatus(int shopId) throws SQLException{
+    public void updateAcceptShopStatus(int shopId) throws SQLException {
         try {
             PreparedStatement stm = conn.prepareStatement("UPDATE Shop SET [status] = 1, [approve] = 1 WHERE shop_id = ? ");
             stm.setInt(1, shopId);
+
             stm.executeUpdate();
             stm.close();
+            PreparedStatement stm1 = conn.prepareStatement("update [User] set role_id = 3 where [user_id] = (select [user_id] from Shop where shop_id=?)");
+            stm1.setInt(1, shopId);
+            stm1.executeUpdate();
+            stm1.close();
             conn.close();
         } catch (Exception e) {
             System.err.println("LOI NAY O Update:" + e);
         }
     }
-    
-    public void updateRejectShopStatus(int shopId) throws SQLException{
+
+    public void updateRejectShopStatus(int shopId) throws SQLException {
         try {
             PreparedStatement stm = conn.prepareStatement("UPDATE Shop SET [status] = 2, [approve] = 1 WHERE shop_id = ? ");
             stm.setInt(1, shopId);
@@ -217,12 +218,13 @@ public class ShopDAO extends AbstractDAO<ShopDTO> {
             System.err.println("LOI NAY O Update:" + e);
         }
     }
+
     @Override
     public void save(ShopDTO t) throws SQLException {
         try {
             PreparedStatement stm = conn.prepareStatement(""
                     + "  INSERT INTO [Shop] ([user_id],[created_at],[shop_name],[status],[approve], front_identity, back_identity)\n"
-                    + "VALUES (?,GETDATE(),?,0,0,?,?)");
+                    + "VALUES (?,GETDATE(),?,-1,0,?,?)");
 
             stm.setInt(1, t.getUserID());
             stm.setString(2, t.getShopName());
@@ -280,10 +282,38 @@ public class ShopDAO extends AbstractDAO<ShopDTO> {
         }
     }
 
-
     @Override
     public void delete(ShopDTO t) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
+    public int checkRegisterShop(int userId) throws SQLException {
+        PreparedStatement stm = conn.prepareStatement("SELECT top 1"
+                + "[status], [approve]"
+                + " FROM Shop WHERE [user_id] = ? order by shop_id desc ");
+        stm.setInt(1, userId);
+        Boolean approve = null;
+        int status = 0;
+        ResultSet rs = stm.executeQuery();
+        if (rs.next()) {
+            status = rs.getInt(1);
+            approve = rs.getBoolean(2);
+        }
+        if (approve == null) {
+            return 0;
+        }
+        if (!approve) {
+            return 2;
+        } else if (status == 2) {
+            return -1;
+        } else if (status == 1) {
+            return 1;
+        }
+        return 0;
+    }
+
+    public static void main(String[] args) throws SQLException {
+        ShopDAO d = new ShopDAO();
+        System.out.println(d.checkRegisterShop(144));
+    }
 }

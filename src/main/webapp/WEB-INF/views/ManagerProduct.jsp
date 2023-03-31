@@ -532,7 +532,7 @@
                                     }
                                     );
                                 })
-                        fetch("MainController?btnAction=product&productAction=getQuantity&shopId=1")
+                        fetch("MainController?btnAction=product&productAction=getQuantity&userId=${sessionScope.user.userID}")
                                 .then(res => res.json())
                                 .then(data => {
                                     const nameCate = data.map(i => i.name)

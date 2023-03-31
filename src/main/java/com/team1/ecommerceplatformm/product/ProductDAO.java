@@ -513,7 +513,7 @@ public class ProductDAO extends AbstractDAO<ProductDTO> {
         stm.close();
         return list;
     }
-
+   
     @Override
     public ProductDTO get(int id) throws SQLException {
         PreparedStatement stm = conn.prepareStatement(""

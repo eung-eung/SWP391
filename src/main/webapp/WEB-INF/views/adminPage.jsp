@@ -245,7 +245,7 @@
                     Các shop đăng ký
                 </div>
                 <div class="admin_page_text productRegis btn">
-                   Các sản phẩm chờ duyệt
+                    Các sản phẩm chờ duyệt
                 </div>
                 <div class="admin_page_text review-list btn">
                     Danh sách các review 
@@ -306,7 +306,7 @@
                                 <th>ID người dùng</th>
                                 <th>Tên Shop</th>
                                 <th>Ngày Đăng ký</th>
-                                <th>Trạng thái</th>
+
                                 <th>Mặt trước CCCD</th>
                                 <th>Mặt sau CCCD</th>
                                 <th>Duyệt</th>
@@ -319,7 +319,7 @@
                                 <th>ID người dùng</th>
                                 <th>Tên Shop</th>
                                 <th>Ngày Đăng ký</th>
-                                <th>Trạng thái</th>
+
                                 <th>Mặt trước CCCD</th>
                                 <th>Mặt sau CCCD</th>
                                 <th>Duyệt</th>
@@ -396,7 +396,21 @@
         </div>
     </body>
     <script>
-
+        function getcategories(index) {
+            let categories = [
+                "Quần áo",
+                "Thực phẩm",
+                "Giày dép",
+                "Đồ gia dụng",
+                "Trang trí",
+                "Nước hoa",
+                "Thú cưng",
+                "Văn phòng phẩm",
+                "Sách",
+                "Khác",
+            ];
+            return categories[index]
+        }
         const btnGroup = document.querySelectorAll(".admin_page_text");
 
         btnGroup.forEach((item) => {
@@ -632,7 +646,12 @@
                                 {'data': 'shopID'},
                                 {'data': 'productID'},
                                 {'data': 'price'},
-                                {'data': 'categoryID'},
+                                {
+                                    'data': 'categoryID',
+                                    render : function (data, type, row) {
+                                       return getcategories(row.categoryID)
+                                    }
+                                },
                                 {'data': 'quanity'},
                                 {'data': 'createAt'},
                                 {
@@ -672,7 +691,7 @@
                                 {'data': 'userID'},
                                 {'data': 'shopName'},
                                 {'data': 'createAt'},
-                                {'data': 'status'},
+
                                 {
                                     data: null,
                                     orderable: false,

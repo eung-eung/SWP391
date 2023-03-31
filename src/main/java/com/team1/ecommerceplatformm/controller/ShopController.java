@@ -55,10 +55,19 @@ public class ShopController extends HttpServlet {
         Gson gson = new Gson();
         switch (shopAction) {
             case "register": {
-                System.out.println("vào shop controller case register  ");
-                request.getRequestDispatcher(Constants.SHOW_REGISTER_SHOP_PAGE).forward(request, response);
-                break;
+                try {
+                    ShopDAO d = new ShopDAO();
+                    UserDTO userDTO = (UserDTO) request.getSession().getAttribute("user");
+                    int status = d.checkRegisterShop(userDTO.getUserID());
+                    System.out.println("vào shop controller case register  ");
+                    request.setAttribute("isChecked", status);
+                    request.getRequestDispatcher(Constants.SHOW_REGISTER_SHOP_PAGE).forward(request, response);
+                    break;
+                } catch (SQLException ex) {
+                    Logger.getLogger(ShopController.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
+            
             case "show": {
                 try {
                     System.out.println("show");
@@ -82,6 +91,19 @@ public class ShopController extends HttpServlet {
                     Logger.getLogger(ShopController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
+            case "showJson": {
+                try {
+                    ShopDAO sDao = new ShopDAO();
+                    int shopId = Integer.parseInt(request.getParameter("shopId"));
+                    ShopDTO sDto = sDao.get(shopId);
+                    response.getWriter().println(gson.toJson(sDto));
+                    
+                    break;
+                } catch (SQLException ex) {
+                    Logger.getLogger(ShopController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            
             case "currentTotal": {
                 try {
                     
@@ -201,7 +223,7 @@ public class ShopController extends HttpServlet {
                     // Xử lý ảnh tại đây
                     fileContent = filePart.getInputStream();
                     img = IOUtils.readFully(fileContent, fileContent.available());
-
+                    
                     try {
                         serviceAccount = new FileInputStream(Constants.URLFIREBASE);
                         options = new FirebaseOptions.Builder()
@@ -223,21 +245,21 @@ public class ShopController extends HttpServlet {
                     database = FirebaseDatabase.getInstance(Constants.URLFIREBASE_URL);
                     rootRef = database.getReference("mynode");
                     studentsRef = rootRef.child(shopDTO.getShopName() + "");
-                   
+                    
                     studentsRef.setValue(url, new DatabaseReference.CompletionListener() {
                         @Override
                         public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                             if (databaseError != null) {
                                 System.out.println("Data luu that bai" + databaseError.getMessage());
                             } else {
-                                System.out.println("Data Luu thanh cong"); 
+                                System.out.println("Data Luu thanh cong");
                             }
                         }
                     });
                     imgCount = false;
-                } 
+                }
             }
-             new ShopDAO().save(shopDTO);
+            new ShopDAO().save(shopDTO);
 
 //                new ShopDAO().save(shopDTO);
         } catch (Exception e) {

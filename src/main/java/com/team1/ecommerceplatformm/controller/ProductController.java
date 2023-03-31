@@ -89,12 +89,12 @@ public class ProductController extends HttpServlet {
                     url = Constants.SHOW_PRODUCT_DETAIL_PAGE;
                     break;
                 }
-//                case "showName": {
-//                    int productID = Integer.parseInt(request.getParameter("productID"));
-//                    ProductDTO pro = productDao.get(productID);
-//                    response.getWriter().println(gson.toJson(pro));
-//                    break;
-//                }
+                case "showName": {
+                    int productID = Integer.parseInt(request.getParameter("productID"));
+                    String name = productDao.getNameProduct(productID);
+                    response.getWriter().println(gson.toJson(name));
+                    break;
+                }
                 case "showQuantity": {
                     int productID = Integer.parseInt(request.getParameter("productID"));
                     ProductDTO pro = productDao.get(productID);
@@ -112,9 +112,9 @@ public class ProductController extends HttpServlet {
                 case "getQuantity": {
                     
                     try {
-                        int shopId = Integer.parseInt(request.getParameter("shopId"));
+                        int userId = Integer.parseInt(request.getParameter("userId"));
                         CategoryDAO cDao = new CategoryDAO();
-                        ArrayList<CategoryDTO> listCate = cDao.getQuantityProductEachCategoryByShopId(shopId);
+                        ArrayList<CategoryDTO> listCate = cDao.getQuantityProductEachCategoryByShopId(userId);
                         System.out.println("li" + listCate);
 //                    System.err.println("a" + a);
 //                    a++;
@@ -134,6 +134,7 @@ public class ProductController extends HttpServlet {
                     response.getWriter().println(gson.toJson(pro));
                     break;
                 }
+
             }
             
         } catch (Exception ex) {

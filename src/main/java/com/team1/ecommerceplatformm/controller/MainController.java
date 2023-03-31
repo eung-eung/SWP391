@@ -116,6 +116,10 @@ public class MainController extends HttpServlet {
                         url = Constants.REVIEW_CONTROLLER;
                         break;
                     }
+                    case "thanks": {
+                        url = Constants.THANKS;
+                        break;
+                    }
 //                    case "renderTable": {
 //                        url = Constants.ADMIN_CONTROLLER;
 //                        break;
